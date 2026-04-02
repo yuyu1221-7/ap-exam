@@ -1,0 +1,2783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Chemistry - 2025 Practice Exam 2</title>
+    <script>
+        // MathJax Configuration
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400&family=Roboto:wght@400;500;700&display=swap');
+
+        /* Base Styles */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        mjx-container {
+            font-size: 1.1em !important;
+            margin: 5px 0;
+        }
+
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+        }
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .info-card ul li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #e0e0e0;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .score-summary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(var(--correct-green) 0% var(--score-percent, 0%), #e9ecef var(--score-percent, 0%) 100%);
+            position: relative;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+        .score-text { z-index: 1; font-size: 32px; font-weight: bold; color: var(--text-dark); }
+        .score-label { z-index: 1; font-size: 14px; color: var(--text-light); margin-top: 5px; }
+        
+        .stats-boxes {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-box.correct { background-color: rgba(40, 167, 69, 0.1); }
+        .stat-box.incorrect { background-color: rgba(220, 53, 69, 0.1); }
+        .stat-box .count { font-size: 28px; font-weight: bold; }
+        .stat-box.correct .count { color: var(--correct-green); }
+        .stat-box.incorrect .count { color: var(--incorrect-red); }
+        .stat-box .label { font-size: 14px; color: var(--text-light); }
+
+        .review-questions-list {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        .review-questions-list h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: 24px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 15px;
+        }
+        .review-item {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .review-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .review-item.correct { background-color: var(--correct-green); }
+        .review-item.incorrect { background-color: rgba(220, 53, 69, 0.85); }
+        
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover {
+            background-color: #001a33;
+        }
+        .download-button.txt {
+             background-color: #6c757d;
+        }
+        .download-button.txt:hover {
+            background-color: #5a6268;
+        }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none;
+            flex-direction: column;
+        }
+        .body-new-sat.active {
+            display: flex;
+        }
+        
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#calculator-btn.active span, .tool-button#highlight-tool-btn.active span, .tool-button#new-reference-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes {
+            position: absolute;
+            left: 30px;
+            width: calc(100% - 60px);
+            bottom: 0;
+        }
+        #footer-dashes {
+             top: 0;
+             bottom: auto;
+        }
+        #question-header-separator {
+             margin-bottom: 25px;
+             width: 100%;
+             left: 0;
+        }
+
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        .pane-content-left { 
+            flex: 0 1 45%; 
+            padding: 30px 25px; 
+            box-sizing: border-box; 
+            font-family: 'Noto Serif', serif; 
+            font-size: 16px; 
+            line-height: 1.7; 
+            overflow-y: auto; 
+            min-width: 200px; 
+            background-color: #ffffff; 
+            color: #000000; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .pane-content-left > * {
+            margin-bottom: 20px;
+        }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 500; font-size: 16px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 10px 15px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; }
+        .data-table td { text-align: center; }
+        .data-table td:first-child { text-align: left; }
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        .annotation-tool { margin-left: auto; cursor: pointer; }
+        .annotation-tool svg { width: 36px; height: 36px; }
+        .annotation-tool.active svg rect { fill: var(--primary-blue); }
+        .annotation-tool.active svg text, .annotation-tool.active svg line { stroke: white; fill: white; }
+        .sat-stem { font-family: 'Noto Serif', serif; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+        .question-option { display: flex; align-items: center; padding: 16px; border: 1.5px solid var(--border-color); border-radius: 10px; background-color: #ffffff; cursor: pointer; position: relative; }
+        .options-list.analysis-mode .question-option { cursor: default; }
+        .question-option.selected { border: 2px solid #324DC7; box-shadow: none; }
+        .sat-radio-num { width: 28px; height: 28px; border: 2px solid var(--text-light); border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; margin-right: 15px; flex-shrink: 0; }
+        .question-option.selected .sat-radio-num { border-color: #324DC7; background-color: #324DC7; color: white; }
+        .option-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.5; flex-grow: 1; }
+        .option-text img { max-width: 100%; display: block; margin: 10px auto; }
+        
+        .question-option.correct-answer { border: 2px solid var(--correct-green); background-color: rgba(40, 167, 69, 0.05); }
+        .question-option.wrong-answer { border: 2px solid var(--incorrect-red); background-color: rgba(220, 53, 69, 0.05); }
+        .question-option.correct-answer .sat-radio-num { border-color: var(--correct-green); background-color: var(--correct-green); color: white; }
+        
+        .annotation-control-wrapper { position: absolute; right: -40px; top: 50%; transform: translateY(-50%); display: none; align-items: center; }
+        .strikethrough-toggle-btn { width: 22px; height: 22px; border: 1px solid #000000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; cursor: pointer; background-color: white; color: #000000; transition: all 0.1s ease-in-out; position: relative; }
+        .strikethrough-toggle-btn::after { content: ''; position: absolute; width: 140%; height: 2px; background-color: #000000; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .strikethrough-line { position: absolute; left: -15px; right: -15px; top: 50%; height: 2px; background-color: #000; transform: translateY(-50%); z-index: 2; display: none; pointer-events: none; }
+        .undo-controls { display: flex; align-items: center; position: absolute; right: -60px; top: 50%; transform: translateY(-50%); display: none; }
+        .undo-text { font-size: 14px; font-weight: bold; text-decoration: underline; color: #555; cursor: pointer; margin-left: -10px; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        #review-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1; 
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active .sat-header,
+        .body-new-sat.review-mode-active #question-screen {
+            display: none;
+        }
+        .body-new-sat.review-mode-active .footer-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active #review-screen {
+            display: flex;
+            padding-bottom: 80px;
+        }
+        .body-new-sat.review-mode-active {
+            height: 100vh;
+        }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        span.underline-dashed { border-bottom: 2px dashed var(--text-dark); }
+        span.underline-wavy { text-decoration: underline wavy var(--text-dark); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); resize: both; overflow: hidden; min-width: 350px; min-height: 200px; }
+        .draggable-header { padding: 10px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .draggable-header .title { font-weight: bold; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .draggable-content { padding: 0; width: 100%; height: calc(100% - 40px); overflow: auto; }
+        #calculator-container .draggable-content { display: flex; flex-direction: column; }
+        .calc-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+        .calc-tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .calc-tab.active { border-bottom-color: var(--primary-blue); font-weight: bold; }
+        .calc-body { flex-grow: 1; }
+        .calc-pane { display: none; width: 100%; height: 100%; }
+        .calc-pane.active { display: block; }
+        .calc-pane iframe { width: 100%; height: 100%; border: none; }
+        #reference-container .draggable-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        #zoom-modal {
+            justify-content: center;
+            align-items: center;
+            z-index: 2100;
+        }
+        .zoom-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2101;
+            line-height: 1;
+        }
+        #zoom-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #zoom-modal-content img, #zoom-modal-content table {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* --- WATERMARK STYLE --- */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Makes the watermark click-through */
+            z-index: 99999; /* Ensures it's on top of other content */
+            background-repeat: repeat;
+            background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo=");
+        }
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+        <div class="watermark"></div>
+    
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+                        <h1 id="start-title">AP Chemistry 2025 Practice Exam 2</h1>
+            <hr>
+            <h3 id="start-section-title">Section I: Multiple Choice</h3>
+            <h4 id="start-section-info">60 Questions | 1hr 30min | 50% of Score</h4>
+<ul id="start-ul">
+    <li>Questions are either discrete questions or question sets, in which you'll be provided with a stimulus or a set of data and a series of related questions.</li>
+    <li>Explain, analyze, and interpret models and representations of chemical properties or phenomena</li>
+    <li>Design experiments and procedures to test a prediction or theory</li>
+    <li>Solve problems using mathematical relationships</li>
+    <li>Make or justify a scientific claim and support it with evidence and/or reasoning</li>
+    <li>A scientific is recommended for use on Section I</li>
+</ul>
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1 id="transition-title">Section I, Part B</h1>
+            <h2 id="transition-subtitle">Calculator Required</h2>
+            <p id="transition-body">You have completed Part A. You may now proceed to Part B. A graphing calculator is required for some questions in this section. <br><br><b>You will not be able to return to Part A.</b></p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Results</h1>
+            <div class="score-summary">
+                <div class="score-circle" id="score-circle">
+                    <span class="score-text" id="score-text">0/4</span>
+                    <span class="score-label">Total Score</span>
+                </div>
+                <div class="stats-boxes">
+                    <div class="stat-box correct">
+                        <div class="count" id="correct-count">0</div>
+                        <div class="label">Correct</div>
+                    </div>
+                    <div class="stat-box incorrect">
+                        <div class="count" id="incorrect-count">0</div>
+                        <div class="label">Incorrect</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-questions-list">
+                <h2>Review Questions</h2>
+                <div class="review-grid" id="results-review-grid">
+                    </div>
+            </div>
+            <div class="download-buttons-container">
+                <button class="download-button txt" id="download-txt-btn">Download Summary (TXT)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section I: Multiple Choice</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">80:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="new-reference-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxOCAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgIGNsaXAtcnVsZT0iZXZlbm9kZCINCiAgICAgICAgZD0iTTE1LjY0NCAzLjcxOGMuMDk5LS4wNzQuMi0uMTQ1LjMwNC0uMjFsLjI5LS4xOGMuMTg1LS4xMTEuMzQ2LS4yMTQuNDg0LS4zMDIuMTM3LS4wOTEuMjY1LS4xODguMzgyLS4yOTEuMTctLjE1NC4zMS0uMzI0LjQyMy0uNTExLjExLS4xODcuMTY1LS40MS4xNjUtLjY2NWEuOTk2Ljk5NiAwIDAgMC0uNDA5LS44NDZBMS4zODEgMS4zODEgMCAwIDAgMTYuODI3LjVhMi4xOTMgMi4xOTMgMCAwIDAtLjU2OC0uMDdjLS4xOCAwLS4zNDcuMDE3LS41MDEuMDVhMy4yNjQgMy4yNjQgMCAwIDAtLjQyLjEyMiAyLjMyIDIuMzIgMCAwIDAtLjMzMy4xNTUgMy41NSAzLjU1IDAgMCAwLS4yNC4xNTJsLS4xODMuOThjLjI1Ny0uMjAyLjUtLjM1NS43MjctLjQ1Ni4yMjgtLjEwMS40NjMtLjE1Mi43MDYtLjE1Mi4xOTggMCAuMzM3LjA0My40MTYuMTI5YS40MjIuNDIyIDAgMCAxIC4xMTguMjk3LjU4Mi41ODIgMCAwIDEtLjE1OC40MDkgMi4zOTggMi4zOTggMCAwIDEtLjQxNi4zNDhjLS4yNDMuMTYyLS40OC4zMTctLjcxLjQ2M2E1LjEzNCA1LjEzNCAwIDAgMC0uNjM1LjQ3NyAzLjA4OCAzLjA4OCAwIDAgMC0uNTYxLjY3Yy0uMTU3LjI1Ni0uMjczLjU4LS4zNDQuOTcyaDMuMzU4bC4yNS0xLjI4NGEuODUuODUgMCAwIDAtLjIyLS4wODEuOTM2LjkzNiAwIDAgMC0uMjItLjAyN2MtLjA2MiAwLS4xMzYuMDA2LS4yMjIuMDJhMS4wMSAxLjAxIDAgMCAwLS4yNS4wNzRsLS4wOTQuNDY2aC0xLjIwNGMuMDY4LS4wOTQuMTQ3LS4xODIuMjM3LS4yNjMuMDktLjA4MS4xODQtLjE2LjI4NC0uMjMzTTEyLjc4My44NDhIOC40ODdhMS4xODYgMS4xODYgMCAwIDAtLjMxLjQ0N2MtLjA3LjE3My0uMTA1LjM0Mi0uMTA1LjUwOCAwIC4wNTYuMDA0LjEyNS4wMTEuMjA4LjAwNy4wODMuMDM4LjIuMDk0LjM1M2gxLjEyTDcuMTE4IDQuMzU2IDUuNTE5Ljg0OEgyLjU3MmMtLjI3Ni4yNjQtLjQxNC42MTYtLjQxNCAxLjA1OSAwIC4wNy4wMDMuMTQyLjAxLjIxOC4wMDguMDc2LjAzMS4yMTguMDczLjQyNWgxLjQzMmwxLjYxOCAzLjU0OS00LjAwNSAzLjgxOUguNDE0Qy4xMzcgMTAuMTggMCAxMC41MzMgMCAxMC45NzZjMCAuMDY5LjAwMy4xNDMuMDEuMjE4LjAwNi4wNzYuMDMxLjIxOC4wNzMuNDI1aDQuNTY1Yy4xMzktLjEyNS4yNDEtLjI3Mi4zMTItLjQ0NWExLjM5IDEuMzkgMCAwIDAgLjEwMy0uNTFjMC0uMDU0LS4wMDQtLjEyNC0uMDA5LS4yMDctLjAwNy0uMDgzLS4wNC0uMi0uMDk0LS4zNTJIMy42NTJsMi40NDktMi4yMjEgMS42ODEgMy43MzVoMi45MjZjLjI5MS0uMjYyLjQzNi0uNjE1LjQzNi0xLjA1OCAwLS4wNy0uMDA0LS4xNDItLjAxLS4yMThhMy4xNTYgMy4xNTYgMCAwIDAtLjA5My0uNDI1SDkuNjNMNy45MjggNi4xNGwzLjc1NS0zLjU5aC43NjljLjI5LS4yNjIuNDM1LS4xNjYuNDM1LTEuMDU3IDAtLjA3MS0uMDAzLS4xNDMtLjAwOS0uMjJhMy4zODMgMy4zODMgMCAwIDAtLjA5NS0uNDI1Ig0KICAgICAgICBmaWxsPSIjMUUxRTFFIg0KICAgICAvPg0KPC9zdmc+DQo=" alt="Reference Icon">
+                    <span>Reference</span>
+                </div>
+
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+
+                <div class="tool-button" id="calculator-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMSAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICAgICAgZmlsbC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgY2xpcC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgZD0iTTAgMTMuMzg1aDEwLjk1MlYuNUgwdjEyLjg4NXptLjk2Ny0uOTY2aDkuMDJWMS40NjdILjk2NnYxMC45NTJ6Ig0KICAgICAgICAgICAgZmlsbD0iIzFFMUUxRSINCiAgICAvPg0KICAgIDxwYXRoDQogICAgICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBjbGlwLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBkPSJNMS45MzIgNS40OTdoNy4wODd2LTIuOUgxLjkzMnYyLjl6bS45NjctLjk2Mmg1LjE1NHYtLjk2N0gyLjg5OXYuOTY3ek0xLjkzMiA3LjQzMWgxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgNy40MzFINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDYuNDE0SDcuNDFWNy40M2gxLjYxVjYuNDE0ek0xLjkzMiA5LjM1N2gxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgOS4zNTdINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDguMzlINy40MXYuOTY3aDEuNjF2LS45NjZ6TTEuOTM0IDExLjI5M2gxLjYxdi0uOTY3aC0xLjYxdi45Njd6TTQuNjcgMTEuMjkzSDYuMjh2LS45NjdINC42N3YuOTY3ek03LjQwOCAxMS4yOTNoMS42MXYtLjk2N2gtMS42MXYuOTY3eiINCiAgICAgICAgICAgIGZpbGw9IiMxRTFFMUUiDQogICAgLz4NCjwvc3ZnPg0K" alt="Calculator Icon">
+                    <span>Calculator</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d">
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <circle cx="12" cy="19" r="2"></circle>
+                    </svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section I: Multiple Choice</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1 of 40</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+<p><strong>The directions that follow are what you will see on exam day. This untimed preview is intended to represent the different question types and functionality you will encounter on exam day and has fewer multiple-choice questions than the exam.</strong></p>
+
+<p style="text-align: center;">Chemistry</p>
+
+<p>Section I has 60 multiple-choice questions and lasts 1 hour and 30 minutes.</p>
+
+<p>Each of the questions or incomplete statements is followed by 4 suggested answers or completions. Select the one that is best in each case.</p>
+
+<p>For all questions, assume that the temperature is 298 K, the pressure is 1.0 atm, and solutions are aqueous unless otherwise specified.</p>
+
+<p>A calculator is allowed in this section. You may use a handheld four-function, scientific, or graphing calculator, or the calculator available in this application.</p>            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section I: Multiple Choice</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="reference-container" class="draggable" style="display: none; top: 100px; left: 150px; width: 600px; height: 700px;">
+        <div class="draggable-header"><span class="title">Reference</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content"></div>
+    </div>
+
+    <div id="calculator-container" class="draggable" style="display: none; top: 100px; left: 100px; width: 400px; height: 600px;">
+        <div class="draggable-header"><span class="title">Calculator</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content">
+            <div class="calc-tabs"><div class="calc-tab active" data-tab="graphing">Scientific calculator</div></div>
+            <div class="calc-body"><div id="graphing-pane" class="calc-pane active"><iframe src="https://www.desmos.com/scientific" allow="fullscreen"></iframe></div></div>
+        </div>
+    </div>
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit Line Reader</button>
+    </div>
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        (function() {
+            let sectionsData = [];
+            let currentSectionIndex = 0;
+            let currentQuestionIndex = 0;
+            let currentView = 'start';
+            let timerInterval;
+
+            function initializeExam() {
+                // Data was incorrectly nested inside a "sections" array.
+                sectionsData = [
+                    {
+                        name: "Section I: Multiple Choice",
+                        time: 90 * 60, // 90 minutes
+                        timerStarted: false, // Flag to track if the timer has started for this section
+                        questions: 
+                            [
+  {
+    "id": 1,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following bonds is most polar?",
+    "options": [
+      "F-F",
+      "O-F",
+      "O-I",
+      "O-Cl"
+    ]
+  },
+  {
+    "id": 2,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A sample of an oxide of vanadium is separated into its elements, resulting in $1.02\\mathrm{g~V}$ and $0.48\\mathrm{g~O}$. Which of the following is the formula of the oxide?",
+    "options": [
+      "$\\mathrm{V}_2\\mathrm{O}$",
+      "$\\mathrm{VO}_2$",
+      "$\\mathrm{V}_2\\mathrm{O}_3$",
+      "$\\mathrm{V}_2\\mathrm{O}_5$"
+    ]
+  },
+  {
+    "id": 3,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/Wxjx/458X132/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Drops of water are observed to condense on a cold window, as represented by the equation. Which of the following is true about the values of $\\Delta H^{\\circ}$ and $\\Delta S^{\\circ}$ for the process?",
+    "options": [
+      "$\\Delta H^{\\circ}$ and $\\Delta S^{\\circ}$ are positive.",
+      "$\\Delta H^{\\circ}$ is positive, and $\\Delta S^{\\circ}$ is negative.",
+      "$\\Delta H^{\\circ}$ is negative, and $\\Delta S^{\\circ}$ is positive.",
+      "$\\Delta H^{\\circ}$ and $\\Delta S^{\\circ}$ are negative."
+    ]
+  },
+  {
+    "id": 4,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/eZgi/1216X86/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following is the balanced net ionic equation for the reaction represented by the preceding equation?",
+    "options": [
+      "$\\mathrm{Al}^{3 + }(aq) + \\mathrm{OH}^{-}(aq)\\rightarrow \\mathrm{Al(OH)}_3(s)$",
+      "$\\mathrm{Al}^{3 + }(aq) + 3\\mathrm{OH}^{-}(aq)\\rightarrow \\mathrm{Al(OH)}_3(s)$",
+      "$\\mathrm{Al}^{3 + }(aq) + 3\\mathrm{Cl}^{-}(aq) + 3\\mathrm{NaOH}(aq)\\rightarrow \\mathrm{Al(OH)}_3(s) + 3\\mathrm{Na}^+ (aq) + 3\\mathrm{Cl}^- (aq)$",
+      "$\\mathrm{Al}^{3 + }(aq) + 3\\mathrm{Cl}^{-}(aq) + 3\\mathrm{Na}^{+}(aq) + 3\\mathrm{OH}^{-}(aq)\\rightarrow \\mathrm{Al(OH)}_3(s) + 3\\mathrm{Na}^{+}(aq) + 3\\mathrm{Cl}^{-}(aq)$"
+    ]
+  },
+  {
+    "id": 5,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/vtF2/1336X230/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following is the value of the equilibrium constant for the following reaction, given the equilibrium constants $K_1$ and $K_2$?<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/JvK8/876X156/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "options": [
+      "$1\\times 10^{-5}$",
+      "$1\\times 10^{-1}$",
+      "$1\\times 10^{0}$",
+      "$1\\times 10^{5}$"
+    ]
+  },
+  {
+    "id": 6,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/5CWJ/680X246/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Based on the table of half-reactions, which of the following is a true statement with correct justification?",
+    "options": [
+      "A reaction will occur when $\\mathrm{Pb}(s)$ is added to a $1.0M$ solution of $\\mathrm{Cr}\\big(\\mathrm{NO}_3\\big)_3$ , because $E^{\\circ}$ for the reaction is $0.61\\mathrm{V}$",
+      "A reaction will occur when $\\mathrm{Pb}(s)$ is added to a $1.0M$ solution of $\\mathrm{Cr}\\big(\\mathrm{NO}_3\\big)_3$ , because $E^{\\circ}$ for the reaction is $1.09\\mathrm{V}$",
+      "A reaction will occur when $\\mathrm{Cr}(s)$ is added to a $1.0M$ solution of $\\mathrm{Pb}\\big(\\mathrm{NO}_3\\big)_2$ , because $E^{\\circ}$ for the reaction is $0.61\\mathrm{V}$",
+      "A reaction will occur when $\\mathrm{Cr}(s)$ is added to a $1.0M$ solution of $\\mathrm{Pb}\\big(\\mathrm{NO}_3\\big)_2$ , because $E^{\\circ}$ for the reaction is $1.09\\mathrm{V}$"
+    ]
+  },
+  {
+    "id": 7,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following Lewis diagrams represents the substance that would exhibit the most significant hydrogen bonding in a pure liquid sample?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/qL9L/464X172/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/BPVy/438X198/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/DYzQ/376X214/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/dHXH/306X194/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+  {
+    "id": 8,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/lnUv/1394X462/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "According to the information in the table and the chemical equation, the value of the molar entropy of $\\mathrm{HCl}(g)$ is closest to which of the following?",
+    "options": [
+      "$170\\mathrm{J / (mol\\cdot K)}$",
+      "$190\\mathrm{J / (mol\\cdot K)}$",
+      "$350\\mathrm{J / (mol\\cdot K)}$",
+      "$370\\mathrm{J / (mol\\cdot K)}$"
+    ]
+  },
+  {
+    "id": 9,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/GbyG/826X192/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "How does the hybridization of the carbon atoms change from reactants to products in the reaction represented by the equation?",
+    "options": [
+      "$sp$ to $sp^2$",
+      "$sp$ to $sp^3$",
+      "$sp^2$ to $sp$",
+      "$sp^3$ to $sp$"
+    ]
+  },
+  {
+    "id": 10,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/C6Cn/608X502/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Given the reaction energy profile, which of the following corresponds to the activation energy for the rate-determining step in the reaction mechanism?",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 11,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/iKM3/1034X134/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>A 10.0 mL solution of an unknown acid, HA, is titrated with 0.20 M $NaOH(aq)$. The reaction represented by the preceding equation occurs during the titration. The following titration curve is produced.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/VHjH/842X504/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following is a conjugate acid-base pair for the reaction that occurs during the titration?",
+    "options": [
+      "HA and $\\mathrm{OH}^{-}$",
+      "HA and $\\mathrm{H}_2\\mathrm{O}$",
+      "$\\mathrm{H}_2\\mathrm{O}$ and $\\mathrm{A}^{-}$",
+      "$\\mathrm{OH}^{-}$ and $\\mathrm{H}_2\\mathrm{O}$"
+    ]
+  },
+  {
+    "id": 12,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/iKM3/1034X134/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>A 10.0 mL solution of an unknown acid, HA, is titrated with 0.20 M $NaOH(aq)$. The reaction represented by the preceding equation occurs during the titration. The following titration curve is produced.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/VHjH/842X504/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The volume of the HA solution that was titrated was $10.0~\\mathrm{mL}$. What was the initial concentration of the HA solution?",
+    "options": [
+      "$0.080M$",
+      "$0.20M$",
+      "$0.50M$",
+      "$1.0M$"
+    ]
+  },
+  {
+    "id": 13,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/iKM3/1034X134/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>A 10.0 mL solution of an unknown acid, HA, is titrated with 0.20 M $NaOH(aq)$. The reaction represented by the preceding equation occurs during the titration. The following titration curve is produced.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/VHjH/842X504/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The $pK_{a}$ of HA is closest to which of the following?",
+    "options": [
+      "2.2",
+      "4.3",
+      "5.4",
+      "8.7"
+    ]
+  },
+  {
+    "id": 14,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/iKM3/1034X134/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>A 10.0 mL solution of an unknown acid, HA, is titrated with 0.20 M $NaOH(aq)$. The reaction represented by the preceding equation occurs during the titration. The following titration curve is produced.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/VHjH/842X504/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following shows the relative concentrations of species in the solution represented by point X on the titration curve?",
+    "options": [
+      "$[\\mathrm{H}^{+}] = [\\mathrm{OH}^{-}] > [\\mathrm{A}^{-}]$",
+      "$[\\mathrm{H}^{+}] > [\\mathrm{OH}^{-}] = [\\mathrm{A}^{-}]$",
+      "$[\\mathrm{OH}^{-}] > [\\mathrm{A}^{-}] > [\\mathrm{H}^{+}]$",
+      "$[\\mathrm{A}^{-}] > [\\mathrm{OH}^{-}] > [\\mathrm{H}^{+}]$"
+    ]
+  },
+  {
+    "id": 15,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "An unknown element, X, forms a compound with barium with the formula of $\\mathrm{BaX}_2$. Which of the following could be the electron configuration of a neutral atom of element X?",
+    "options": [
+      "[Ne] $3s^2$",
+      "[Ne] $3s^2 3p^2$",
+      "[Ne] $3s^2 3p^5$",
+      "[Ne] $3s^2 3p^6$"
+    ]
+  },
+  {
+    "id": 16,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Copper consists of two naturally occurring isotopes, one with 34 neutrons and one with 36 neutrons. Which of the following is the mass spectrum of a representative sample of Cu?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/9opm/456X434/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/FJrv/430X436/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/bp31/440X430/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/sr2z/438X440/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+  {
+    "id": 17,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/gv4M/698X304/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Properties of $\\mathrm{CH}_3\\mathrm{OH}$ and $\\mathrm{H}_2\\mathrm{O}$ are given in the table. A student is given a beaker containing a solution of $\\mathrm{CH}_3\\mathrm{OH}(l)$ and $\\mathrm{H}_2\\mathrm{O}(l)$. If the student wishes to separate and collect the two components of the solution, which of the following experimental techniques would be most appropriate?",
+    "options": [
+      "Using paper chromatography and collecting the liquid that first moves to the top of the paper",
+      "Combusting the $\\mathrm{CH}_3\\mathrm{OH}$ and collecting the products of the reaction",
+      "Boiling the mixture and condensing and collecting the first vapors produced",
+      "Titrating the mixture with $\\mathrm{HCl}(aq)$ to the equivalence point"
+    ]
+  },
+  {
+    "id": 18,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "In a kinetic study of a reaction, a student measures concentration of one species in the reaction at regular time intervals and graphs the concentration versus time. If the reaction was zeroth order instead of first order, then the graph of concentration versus time would show a",
+    "options": [
+      "constant half-life",
+      "constant slope",
+      "half-life that gets progressively longer",
+      "slope that becomes less steep over time"
+    ]
+  },
+  {
+    "id": 19,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/qCTf/712X206/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "A sample of $\\mathrm{MgCO}_3(s)$ is placed in a previously evacuated rigid container. The temperature is raised to $250^{\\circ}\\mathrm{C}$, and the reaction represented by the equation reaches equilibrium with both solids present in the container. Which of the following adjustments to the system will increase the number of moles of $\\mathrm{CO}_2(g)$ at equilibrium?",
+    "options": [
+      "Raising the temperature of the system to $300^{\\circ}\\mathrm{C}$",
+      "Lowering the temperature of the system to $200^{\\circ}\\mathrm{C}$",
+      "Adding $\\mathrm{MgO}(s)$ to the system",
+      "Adding $\\mathrm{MgCO}_3(s)$ to the system"
+    ]
+  },
+  {
+    "id": 20,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/FbNn/598X130/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "A student conducts an experiment to determine the percentage of silver in an alloy by first reacting the alloy with nitric acid. The student then precipitates the $\\mathrm{Ag}^{+}(aq)$ by adding excess $\\mathrm{NaCl}(aq)$ to form $\\mathrm{AgCl}(s)$ according to the equation. The precipitate is filtered, dried, and weighed. Which of the following indicates the effect on the calculated percentage of silver if the precipitate was not dried completely before weighing it, and explains why?",
+    "options": [
+      "The calculated percentage is too low because the additional water will cause a significant quantity of the $\\mathrm{AgCl}(s)$ to dissolve and wash through the filter paper.",
+      "The calculated percentage is too low because water has a significantly lower molar mass than $\\mathrm{AgCl}(s)$, which reduces the average mass of the precipitate.",
+      "The calculated percentage is the same because the additional water does not affect the mass of the alloy, and the student will react the same mass of $\\mathrm{Ag}$ regardless.",
+      "The calculated percentage is too high because the additional water adds mass to the $\\mathrm{AgCl}(s)$, and the student will calculate a higher mass of $\\mathrm{Ag}$ in the sample."
+    ]
+  },
+  {
+    "id": 21,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>An equimolar mixture of $\\mathrm{SO}_2$ and $\\mathrm{O}_2$ is placed in a rigid container at $298~\\mathrm{K}$ with an initial pressure of 0.20 atm. A catalyst is added to the mixture, and the reaction represented below occurs.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/QTFG/1064X112/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following gives the shape of the $\\mathrm{SO}_2$ molecule and best helps explain why it has that shape?",
+    "options": [
+      "It is linear, because there are two electron domains around the sulfur atom.",
+      "It is linear, because there are three electron domains around the sulfur atom.",
+      "It is bent, because there are two electron domains around the sulfur atom.",
+      "It is bent, because there are three electron domains around the sulfur atom."
+    ]
+  },
+  {
+    "id": 22,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>An equimolar mixture of $\\mathrm{SO}_2$ and $\\mathrm{O}_2$ is placed in a rigid container at $298~\\mathrm{K}$ with an initial pressure of 0.20 atm. A catalyst is added to the mixture, and the reaction represented below occurs.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/QTFG/1064X112/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "What is the partial pressure of $\\mathrm{O}_2(g)$ in the container before any reaction occurs?",
+    "options": [
+      "0.067 atm",
+      "0.10 atm",
+      "0.13 atm",
+      "0.20 atm"
+    ]
+  },
+  {
+    "id": 23,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>An equimolar mixture of $\\mathrm{SO}_2$ and $\\mathrm{O}_2$ is placed in a rigid container at $298~\\mathrm{K}$ with an initial pressure of 0.20 atm. A catalyst is added to the mixture, and the reaction represented below occurs.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/QTFG/1064X112/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/61Hk/692X244/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Based on the bond energies given in the table and the value of $\\Delta H$, which of the following is the best estimate for the energy of one of the sulfur-oxygen bonds in $\\mathrm{SO}_3$?",
+    "options": [
+      "$403\\mathrm{kJ / mol}$",
+      "$470\\mathrm{kJ / mol}$",
+      "$880\\mathrm{kJ / mol}$",
+      "$1410\\mathrm{kJ / mol}$"
+    ]
+  },
+  {
+    "id": 24,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>An equimolar mixture of $\\mathrm{SO}_2$ and $\\mathrm{O}_2$ is placed in a rigid container at $298~\\mathrm{K}$ with an initial pressure of 0.20 atm. A catalyst is added to the mixture, and the reaction represented below occurs.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/QTFG/1064X112/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "What is the partial pressure of $\\mathrm{SO}_3(g)$ in the container after the reaction goes to completion and the temperature is returned to $298~\\mathrm{K}$?",
+    "options": [
+      "0.050 atm",
+      "0.10 atm",
+      "0.20 atm",
+      "0.40 atm"
+    ]
+  },
+  {
+    "id": 25,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/PDR8/626X256/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "A student performs an experiment on samples of two unknown liquids... The student collects the information shown in the table. Which of the following could explain why the temperature changes in samples X and Z were different?",
+    "options": [
+      "Sample X and sample $Z$ were of the same substance, but the volume of sample $\\textrm{X}$ was greater than that of sample Z.",
+      "Sample X and sample $Z$ were of the same substance, but the specific heat of sample X was less than that of sample Z.",
+      "Sample X and sample $Z$ were of different substances, but the amount of energy needed to melt the ice in sample X was greater than in sample Z.",
+      "Sample X and sample $Z$ were of different substances, and the specific heat of sample X was less than sample Z."
+    ]
+  },
+{
+  "id": 26,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 2,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "",
+  "stem": "Humans are warned to shield their eyes from ultraviolet radiation with wavelengths shorter than 300 nm but not from infrared radiation with wavelengths of about 900 nm. Which of the following explains the reason for this based on what happens at the molecular level with exposure to these types of radiation?",
+  "options": [
+    "900 nm radiation has triple the energy of 300 nm radiation, so infrared radiation is more likely to promote electrons or break covalent bonds.",
+    "900 nm radiation has one-third the energy of 300 nm radiation, so infrared radiation is more likely to cause molecular rotation to occur.",
+    "300 nm radiation has triple the energy of 900 nm radiation, so ultraviolet radiation is more likely to promote electrons or break covalent bonds.",
+    "300 nm radiation has one-third the energy of 900 nm radiation, so ultraviolet radiation is more likely to cause molecular vibration to occur."
+  ]
+},
+  {
+    "id": 27,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/sYqh/468X70/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "An elementary step in a reaction mechanism is given by the equation. Which of the following diagrams would best help explain why not all collisions result in reaction?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/if9i/710X174/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/VvNQ/558X224/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/3AY9/474X220/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/Zf4i/620X184/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+  {
+    "id": 28,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/3KFJ/726X114/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The rate law for the reaction represented is rate $= k\\left[\\mathrm{NO}_2\\right]^2$. Which of the following mechanisms is consistent with the rate law?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/MIOu/528X276/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/UTG9/724X160/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/xKcp/540X214/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/rkiH/616X178/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+  {
+    "id": 29,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/1qBc/560X388/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following names a pair of elements that would likely form a substitutional alloy and explains why?",
+    "options": [
+      "Ni and $\\mathrm{Cu}$ , because Ni atoms would fit in the spaces between $\\mathrm{Cu}$ atoms in the solid lattice.",
+      "Ni and $\\mathrm{Cu}$ , because Ni atoms would take the place of $\\mathrm{Cu}$ atoms in the solid lattice.",
+      "W and N, because N atoms would fit in the spaces between W atoms in the solid lattice.",
+      "W and N, because N atoms would take the place of W atoms in the solid lattice."
+    ]
+  },
+  {
+    "id": 30,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/1qBc/560X388/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following explains why an alloy of Au and Ag conducts electricity?",
+    "options": [
+      "Ag typically forms only $\\mathrm{Ag^{+}}$ ions, whereas Au forms both $\\mathrm{Au^{+}}$ and $\\mathrm{Au}^{3 + }$ ions.",
+      "Au has a larger atomic radius than $\\mathrm{Ag}$ , so its electrons are easier to remove.",
+      "Both $\\mathrm{Ag}$ and Au have delocalized valence electrons.",
+      "Both $\\mathrm{Ag}$ and Au attract shared electrons equally."
+    ]
+  },
+  {
+    "id": 31,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/1qBc/560X388/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Which of the following best explains why Au has a larger radius than Cu does?",
+    "options": [
+      "Au has a larger electronegativity than Cu does.",
+      "Au has more occupied electron shells than Cu does.",
+      "Au has more protons than Cu does.",
+      "Au is more dense than Cu is."
+    ]
+  },
+{
+  "id": 32,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 2,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/M0Wa/466X538/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "A 1.0 $M$ solution of $\\mathrm{AgNO_3}$ is prepared by dissolving 0.50 mol of $\\mathrm{AgNO_3}(s)$ in water to make 500 mL of solution. A highly magnified view of the solution is shown. If 1.50 mol of $\\mathrm{AgNO_3}(s)$ is added to the solution in the beaker and diluted to a final volume of 1000 mL, which of the following magnified views most accurately reflects the composition of the solution? (All magnified views represent the same volume of solution.)",
+  "options": [
+    "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/1Lio/450X482/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/D2ZD/486X498/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/2r0y/484X512/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/woQb/488X484/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+  ]
+},
+  {
+    "id": 33,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A solution is prepared by mixing $0.50\\mathrm{L}$ of $0.40M\\mathrm{HNO}_3$ with $0.50\\mathrm{L}$ of $0.20M$ KOH. If it is assumed that volumes are additive, the $\\mathrm{pH}$ of the resulting mixture will be which of the following?",
+    "options": [
+      "0.10",
+      "0.70",
+      "1.0",
+      "7.0"
+    ]
+  },
+  {
+    "id": 34,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/dEWC/1008X124/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/6B7t/662X276/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "A student reacts $\\mathrm{Mg}(s)$ with $\\mathrm{HCl}(aq)$ to determine the value of $\\Delta H^{\\circ}$ for the reaction represented. Information for the experiment is given in the following table. If the student conducts a second trial and uses the same mass of $\\mathrm{Mg}(s)$ but 500. mL of $1.0M$ HCl, which of the following will occur?",
+    "options": [
+      "The value of the calculated $\\Delta H^{\\circ}$ will increase.",
+      "The temperature change of the solution will be less than $15.1\\mathrm{K}$",
+      "The temperature change of the solution will be approximately $25~\\mathrm{K}$",
+      "The temperature change of the solution will be $15.1\\mathrm{K}$"
+    ]
+  },
+  {
+    "id": 35,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/7pRn/682X444/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Formulas and properties of some group 1 and 2 compounds are listed in the table. Which of the following questions could be tested to determine if an unknown white powder was a hydroxide from group 2 and not from group 1?",
+    "options": [
+      "Does the compound conduct electricity when dissolved in distilled water?",
+      "Does the compound dissolve significantly in distilled water?",
+      "Does the compound form a precipitate when reacted with $\\mathrm{HNO}_3$?",
+      "Does the compound have a molar mass above $50\\mathrm{g / mol}$?"
+    ]
+  },
+  {
+    "id": 36,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/Eoxe/1510X114/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Sodium hydroxide can be produced commercially from the electrolysis of sodium chloride solutions, as indicated by the balanced equation.</p>",
+    "stem": "Which of the following is the best evidence that the reaction is an oxidation-reduction reaction?",
+    "options": [
+      "Heat is consumed during the reaction.",
+      "The oxidation numbers of both Na and O change as the reaction proceeds.",
+      "The oxidation number of each Cl atom changes from $^{-1}$ to 0, and some H atoms change from $+1$ to 0.",
+      "Each Cl atom gains an electron, and each $\\mathrm{H}_2\\mathrm{O}$ molecule loses a proton."
+    ]
+  },
+  {
+    "id": 37,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/Eoxe/1510X114/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Sodium hydroxide can be produced commercially from the electrolysis of sodium chloride solutions, as indicated by the balanced equation.</p>",
+    "stem": "What is the approximate minimum voltage that must be supplied to a $1.0M$ solution of $\\mathrm{NaCl}(aq)$ to produce $\\mathrm{NaOH}(aq)$ according to the reaction above?<br>($F ≈ 100,000$ coulombs per mole of electrons.)",
+    "options": [
+      "$0.004\\mathrm{V}$",
+      "$1.0\\mathrm{V}$",
+      "$2.0\\mathrm{V}$",
+      "$4.0\\mathrm{V}$"
+    ]
+  },
+  {
+    "id": 38,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/Eoxe/1510X114/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Sodium hydroxide can be produced commercially from the electrolysis of sodium chloride solutions, as indicated by the balanced equation.</p>",
+    "stem": "The gases produced from the electrolysis reaction are condensed in order to prevent their escape into the atmosphere. Which of the following indicates the gas that condenses at the lower temperature and gives a particle-level explanation for why?",
+    "options": [
+      "$\\mathrm{H}_{2}$ , because the hydrogen bonding in $\\mathrm{H}_{2}(l)$ is stronger than the dispersion forces in $\\mathrm{Cl}_2(l)$",
+      "$\\mathrm{H}_{2}$ , because the dispersion forces in $\\mathrm{H}_{2}(l)$ are weaker than the dispersion forces in $\\mathrm{Cl}_2(l)$",
+      "$\\mathrm{Cl}_2$ , because the $\\mathrm{Cl - Cl}$ bond in $\\mathrm{Cl}_2$ is stronger than the $\\mathrm{H - H}$ bond in $\\mathrm{H}_{2}$",
+      "$\\mathrm{Cl}_2$ , because Cl atoms are more electronegative than H atoms."
+    ]
+  },
+  {
+    "id": 39,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/gqbk/692X530/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "A student prepares several solutions of known concentration and measures their absorbance in a $1.0 \\mathrm{cm}$ cuvette to generate the Beer-Lambert plot shown. Another student uses the same solutions with a $2.0 \\mathrm{cm}$ cuvette. Which of the following indicates how the second student's plot will differ from the plot of the first student?",
+    "options": [
+      "The slope will be doubled because the absorbance is doubled in the $2.0 \\mathrm{cm}$ cell.",
+      "The slope will be halved because half as much light gets through the $2.0 \\mathrm{cm}$ cell.",
+      "The slope will be doubled because the molar absorptivity is doubled in the $2.0 \\mathrm{cm}$ cuvette.",
+      "The slope will be halved because the molar absorptivity is halved in the $2.0 \\mathrm{cm}$ cuvette."
+    ]
+  },
+{
+  "id": 40,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 2,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/ufG9/390X318/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "A student measures the ratio $\\frac{PV}{nT}$ for a sample of gaseous $\\mathrm{C_4H_{10}}$ at three different volumes in a sealed syringe of variable volume. At all times the syringe is held at a temperature of 300 K. The data are shown in the table.\n\nWhich of the following best explains the trend in the data as the volume decreases?",
+  "options": [
+    "The $\\mathrm{C_4H_{10}}$ molecules decompose as the volume decreases, creating more moles of gas.",
+    "The volume of the $\\mathrm{C_4H_{10}}$ molecules becomes more significant as the volume decreases.",
+    "The intermolecular forces between $\\mathrm{C_4H_{10}}$ molecules become more significant as the volume decreases.",
+    "The average kinetic energy of the $\\mathrm{C_4H_{10}}$ molecules decreases as the volume decreases."
+  ]
+},
+
+  {
+    "id": 41,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/hbPU/782X274/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Structural diagrams for two weak acids, X and Z, are shown. Which acid has the larger value of $K_{a}$ , and why?",
+    "options": [
+      "X, because more hydrogen atoms per molecule can dissociate, decreasing the pH of the solution.",
+      "X, because the weaker London dispersion forces make the hydrogen atom more likely to be separated from the conjugate base.",
+      "Z, because the symmetry of the molecule results in a weaker dipole and a less polarizable $\\mathrm{O} - \\mathrm{H}$ bond, making the hydrogen atom less likely to be separated from the conjugate base.",
+      "Z, because the electronegative Cl atoms stabilize the conjugate base, allowing the acid to ionize to a greater degree than acid X."
+    ]
+  },
+  {
+    "id": 42,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/XCyo/506X124/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The reaction represented is first order with respect to $\\mathrm{H}_2\\mathrm{O}_2$. An experiment is performed in which $100. \\mathrm{mL}$ of $0.20~M\\mathrm{H}_2\\mathrm{O}_2$ is decomposed to $\\mathrm{H}_2\\mathrm{O}$ and $\\mathrm{O}_2$ at a temperature of $300~\\mathrm{K}$. A chemist wants to triple the rate of the reaction. Which of the following experimental conditions would triple the rate of the reaction?",
+    "options": [
+      "Repeating the experiment with $50. \\mathrm{mL}$ of $0.60~M\\mathrm{H}_2\\mathrm{O}_2$ at $300~\\mathrm{K}$",
+      "Repeating the experiment with $100. \\mathrm{mL}$ of $0.20~M\\mathrm{H}_2\\mathrm{O}_2$ at $100~\\mathrm{K}$",
+      "Repeating the experiment with $200. \\mathrm{mL}$ of $0.067~M\\mathrm{H}_2\\mathrm{O}_2$ at $300~\\mathrm{K}$",
+      "Repeating the experiment with $300. \\mathrm{mL}$ of $0.20~M\\mathrm{H}_2\\mathrm{O}_2$ at $300~\\mathrm{K}$"
+    ]
+  },
+  {
+    "id": 43,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/DDdO/616X110/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Samples of $\\mathrm{N}_2(g)$ and $\\mathrm{H}_2(g)$ are placed in a rigid container at a constant temperature of $315\\mathrm{K}$ and allowed to react according to the equation shown.</p>",
+    "stem": "Which of the following compares the average kinetic energy and average speed of the $\\mathrm{N}_2(g)$ and $\\mathrm{H}_2(g)$ molecules in the container at $315\\mathrm{K}$ before any reaction occurs?",
+    "options": [
+      "The $\\mathrm{H}_2(g)$ molecules have a greater average kinetic energy and average speed than the $\\mathrm{N}_2(g)$ molecules.",
+      "The $\\mathrm{H}_2(g)$ molecules have a greater average kinetic energy than the $\\mathrm{N}_2(g)$ molecules, but the molecules have the same average speed.",
+      "The $\\mathrm{H}_2(g)$ molecules have a greater average speed than the $\\mathrm{N}_2(g)$ molecules, but the molecules have the same average kinetic energy.",
+      "The $\\mathrm{H}_2(g)$ molecules and $\\mathrm{N}_2(g)$ molecules have the same average kinetic energy and average speed."
+    ]
+  },
+  {
+    "id": 44,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/DDdO/616X110/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Samples of $\\mathrm{N}_2(g)$ and $\\mathrm{H}_2(g)$ are placed in a rigid container at a constant temperature of $315\\mathrm{K}$ and allowed to react according to the equation shown.</p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/7nRM/512X324/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The reactants for are represented in the diagram. A catalyst is added to the mixture and the reaction occurs.  Which of the following is a correct particulate representation of the mixture after the reaction occurs?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/eenv/344X304/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/0SP8/340X296/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/FnNq/336X288/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/K5zt/350X302/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+  {
+  "id": 45,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 1,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/DDdO/616X110/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><p>Samples of $\\mathrm{N}_2(g)$ and $\\mathrm{H}_2(g)$ are placed in a rigid container at a constant temperature of $315\\mathrm{K}$ and allowed to react according to the equation shown.</p><br><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/uJ2C/722X434/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "The synthesis of ammonia is carried out in three glass vessels of equal volume. In each vessel, $\\mathrm{N}_2$ and $\\mathrm{H}_2$ both have an initial partial pressure of 3.0 atm. A small piece of iron is added to one vessel, and a small piece of nickel is added to another vessel. The temperature is kept constant, and the pressure is measured at regular intervals, as shown in the table.\n\nWhich of the following explains the results shown in the table?",
+  "options": [
+    "Both iron and nickel are inhibitors; they prevent the system from reaching equilibrium.",
+    "Both iron and nickel are catalysts; more $\\mathrm{N}_2$ and $\\mathrm{H}_2$ are consumed in the iron and nickel vessels than in the glass vessel, reducing the overall pressure.",
+    "Both iron and nickel react strongly with $\\mathrm{NH}_3$, causing it to decompose into $\\mathrm{N}_2$ and $\\mathrm{H}_2$, reducing the overall pressure.",
+    "Solids do not appear in the equilibrium expression, so the partial pressures of the gases are not affected by the metal."
+  ]
+},
+  {
+  "id": 46,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 1,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/he0y/580X422/image.png/webp' style=\"width:100%; max-width:600px;\" /><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/kjhm/702X366/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "A solution of $\\mathrm{KI}(aq)$ is electrolyzed using the setup shown.\n\nBubbles appear on the cathode, and a yellow color appears in the solution surrounding the anode. When phenolphthalein ($pK_a = 9.4$) is added, the solution surrounding the cathode turns pink. Standard reduction potentials are given in the table.\n\nWhich of the following identifies what is produced at the cathode and provides correct reasoning?",
+  "options": [
+    "$\\mathrm{K}(s)$ is produced; the phenolphthalein indicates that the solution is acidic, and alkali metals produce $\\mathrm{H}_2(g)$ and acidic solutions when added to water.",
+    "$\\mathrm{H}_2(g)$ and $\\mathrm{OH}^-(aq)$ are produced; gas bubbles form, and the phenolphthalein color change indicates that $\\mathrm{OH}^-(aq)$ is produced in the solution around the cathode.",
+    "$\\mathrm{O}_2(g)$ and $\\mathrm{OH}^-(aq)$ are produced; gas bubbles form, and the phenolphthalein color change indicates that $\\mathrm{OH}^-(aq)$ is produced in the solution around the cathode.",
+    "$\\mathrm{O}_2(g)$ is produced; the last half-reaction in the table has the most positive reduction potential, which indicates that it is the most favored reaction."
+  ]
+},
+{
+  "id": 47,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 0,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "",
+  "stem": "A student conducts an experiment to measure the specific heat capacity, $c$, of a metal. The student heats 20.0 g of the metal, adds the heated metal into a calorimeter containing 100.0 g of water initially at 18.5°C, and the mixture comes to thermal equilibrium at 19.7°C. Which of the following experimental errors best explains why the value of $c$ calculated from the data is smaller than the accepted value for the metal?",
+  "options": [
+    "The heated metal transfers some thermal energy to the surrounding air before it contacts the water in the calorimeter.",
+    "The warmer air in the laboratory transfers thermal energy into the colder water in the calorimeter.",
+    "An improperly calibrated balance results in more than 20.0 g of metal being used in the experiment.",
+    "An improperly calibrated balance results in less than 100.0 g of water being used in the experiment."
+  ]
+},
+  {
+    "id": 48,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/xwue/906X136/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The reaction has an equilibrium constant with a value of $K_{1}$. What is the value of the equilibrium constant, in terms of $K_{1}$, for the reaction $4\\mathrm{N}_2\\mathrm{O}(g)\\rightleftharpoons 4\\mathrm{N}_2(g) + 2\\mathrm{O}_2(g)$?",
+    "options": [
+      "$(K_{1})^{2}$",
+      "$\\frac{1}{\\sqrt{K_1}}$",
+      "$\\frac{1}{2K_1}$",
+      "$\\frac{1}{(K_1)^2}$"
+    ]
+  },
+  {
+  "id": 49,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 2,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/3llQ/1100X518/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "A mixture of $\\mathrm{CO}(g)$, $\\mathrm{H}_2\\mathrm{O}(g)$, $\\mathrm{CO}_2(g)$, and $\\mathrm{H}_2(g)$ is placed in a previously evacuated, rigid container. The initial partial pressures are given in the table. Which of the following predicts what will happen to the concentration of $\\mathrm{CO}_2$ as the system approaches equilibrium at 500 K, with justification?",
+  "options": [
+    "$[\\mathrm{CO}_2]$ will increase because $Q > K$.",
+    "$[\\mathrm{CO}_2]$ will increase because $Q < K$.",
+    "$[\\mathrm{CO}_2]$ will decrease because $Q > K$.",
+    "$[\\mathrm{CO}_2]$ will decrease because $Q < K$."
+  ]
+},
+  {
+    "id": 50,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following reactions has the most negative value of $\\Delta S^{\\circ}$?",
+    "options": [
+      "$\\mathrm{HCl}(aq) + \\mathrm{NaOH}(aq) \\rightarrow \\mathrm{H}_2\\mathrm{O}(l) + \\mathrm{NaCl}(aq)$",
+      "$\\mathrm{CaCO}_3(s) \\rightarrow \\mathrm{CaO}(s) + \\mathrm{CO}_2(g)$",
+      "$\\mathrm{C}_2\\mathrm{H}_2(g) + 2\\mathrm{Cl}_2(g) \\rightarrow \\mathrm{C}_2\\mathrm{H}_2\\mathrm{Cl}_4(l)$",
+      "$\\mathrm{HCN}(g) \\rightarrow \\mathrm{HNC}(g)$"
+    ]
+  },
+  {
+    "id": 51,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/nzj2/1054X312/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Information about two compounds is given in the table. Which of the following provides particle-level reasoning for the solubility of the two compounds?",
+    "options": [
+      "Molecules of both compounds are polar and will experience London dispersion forces only.",
+      "Molecules of both compounds have similar masses and therefore have similar London dispersion forces.",
+      "Molecules of propane have more available hydrogen bonding sites for $\\mathrm{H}_2\\mathrm{O}$ molecules.",
+      "Molecules of dimethyl ether will experience hydrogen bonding attractions to $\\mathrm{H}_2\\mathrm{O}$ molecules, but molecules of propane will not."
+    ]
+  },
+  {
+    "id": 52,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>A solution is prepared by combining 1.0 L of 0.50 $M$ $\\mathrm{HClO_2}$ with 1.0 L of 0.50 $M$ $\\mathrm{KClO_2}$. The pH of the solution is 2.0.</p>",
+    "stem": "The value of $K_{b}$ for $\\mathrm{ClO_2}^-$ is closest to which of the following?",
+    "options": [
+      "$1.0\\times 10^{-14}$",
+      "$1.0\\times 10^{-12}$",
+      "$1.0\\times 10^{-7}$",
+      "$1.0\\times 10^{-2}$"
+    ]
+  },
+  {
+    "id": 53,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>A solution is prepared by combining 1.0 L of 0.50 $M$ $\\mathrm{HClO_2}$ with 1.0 L of 0.50 $M$ $\\mathrm{KClO_2}$. The pH of the solution is 2.0.</p>",
+    "stem": "When $10~\\mathrm{mL}$ of $0.50M\\mathrm{NaOH}$ is added to the solution, the $\\mathrm{pH}$ does not change significantly. Which of the following is the net ionic equation for the reaction that occurs and prevents a significant change in $\\mathrm{pH}$?",
+    "options": [
+      "$\\mathrm{NaOH}(aq) + \\mathrm{K}^{+}(aq)\\rightarrow \\mathrm{KOH}(aq) + \\mathrm{Na}^{+}(aq)$",
+      "$\\mathrm{NaOH}(aq) + \\mathrm{ClO}_2^- (aq)\\rightarrow \\mathrm{NaCl}(aq) + \\mathrm{H}_2\\mathrm{O}(l)$",
+      "$\\mathrm{OH}^{-}(aq) + \\mathrm{Na}^{+}(aq)\\rightarrow \\mathrm{NaOH}(s)$",
+      "$\\mathrm{OH}^{-}(aq) + \\mathrm{HClO}_2(aq)\\rightarrow \\mathrm{ClO}_2^{-}(aq) + \\mathrm{H}_2\\mathrm{O}(l)$"
+    ]
+  },
+  {
+    "id": 54,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>A solution is prepared by combining 1.0 L of 0.50 $M$ $\\mathrm{HClO_2}$ with 1.0 L of 0.50 $M$ $\\mathrm{KClO_2}$. The pH of the solution is 2.0.</p>",
+    "stem": "If the solution was prepared by combining $1.0~\\mathrm{L}$ of $2.0M\\mathrm{HClO}_2$ and $1.0~\\mathrm{L}$ of $2.0M\\mathrm{KClO}_2$ instead of $1.0~\\mathrm{L}$ of $0.50M\\mathrm{HClO}_2$ and $1.0~\\mathrm{L}$ of $0.50M\\mathrm{KClO}_2$ , which of the following would describe the solution?",
+    "options": [
+      "It would have a $\\mathrm{pH}$ greater than 2.0.",
+      "It would have a $\\mathrm{pH}$ less than 2.0.",
+      "It would have a $\\mathrm{pH}$ of 2.0 and a greater buffer capacity than the solution made with $0.50M\\mathrm{HClO}_2$ and $\\mathrm{KClO}_2$",
+      "It would have a $\\mathrm{pH}$ of 2.0 and a lesser buffer capacity than the solution made with $0.50M\\mathrm{HClO}_2$ and $\\mathrm{KClO}_2$"
+    ]
+  },
+  {
+    "id": 55,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p>A solution is prepared by combining 1.0 L of 0.50 $M$ $\\mathrm{HClO_2}$ with 1.0 L of 0.50 $M$ $\\mathrm{KClO_2}$. The pH of the solution is 2.0.</p>",
+    "stem": "Consider the Lewis electron-dot diagram for the $\\mathrm{ClO_2}^-$ ion that minimizes formal charge. Which of the following is true about the hybridization of the Cl atom in the ion?",
+    "options": [
+      "The Cl atom is not hybridized, and the ion contains one single $\\mathrm{Cl - O}$ bond and one double $\\mathrm{Cl - O}$ bond.",
+      "The Cl atom is $sp$ hybridized, and the ion contains two equivalent $\\mathrm{Cl - O}$ double bonds.",
+      "The Cl atom is $sp^2$ hybridized, and the ion contains two equivalent $\\mathrm{Cl - O}$ single bonds.",
+      "The Cl atom is $sp^3$ hybridized, and the ion contains two equivalent $\\mathrm{Cl - O}$ single bonds."
+    ]
+  },
+  {
+    "id": 56,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/ow81/718X436/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "The preceding graph shows potential energy versus bond length for a $\\mathrm{Br}_2$ molecule. Which of the following graphs shows potential energy versus bond length for an $\\mathrm{I}_2$ molecule?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/FeLH/590X358/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/gaoe/588X366/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/WcR9/600X356/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/hXma/620X368/image.png/webp' style=\"width:100%; max-width:600px;\" />"
+    ]
+  },
+{
+  "id": 57,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 3,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/03bQ/1034X906/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "To measure the heat of solution for $\\mathrm{NH_4Cl}$, a student measures the temperature of 100.0 g of $\\mathrm{H_2O}$ (specific heat 4.18 J/(g·°C)), adds 22.15 g of $\\mathrm{NH_4Cl}$, and measures the temperature after the $\\mathrm{NH_4Cl}$ is dissolved. The temperatures are shown in the diagram. Which of the following indicates the sign of $\\Delta H_{soln}$ and the number of significant figures that can be reported for the value of $\\Delta H_{soln}$ in the experiment? (Assume that the specific heat of the solution is identical to the specific heat of water.)",
+  "options": [
+    "$\\Delta H_{soln} < 0$, 2 significant figures",
+    "$\\Delta H_{soln} < 0$, 3 significant figures",
+    "$\\Delta H_{soln} > 0$, 2 significant figures",
+    "$\\Delta H_{soln} > 0$, 3 significant figures"
+  ]
+},
+  {
+    "id": 58,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "The molar solubility of $\\mathrm{PbI}_2$ is $1 \\times 10^{-3} M$. Which of the following is the best estimate for the value of $K_{sp}$ of $\\mathrm{PbI}_2$?",
+    "options": [
+      "$1\\times 10^{-6}$",
+      "$2\\times 10^{-6}$",
+      "$1\\times 10^{-9}$",
+      "$4\\times 10^{-9}$"
+    ]
+  },
+{
+  "id": 59,
+  "isMarkedForReview": false,
+  "selectedAnswer": null,
+  "correctAnswer": 2,
+  "notes": [],
+  "highlights": {
+    "left": null,
+    "right": null
+  },
+  "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/qag7/660X900/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+  "stem": "A chemist conducts a column chromatography experiment by placing an aqueous mixture of X and Z into a column that is packed with a nonpolar stationary phase, as represented on the left. After ethanol ($\\mathrm{C_2H_5OH}$) is poured through the column, separation of X and Z occurs, as represented by the column on the right. Which of the following explains the experimental result based on particle interactions?",
+  "options": [
+    "X is more polar than Z; molecules of X are more attracted to the stationary phase than to the mobile phase.",
+    "X has a smaller molecular volume than Z does; molecules of X pass more easily through the stationary phase.",
+    "Z is more polar than X; molecules of Z are more attracted to the mobile phase than to the stationary phase.",
+    "Z has a larger molar mass than X does; molecules of Z are more influenced by gravity."
+  ]
+},
+  {
+    "id": 60,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/jksP/1410X232/image.png/webp' style=\"width:100%; max-width:600px;\" />",
+    "stem": "Reactions 1 and 2 represented can be manipulated to produce reaction 3. What is the value of $\\Delta H^{\\circ}$ for reaction 2?",
+    "options": [
+      "$-370\\mathrm{kJ / mol}_{rxn}$",
+      "$-185\\mathrm{kJ / mol}_{rxn}$",
+      "$85\\mathrm{kJ / mol}_{rxn}$",
+      "$185\\mathrm{kJ / mol}_{rxn}$"
+    ]
+  }
+]
+                        
+                    }
+                ];
+
+                const totalQuestions = sectionsData.reduce((sum, section) => sum + section.questions.length, 0);
+                const totalMinutes = sectionsData.reduce((sum, section) => sum + section.time, 0) / 60;
+                document.getElementById('start-section-info').textContent = `${totalQuestions} Questions | ${totalMinutes} min | 50% of Score`;
+                 document.getElementById('timer-display').textContent = `${String(totalMinutes).padStart(2, '0')}:00`;
+                document.getElementById('score-text').textContent = `0/${totalQuestions}`;
+                document.getElementById('question-progress-btn').textContent = `Question 1 of ${totalQuestions}`;
+
+            }
+            
+            const startScreen = document.getElementById('start-screen');
+            const transitionScreen = document.getElementById('section-transition-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const mainAppContainer = document.querySelector('.body-new-sat');
+            const leftPanel = document.getElementById('left-panel');
+            const rightPanel = document.getElementById('right-panel');
+            const questionProgressBtn = document.getElementById('question-progress-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            const calculatorBtn = document.getElementById('calculator-btn');
+
+            function startTimer(duration) {
+                let timer = duration;
+                clearInterval(timerInterval);
+                timerInterval = setInterval(function () {
+                    let minutes = parseInt(timer / 60, 10);
+                    let seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    timerDisplay.textContent = minutes + ":" + seconds;
+
+                    if (--timer < 0) {
+                        clearInterval(timerInterval);
+                        if (currentView === 'review' || currentView === 'question') {
+                             handleTimeUp();
+                        }
+                    }
+                }, 1000);
+            }
+
+            function handleTimeUp() {
+                alert("Time's up for this section!");
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+            }
+            
+            function switchView(viewName) {
+                currentView = viewName;
+                startScreen.classList.add('hidden');
+                transitionScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                mainAppContainer.classList.remove('active', 'review-mode-active');
+                
+                if (['start', 'transition', 'results'].includes(viewName)) {
+                    mainAppContainer.style.display = 'none';
+                } else {
+                    mainAppContainer.style.display = 'flex';
+                }
+
+                switch(viewName) {
+                    case 'start':
+                        startScreen.classList.remove('hidden');
+                        break;
+                    case 'transition':
+                        clearInterval(timerInterval);
+                        document.getElementById('transition-title').textContent = sectionsData[currentSectionIndex].name;
+                        transitionScreen.classList.remove('hidden');
+                        break;
+                    case 'results':
+                        clearInterval(timerInterval);
+                        calculateAndShowResults();
+                        resultsScreen.classList.remove('hidden');
+                        break;
+                    case 'question':
+                    case 'analysis':
+                        mainAppContainer.classList.add('active');
+                        break;
+                    case 'review':
+                        mainAppContainer.classList.add('active', 'review-mode-active');
+                        renderReviewScreen();
+                        break;
+                }
+            }
+
+            function saveCurrentQuestionState() {
+                if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                if (question) {
+                    question.highlights.left = leftPanel.innerHTML;
+                    question.highlights.right = rightPanel.innerHTML;
+                }
+            }
+
+            function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+                currentView = isAnalysisMode ? 'analysis' : 'question';
+                switchView(currentView);
+
+                currentSectionIndex = secIndex;
+                currentQuestionIndex = qIndex;
+                
+                const section = sectionsData[secIndex];
+                
+                // BUG FIX: Timer only starts if it hasn't started for the section.
+                if (!isAnalysisMode && !section.timerStarted) {
+                    startTimer(section.time);
+                    section.timerStarted = true;
+                }
+                
+                calculatorBtn.style.display = 'flex';
+
+                const question = section.questions[qIndex];
+                if (!question) return;
+
+                document.getElementById('main-module-title').textContent = section.name;
+
+                const questionScreen = document.getElementById('question-screen');
+
+                if (question.leftContent && question.leftContent.trim() !== '') {
+                    leftPanel.innerHTML = question.leftContent;
+                    questionScreen.classList.remove('single-column');
+                } else {
+                    leftPanel.innerHTML = '';
+                    questionScreen.classList.add('single-column');
+                }
+
+                rightPanel.innerHTML = isAnalysisMode ? generateAnalysisHTML() : generateQuestionHTML();
+
+                function generateQuestionHTML() {
+                     const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        const isSelected = question.selectedAnswer === i ? 'selected' : '';
+                        return `<div class="question-option ${isSelected}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                    <div class="strikethrough-line" data-struck="false"></div>
+                                    <div class="annotation-control-wrapper"><div class="strikethrough-toggle-btn" data-letter="${letter}">${letter}</div></div>
+                                    <div class="undo-controls"><span class="undo-text">Undo</span></div>
+                                </div>`;
+                    }).join('');
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                            <div class="mark-review">
+                                <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                                <span>Mark for Review</span>
+                            </div>
+                            <div class="annotation-tool">
+                                <svg width="36" height="36" viewBox="0 0 100 100">
+                                    <rect x="5" y="5" width="90" height="90" rx="10" ry="10" fill="none" stroke="#555" stroke-width="4"/>
+                                    <text x="50" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#2d2d2d">ABC</text>
+                                    <line x1="15" y1="80" x2="85" y2="20" stroke="#2d2d2d" stroke-width="6" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list">${optionsHTML}</div>
+                    `;
+                }
+
+                 function generateAnalysisHTML() {
+                    const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        let optionClasses = "question-option";
+                        if(i === question.correctAnswer) optionClasses += ' correct-answer';
+                        if(i === question.selectedAnswer && i !== question.correctAnswer) optionClasses += ' wrong-answer';
+                        if(question.selectedAnswer === i) optionClasses += ' selected';
+                        return `<div class="${optionClasses}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                </div>`;
+                    }).join('');
+
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list analysis-mode">${optionsHTML}</div>
+                    `;
+                }
+
+
+                if(window.MathJax) {
+                    window.MathJax.typesetPromise([rightPanel, leftPanel]).catch(err => console.error("MathJax typesetting error:", err));
+                }
+
+                updateMarkForReviewButton();
+                addQuestionEventListeners(isAnalysisMode);
+                updateFooter(isAnalysisMode);
+                if(!isAnalysisMode) renderNotes();
+
+                leftPanel.removeEventListener('click', handleZoomClick);
+                leftPanel.addEventListener('click', handleZoomClick);
+            }
+
+            function handleZoomClick(e) {
+                 const target = e.target;
+                if (target.tagName === 'IMG' || target.closest('.data-table')) {
+                    const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+                    openZoomModal(contentTarget);
+                }
+            }
+            
+            function updateFooter(isAnalysisMode = false) {
+                const totalQuestions = sectionsData.reduce((sum, section) => sum + section.questions.length, 0);
+                const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                
+                const questionNumberInExam = sectionsData.slice(0, currentSectionIndex).reduce((acc, section) => acc + section.questions.length, 0) + currentQuestionIndex + 1;
+                questionProgressBtn.textContent = `Question ${questionNumberInExam} of ${totalQuestions}`;
+                
+                const backBtn = document.getElementById('back-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const nextBtnSpan = nextBtn.querySelector('span');
+                const backBtnSpan = backBtn.querySelector('span');
+
+                if (isAnalysisMode) {
+                    backBtn.style.display = 'none';
+                    nextBtn.classList.add('back-to-results-btn');
+                    nextBtnSpan.textContent = 'Back to Results';
+                } else {
+                    nextBtn.classList.remove('back-to-results-btn');
+                    const isLastQuestionOfSection = currentQuestionIndex === sectionsData[currentSectionIndex].questions.length - 1;
+                    const isLastSection = currentSectionIndex === sectionsData.length - 1;
+
+                    if (currentView === 'review') {
+                        nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                        backBtnSpan.textContent = 'Back to Question';
+                    } else {
+                        nextBtnSpan.textContent = isLastQuestionOfSection ? 'Review' : 'Next';
+                        backBtnSpan.textContent = 'Back';
+                    }
+                    backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+                }
+            }
+            
+            function renderReviewScreen() {
+                const section = sectionsData[currentSectionIndex];
+                document.getElementById('review-module-name').textContent = section.name;
+                document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+                renderGrid('review-grid-main');
+                updateFooter();
+            }
+
+            function renderGrid(containerId) {
+                const gridContainer = document.getElementById(containerId);
+                const section = sectionsData[currentSectionIndex];
+                gridContainer.innerHTML = '';
+                section.questions.forEach((q, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('question-grid-item');
+                    item.textContent = q.id;
+                    item.dataset.questionIndex = index;
+
+                    if (q.selectedAnswer !== null) item.classList.add('completed');
+                    else item.classList.add('unanswered');
+                    if (q.isMarkedForReview) item.classList.add('for-review');
+                    if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+                    
+                    gridContainer.appendChild(item);
+                });
+            }
+
+            function updateMarkForReviewButton() {
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                const btn = rightPanel.querySelector('.mark-review');
+                if (!btn) return;
+                btn.classList.toggle('marked', question.isMarkedForReview);
+            }
+            
+            function calculateAndShowResults() {
+                let correctCount = 0;
+                let incorrectCount = 0;
+                let totalCount = 0;
+
+                const resultsGrid = document.getElementById('results-review-grid');
+                resultsGrid.innerHTML = '';
+
+                sectionsData.forEach((section, sIndex) => {
+                    section.questions.forEach((q, qIndex) => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (q.selectedAnswer !== null) {
+                            if (isCorrect) correctCount++;
+                            else incorrectCount++;
+                        } else {
+                            incorrectCount++;
+                        }
+                        
+                        const item = document.createElement('div');
+                        item.classList.add('review-item');
+                        item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        item.textContent = q.id;
+                        item.dataset.sectionIndex = sIndex;
+                        item.dataset.questionIndex = qIndex;
+                        resultsGrid.appendChild(item);
+                    });
+                });
+                
+                const scorePercent = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+                document.getElementById('score-text').textContent = `${correctCount} / ${totalCount}`;
+                document.getElementById('score-circle').style.setProperty('--score-percent', `${scorePercent}%`);
+                document.getElementById('correct-count').textContent = correctCount;
+                document.getElementById('incorrect-count').textContent = incorrectCount;
+            }
+
+            function attachGlobalListeners() {
+                document.getElementById('start-exam-btn').addEventListener('click', () => {
+                    loadQuestion(0, 0);
+                });
+                document.getElementById('continue-btn').addEventListener('click', () => {
+                    loadQuestion(currentSectionIndex, 0);
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if (currentView === 'analysis') {
+                        switchView('results');
+                        return;
+                    }
+                    
+                    if (currentView === 'question') {
+                        const section = sectionsData[currentSectionIndex];
+                        if (currentQuestionIndex < section.questions.length - 1) {
+                            currentQuestionIndex++;
+                            loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        } else {
+                            switchView('review');
+                        }
+                        return;
+                    }
+
+                    if (currentView === 'review') {
+                        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                        if (isLastSection) {
+                            switchView('results');
+                        } else {
+                            currentSectionIndex++;
+                            switchView('transition');
+                        }
+                        return;
+                    }
+                });
+
+                document.getElementById('back-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if(currentView === 'review') { 
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        return; 
+                    }
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                    }
+                });
+                 document.getElementById('results-review-grid').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('review-item')) {
+                        const sIndex = parseInt(e.target.dataset.sectionIndex, 10);
+                        const qIndex = parseInt(e.target.dataset.questionIndex, 10);
+                        loadQuestion(sIndex, qIndex, true);
+                    }
+                });
+            }
+            
+            window.onbeforeunload = function(e) {
+                if (currentView === 'question' || currentView === 'review') {
+                    const message = 'You have not finished the exam. Are you sure you want to leave? Your progress will be lost.';
+                    e.returnValue = message; 
+                    return message;
+                }
+            };
+
+            let isAnnotationModeActive = false;
+            function addQuestionEventListeners(isAnalysisMode) {
+                const annotationToolBtn = rightPanel.querySelector('.annotation-tool');
+                if (annotationToolBtn) {
+                     annotationToolBtn.onclick = isAnalysisMode ? null : () => {
+                        isAnnotationModeActive = !isAnnotationModeActive;
+                        annotationToolBtn.classList.toggle('active', isAnnotationModeActive);
+                        rightPanel.querySelectorAll('.question-option').forEach(option => {
+                            const line = option.querySelector('.strikethrough-line');
+                            const wrapper = option.querySelector('.annotation-control-wrapper');
+                            const undo = option.querySelector('.undo-controls');
+                            if (isAnnotationModeActive) {
+                                if (line.dataset.struck === 'true') { line.style.display = 'block'; undo.style.display = 'flex'; wrapper.style.display = 'none';
+                                } else { line.style.display = 'none'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                            } else { [line, wrapper, undo].forEach(el => el.style.display = 'none'); }
+                        });
+                    };
+                }
+
+                const markForReviewBtn = rightPanel.querySelector('.mark-review');
+                if(markForReviewBtn) {
+                    markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                        const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                        q.isMarkedForReview = !q.isMarkedForReview;
+                        updateMarkForReviewButton();
+                        if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                }
+
+                rightPanel.querySelectorAll('.question-option').forEach(option => {
+                    option.onclick = isAnalysisMode ? null : function(e) {
+                         if (isAnnotationModeActive || document.querySelector('#highlight-tool-btn').classList.contains('active')) return;
+                         if (e.target.closest('.annotation-control-wrapper') || e.target.closest('.undo-controls')) return;
+
+                        const selectedIndex = parseInt(this.dataset.optionIndex, 10);
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].selectedAnswer = selectedIndex;
+                        rightPanel.querySelectorAll('.question-option').forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                         if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                });
+                
+                const optionsList = rightPanel.querySelector('.options-list');
+                if (optionsList) {
+                    optionsList.addEventListener('click', function(e) {
+                        const option = e.target.closest('.question-option');
+                        if (!option || !isAnnotationModeActive) return;
+                        const line = option.querySelector('.strikethrough-line'), wrapper = option.querySelector('.annotation-control-wrapper'), undo = option.querySelector('.undo-controls');
+                        if (e.target.closest('.strikethrough-toggle-btn')) { line.style.display = 'block'; line.dataset.struck = 'true'; wrapper.style.display = 'none'; undo.style.display = 'flex'; } 
+                        else if (e.target.closest('.undo-text')) { line.style.display = 'none'; line.dataset.struck = 'false'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                    });
+                }
+            }
+            
+            function handleGridClick(e) {
+                if (e.target.classList.contains('question-grid-item')) {
+                    const index = parseInt(e.target.dataset.questionIndex, 10);
+                    if (currentView === 'review') {
+                        const previewBox = document.getElementById('review-question-preview');
+                        const question = sectionsData[currentSectionIndex].questions[index];
+                        previewBox.innerHTML = `<strong>Question ${question.id}:</strong> ${question.stem}`;
+                        if (window.MathJax) { 
+                            window.MathJax.typesetPromise([previewBox]).catch(err => console.error("MathJax preview typesetting error:", err));
+                        }
+                    } else {
+                        saveCurrentQuestionState();
+                        loadQuestion(currentSectionIndex, index);
+                        closeModal(questionListModal);
+                    }
+                }
+            }
+            document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+            document.getElementById('review-grid-main').addEventListener('click', (e) => {
+                if (e.target.classList.contains('question-grid-item')) {
+                      saveCurrentQuestionState();
+                      const index = parseInt(e.target.dataset.questionIndex, 10);
+                      loadQuestion(currentSectionIndex, index);
+                }
+            });
+
+            document.getElementById('download-txt-btn').addEventListener('click', function() {
+                let correctCount = 0;
+                let totalCount = 0;
+                let incorrectQuestionNumbers = [];
+
+                sectionsData.forEach(section => {
+                    section.questions.forEach(q => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (isCorrect) {
+                            correctCount++;
+                        } else {
+                            incorrectQuestionNumbers.push(q.id);
+                        }
+                    });
+                });
+                const incorrectCount = totalCount - correctCount;
+
+                let summary = `对的个数/总题目数：${correctCount}/${totalCount}\\r\\n` +
+                              `错误个数（包括unanswered）：${incorrectCount}\\r\\n` +
+                              `错误题目题号列举：${incorrectQuestionNumbers.join(', ')}`;
+                
+                const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'exam_summary.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            const directionsModal = document.getElementById('directions-modal');
+            const questionListModal = document.getElementById('question-list-modal');
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomModalContent = document.getElementById('zoom-modal-content');
+            const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+            function openModal(modal) { modal.classList.add('active'); }
+            function closeModal(modal) { modal.classList.remove('active'); }
+
+            function openZoomModal(element) {
+                zoomModalContent.innerHTML = '';
+                const clonedElement = element.cloneNode(true);
+                zoomModalContent.appendChild(clonedElement);
+                openModal(zoomModal);
+            }
+            
+            document.getElementById('directions-btn').addEventListener('click', () => openModal(directionsModal));
+            document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+            directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+            
+            questionProgressBtn.addEventListener('click', (e) => { 
+                e.stopPropagation();
+                document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+                renderGrid('popup-question-grid');
+                questionListModal.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                const qListContent = questionListModal.querySelector('.question-list-content');
+                if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+                    closeModal(questionListModal);
+                }
+            });
+            
+            function makeDraggable(elmnt, header) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                if (header) {
+                    header.onmousedown = dragMouseDown;
+                } else {
+                    elmnt.onmousedown = dragMouseDown;
+                }
+
+                function dragMouseDown(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    document.onmousemove = elementDrag;
+                }
+
+                function elementDrag(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                }
+
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+            }
+
+            const refContainer = document.getElementById('reference-container');
+            const newRefBtn = document.getElementById('new-reference-btn');
+            makeDraggable(refContainer, refContainer.querySelector('.draggable-header'));
+
+            newRefBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const isVisible = refContainer.style.display === 'block';
+                refContainer.style.display = isVisible ? 'none' : 'block';
+                btn.classList.toggle('active', !isVisible);
+            });
+            refContainer.querySelector('.close-btn').addEventListener('click', () => {
+                refContainer.style.display = 'none';
+                newRefBtn.classList.remove('active');
+            });
+
+
+            document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+            
+            zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+            zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+            document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+            document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+            
+            const splitter = document.getElementById('splitter');
+            let isDragging = false;
+            splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const notesPanelEl = document.getElementById('notes-panel');
+                const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+                let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+                const minWidth = 150;
+                const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+                if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+                if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+                leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+            });
+            document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+            const calcContainer = document.getElementById('calculator-container');
+            makeDraggable(calcContainer, calcContainer.querySelector('.draggable-header'));
+            
+            calculatorBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const isVisible = calcContainer.style.display === 'block';
+                calcContainer.style.display = isVisible ? 'none' : 'block';
+                btn.classList.toggle('active', !isVisible);
+            });
+            calcContainer.querySelector('.close-btn').addEventListener('click', () => { calcContainer.style.display = 'none'; document.getElementById('calculator-btn').classList.remove('active'); });
+
+            const moreBtn = document.getElementById('more-btn');
+            const moreDropdown = document.getElementById('more-dropdown');
+            const lineReaderOverlay = document.getElementById('line-reader-overlay');
+            moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+            document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+            function toggleLineReader() {
+                const isVisible = lineReaderOverlay.style.display === 'block';
+                lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+                document.removeEventListener('mousemove', moveLineReader);
+                if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+            }
+            function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+            document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+            document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+            const highlightBtn = document.getElementById('highlight-tool-btn');
+            const highlightToolbar = document.getElementById('highlight-toolbar');
+            const notesPanelEl = document.getElementById('notes-panel');
+            const notesContent = document.getElementById('notes-content');
+            const noteInputModal = document.getElementById('note-input-modal');
+            let currentNoteRange = null;
+
+            highlightBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                btn.classList.toggle('active');
+                notesPanelEl.classList.toggle('visible');
+                if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+            });
+            
+            document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+                if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+                setTimeout(() => {
+                    const selection = window.getSelection();
+                    if (selection && !selection.isCollapsed) {
+                        const range = selection.getRangeAt(0);
+                        const rect = range.getBoundingClientRect();
+                        highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                        highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                        highlightToolbar.style.display = 'flex';
+                    } else {
+                        highlightToolbar.style.display = 'none';
+                    }
+                }, 10);
+            });
+            document.addEventListener('mousedown', (e) => {
+                if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+                   highlightToolbar.style.display = 'none';
+                }
+            });
+
+            highlightToolbar.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+                const { color, action } = target.dataset;
+                if (color) wrapSelection('highlighted highlight-' + color);
+                else if (action === 'note') addNoteFromSelection();
+                else if (action === 'remove') removeHighlightAtSelection();
+                highlightToolbar.style.display = 'none';
+            });
+            
+            function wrapSelection(className) {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const wrapper = document.createElement('span');
+                wrapper.className = className;
+                wrapper.appendChild(range.extractContents());
+                range.insertNode(wrapper);
+                selection.removeAllRanges();
+            }
+            
+            function addNoteFromSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                currentNoteRange = selection.getRangeAt(0).cloneRange();
+                document.getElementById('note-modal-text').textContent = selection.toString().trim();
+                document.getElementById('note-textarea').value = '';
+                openModal(noteInputModal);
+            }
+
+            function removeHighlightAtSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+                    if (range.intersectsNode(span)) {
+                        const parent = span.parentNode;
+                        while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                        parent.removeChild(span);
+                        parent.normalize();
+                    }
+                });
+                selection.removeAllRanges();
+            }
+
+            document.getElementById('save-note-btn').addEventListener('click', () => {
+                const noteText = document.getElementById('note-textarea').value.trim();
+                if (noteText && currentNoteRange) {
+                    const highlightedText = document.getElementById('note-modal-text').textContent;
+                    const noteId = 'note_' + Date.now();
+                    const span = document.createElement('span');
+                    span.className = 'highlighted highlight-yellow';
+                    span.dataset.noteId = noteId;
+                    span.appendChild(currentNoteRange.extractContents());
+                    currentNoteRange.insertNode(span);
+                    
+                    const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                    currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+                    renderNotes();
+                }
+                closeModal(noteInputModal);
+            });
+            document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+            
+            function loadReferenceMaterial() {
+                const refContent = refContainer.querySelector('.draggable-content');
+                refContent.innerHTML = `
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/TptO/1880X1444/image.png/webp" alt="Reference Page 1" style="max-width:100%; height:auto;">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/kUFv/1262X1636/image.png/webp" alt="Reference Page 2" style="max-width:100%; height:auto;">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/gvH2/1270X1642/image.png/webp" alt="Reference Page 3" style="max-width:100%; height:auto;">
+                `;
+            }
+
+            function renderNotes() {
+                notesContent.innerHTML = '';
+                if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                currentNotes.forEach(note => {
+                    const noteDiv = document.createElement('div');
+                    noteDiv.className = 'note';
+                    noteDiv.dataset.noteId = note.id;
+                    noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+                    notesContent.appendChild(noteDiv);
+                });
+                notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+                   btn.addEventListener('click', (e) => {
+                        const noteElement = e.target.closest('.note');
+                        const noteId = noteElement.dataset.noteId;
+                        const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                        if (spanToRemove) {
+                            const parent = spanToRemove.parentNode;
+                            while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                            parent.removeChild(spanToRemove);
+                            parent.normalize();
+                        }
+                        const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                        renderNotes();
+                   });
+                });
+            }
+
+            // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>
+

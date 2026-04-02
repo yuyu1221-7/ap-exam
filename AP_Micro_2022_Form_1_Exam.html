@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Microeconomics - 2022 Form 1 EXAM</title>
+    <script>
+        // MathJax Configuration
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400&family=Roboto:wght@400;500;700&display=swap');
+
+        /* Base Styles */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* Improve MathJax formula size */
+        mjx-container {
+            font-size: 1.1em !important;
+            margin: 5px 0;
+        }
+
+        /* Read-only & Zoom styles */
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }
+        
+        /* --- FULL PAGE SCREENS --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+        }
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .info-card ul li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #e0e0e0;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        /* --- RESULTS PAGE STYLES --- */
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .score-summary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(var(--correct-green) 0% var(--score-percent, 0%), #e9ecef var(--score-percent, 0%) 100%);
+            position: relative;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+        .score-text { z-index: 1; font-size: 32px; font-weight: bold; color: var(--text-dark); }
+        .score-label { z-index: 1; font-size: 14px; color: var(--text-light); margin-top: 5px; }
+        
+        .stats-boxes {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-box.correct { background-color: rgba(40, 167, 69, 0.1); }
+        .stat-box.incorrect { background-color: rgba(220, 53, 69, 0.1); }
+        .stat-box .count { font-size: 28px; font-weight: bold; }
+        .stat-box.correct .count { color: var(--correct-green); }
+        .stat-box.incorrect .count { color: var(--incorrect-red); }
+        .stat-box .label { font-size: 14px; color: var(--text-light); }
+
+        .review-questions-list {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        .review-questions-list h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: 24px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 15px;
+        }
+        .review-item {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .review-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .review-item.correct { background-color: var(--correct-green); }
+        .review-item.incorrect { background-color: rgba(220, 53, 69, 0.85); }
+        
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover {
+            background-color: #001a33;
+        }
+        .download-button.txt {
+             background-color: #6c757d;
+        }
+        .download-button.txt:hover {
+            background-color: #5a6268;
+        }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* --- Main Application --- */
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+        }
+        .body-new-sat.active {
+            display: flex;
+        }
+        
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#calculator-btn.active span, .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        /* --- Dashed Separator (CSS Method) --- */
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes {
+            position: absolute;
+            left: 30px;
+            width: calc(100% - 60px);
+            bottom: 0;
+        }
+        #footer-dashes {
+             top: 0;
+             bottom: auto;
+        }
+        #question-header-separator {
+             margin-bottom: 25px;
+             width: 100%;
+             left: 0;
+        }
+
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        .pane-content-left { 
+            flex: 0 1 45%; 
+            padding: 30px 25px; 
+            box-sizing: border-box; 
+            font-family: 'Noto Serif', serif; 
+            font-size: 16px; 
+            line-height: 1.7; 
+            overflow-y: auto; 
+            min-width: 200px; 
+            background-color: #ffffff; 
+            color: #000000; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+        }
+        .pane-content-left > * {
+            margin-bottom: 20px;
+        }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 500; font-size: 16px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 10px 15px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; }
+        .data-table td { text-align: center; }
+        .data-table td:first-child { text-align: left; }
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        .annotation-tool { margin-left: auto; cursor: pointer; }
+        .annotation-tool svg { width: 36px; height: 36px; }
+        .annotation-tool.active svg rect { fill: var(--primary-blue); }
+        .annotation-tool.active svg text, .annotation-tool.active svg line { stroke: white; fill: white; }
+        .sat-stem { font-family: 'Noto Serif', serif; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+        .question-option { display: flex; align-items: center; padding: 16px; border: 1.5px solid var(--border-color); border-radius: 10px; background-color: #ffffff; cursor: pointer; position: relative; }
+        .options-list.analysis-mode .question-option { cursor: default; }
+        .question-option.selected { border: 2px solid #324DC7; box-shadow: none; }
+        .sat-radio-num { width: 28px; height: 28px; border: 2px solid var(--text-light); border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; margin-right: 15px; flex-shrink: 0; }
+        .question-option.selected .sat-radio-num { border-color: #324DC7; background-color: #324DC7; color: white; }
+        .option-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.5; flex-grow: 1; }
+        .option-text img { max-width: 100%; display: block; margin: 10px auto; }
+        
+        /* --- ANALYSIS VIEW STYLES (NO CHECKMARK) --- */
+        .question-option.correct-answer { border: 2px solid var(--correct-green); background-color: rgba(40, 167, 69, 0.05); }
+        .question-option.wrong-answer { border: 2px solid var(--incorrect-red); background-color: rgba(220, 53, 69, 0.05); }
+        .question-option.correct-answer .sat-radio-num { border-color: var(--correct-green); background-color: var(--correct-green); color: white; }
+        
+        .annotation-control-wrapper { position: absolute; right: -40px; top: 50%; transform: translateY(-50%); display: none; align-items: center; }
+        .strikethrough-toggle-btn { width: 22px; height: 22px; border: 1px solid #000000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; cursor: pointer; background-color: white; color: #000000; transition: all 0.1s ease-in-out; position: relative; }
+        .strikethrough-toggle-btn::after { content: ''; position: absolute; width: 140%; height: 2px; background-color: #000000; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .strikethrough-line { position: absolute; left: -15px; right: -15px; top: 50%; height: 2px; background-color: #000; transform: translateY(-50%); z-index: 2; display: none; pointer-events: none; }
+        .undo-controls { display: flex; align-items: center; position: absolute; right: -60px; top: 50%; transform: translateY(-50%); display: none; }
+        .undo-text { font-size: 14px; font-weight: bold; text-decoration: underline; color: #555; cursor: pointer; margin-left: -10px; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- REVIEW SCREEN --- */
+        #review-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1; 
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active .sat-header,
+        .body-new-sat.review-mode-active #question-screen {
+            display: none;
+        }
+        .body-new-sat.review-mode-active .footer-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active #review-screen {
+            display: flex;
+            padding-bottom: 80px; /* space for footer */
+        }
+        .body-new-sat.review-mode-active {
+            height: 100vh;
+        }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        span.underline-dashed { border-bottom: 2px dashed var(--text-dark); }
+        span.underline-wavy { text-decoration: underline wavy var(--text-dark); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); resize: both; overflow: hidden; min-width: 350px; min-height: 200px; }
+        .draggable-header { padding: 10px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .draggable-header .title { font-weight: bold; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .draggable-content { padding: 0; width: 100%; height: calc(100% - 40px); overflow: auto; }
+        #calculator-container .draggable-content { display: flex; flex-direction: column; }
+        .calc-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+        .calc-tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .calc-tab.active { border-bottom-color: var(--primary-blue); font-weight: bold; }
+        .calc-body { flex-grow: 1; }
+        .calc-pane { display: none; width: 100%; height: 100%; }
+        .calc-pane.active { display: block; }
+        .calc-pane iframe { width: 100%; height: 100%; border: none; }
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* Zoom Modal Styles */
+        #zoom-modal {
+            justify-content: center;
+            align-items: center;
+            z-index: 2100; /* Higher than other elements */
+        }
+        .zoom-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2101;
+            line-height: 1;
+        }
+        #zoom-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #zoom-modal-content img, #zoom-modal-content table {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* --- WATERMARK STYLE --- */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Makes the watermark click-through */
+            z-index: 99999; /* Ensures it's on top of other content */
+            background-repeat: repeat;
+            background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo=");
+        }
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+        <div class="watermark"></div>
+    
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+                        <h1>AP Microeconomics 2022 Form 1 Exam</h1>
+            <hr>
+            <h3>Section I: Multiple Choice</h3>
+            <h4>60 Questions | 1hr 10mins | 66% of Score</h4>
+            <ul>
+                <li>Questions require the use of economics content knowledge and reasoning across the range of course topics and skills. You'll be asked to:</li>
+                <li>Define economic principles and models</li>
+                <li>Explain given economic outcomes</li>
+                <li>Determine the outcomes of specific economic situations</li>
+            </ul>
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1 id="transition-title">Section I, Part B</h1>
+            <h2 id="transition-subtitle">Calculator Required</h2>
+            <p id="transition-body">You have completed Part A. You may now proceed to Part B. A graphing calculator is required for some questions in this section. <br><br><b>You will not be able to return to Part A.</b></p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Results</h1>
+            <div class="score-summary">
+                <div class="score-circle" id="score-circle">
+                    <span class="score-text" id="score-text">0/60</span>
+                    <span class="score-label">Total Score</span>
+                </div>
+                <div class="stats-boxes">
+                    <div class="stat-box correct">
+                        <div class="count" id="correct-count">0</div>
+                        <div class="label">Correct</div>
+                    </div>
+                    <div class="stat-box incorrect">
+                        <div class="count" id="incorrect-count">0</div>
+                        <div class="label">Incorrect</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-questions-list">
+                <h2>Review Questions</h2>
+                <div class="review-grid" id="results-review-grid">
+                    </div>
+            </div>
+            <div class="download-buttons-container">
+                <button class="download-button txt" id="download-txt-btn">Download Summary (TXT)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section I: Multiple Choice</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">70:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+                <div class="tool-button" id="calculator-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMSAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICAgICAgZmlsbC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgY2xpcC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgZD0iTTAgMTMuMzg1aDEwLjk1MlYuNUgwdjEyLjg4NXptLjk2Ny0uOTY2aDkuMDJWMS40NjdILjk2NnYxMC45NTJ6Ig0KICAgICAgICAgICAgZmlsbD0iIzFFMUUxRSINCiAgICAvPg0KICAgIDxwYXRoDQogICAgICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBjbGlwLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBkPSJNMS45MzIgNS40OTdoNy4wODd2LTIuOUgxLjkzMnYyLjl6bS45NjctLjk2Mmg1LjE1NHYtLjk2N0gyLjg5OXYuOTY3ek0xLjkzMiA3LjQzMWgxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgNy40MzFINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDYuNDE0SDcuNDFWNy40M2gxLjYxVjYuNDE0ek0xLjkzMiA5LjM1N2gxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgOS4zNTdINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDguMzlINy40MXYuOTY3aDEuNjF2LS45NjZ6TTEuOTM0IDExLjI5M2gxLjYxdi0uOTY3aC0xLjYxdi45Njd6TTQuNjcgMTEuMjkzSDYuMjh2LS45NjdINC42N3YuOTY3ek03LjQwOCAxMS4yOTNoMS42MXYtLjk2N2gtMS42MXYuOTY3eiINCiAgICAgICAgICAgIGZpbGw9IiMxRTFFMUUiDQogICAgLz4NCjwvc3ZnPg0K" alt="Calculator Icon">
+                    <span>Calculator</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d">
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <circle cx="12" cy="19" r="2"></circle>
+                    </svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section I: Multiple Choice</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1 of 60</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+                <p><strong>The directions that follow are what you will see on exam day. This untimed preview is intended to represent the different question types and functionality you will encounter on exam day and has fewer multiple-choice questions than the exam.</strong></p>
+<p>Section I has 60 questions and lasts 1 hour and 10 minutes.</p>
+<p>Each of the questions or incomplete statements is followed by 5 suggested answers or completions. Select the one that is best in each case.</p>
+<p>A calculator is allowed in this section. You may use a handheld calculator that is approved for this exam or the calculator available in this application.</p>
+<p>You can go back and forth between questions in this section until time expires. The clock will turn red when 5 minutes remain—<strong>the proctor will not give you any time updates or warnings</strong>.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section I: Multiple Choice</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    <div id="calculator-container" class="draggable" style="display: none; top: 100px; left: 100px; width: 400px; height: 600px;">
+        <div class="draggable-header"><span class="title">Calculator</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content">
+            <div class="calc-tabs"><div class="calc-tab active" data-tab="graphing">Four-function calculator</div></div>
+            <div class="calc-body"><div id="graphing-pane" class="calc-pane active"><iframe src="https://www.desmos.com/fourfunction" allow="fullscreen"></iframe></div></div>
+        </div>
+    </div>
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit Line Reader</button>
+    </div>
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        // --- Self-contained script for the entire application ---
+        (function() {
+            // --- STATE MANAGEMENT ---
+            let sectionsData = [];
+            let currentSectionIndex = 0;
+            let currentQuestionIndex = 0;
+            let currentView = 'start'; // start, question, review, transition, results, analysis
+            let timerInterval;
+
+            function initializeExam() {
+                sectionsData = [
+                    {
+                        name: "Section I: Multiple Choice",
+                        time: 70*60, // 70 minutes
+                        questions: 
+                                    [
+    {
+        "id": 1,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "If accounting profit is greater than zero for a firm in a competitive industry, then which of the following must be true?",
+        "options": [
+            "The firm has no fixed cost.",
+            "The firm has positive economic profit.",
+            "The firm's total revenue exceeds its explicit cost.",
+            "The firm's economic profit exceeds its opportunity cost.",
+            "New firms will enter the industry in the long run."
+        ]
+    },
+    {
+        "id": 2,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following best describes firms in an industry if all the firms are in a cartel?",
+        "options": [
+            "They produce the allocatively efficient quantity.",
+            "They face a perfectly elastic demand curve.",
+            "They have identical cost curves.",
+            "They coordinate their production decisions.",
+            "They agree to remove barriers to entry."
+        ]
+    },
+    {
+        "id": 3,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is true for a price-discriminating firm?",
+        "options": [
+            "The firm charges different prices to different consumers for the same product.",
+            "The firm charges different prices for different products.",
+            "The firm pays more per unit of labor than it pays per unit of capital.",
+            "The firm pays more per unit of capital than it pays per unit of labor.",
+            "The firm sells different quantities to its consumers but charges each of them the same price."
+        ]
+    },
+    {
+        "id": 4,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "A difference between command and market economic systems is that command economic systems",
+        "options": [
+            "have a legal system that provides incentives to produce, whereas market economic systems do not",
+            "ensure efficiency, whereas market economic systems ensure equity",
+            "limit individual property rights, whereas market economic systems protect individual property rights",
+            "maximize producer and consumer surplus, whereas market economic systems do not",
+            "regulate production but not distribution, whereas market economic systems regulate both production and distribution"
+        ]
+    },
+    {
+        "id": 5,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Dr. Art and Dr. Zed jointly own an outpatient surgery practice. Dr. Art takes 2 hours to perform knee surgery and 1 hour to perform elbow surgery. Dr. Zed takes 4 hours to perform knee surgery and 1 hour to perform elbow surgery. Which of the following conclusions is supported by the information provided?",
+        "options": [
+            "Dr. Art has a comparative advantage in elbow surgery.",
+            "Dr. Zed has a comparative advantage in elbow surgery.",
+            "Dr. Zed does not have a comparative advantage in performing either procedure.",
+            "Dr. Art does not have a comparative advantage in performing either procedure.",
+            "Dr. Zed has an absolute advantage in performing both procedures."
+        ]
+    },
+    {
+        "id": 6,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Assume that all firms in a perfectly competitive market currently earn positive economic profits. What will happen in the long run if all firms face constant returns to scale in production?",
+        "options": [
+            "The price of the product will increase.",
+            "Firms will exit the industry.",
+            "The quantity produced by each existing firm will decrease.",
+            "Average total cost of production will increase.",
+            "Nothing will change."
+        ]
+    },
+    {
+        "id": 7,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<h4>Questions 7-8 are based on the table provided.</h4><p>The table provided shows a firm's average fixed cost (AFC), total variable cost (TVC), and total economic profit at different levels of output in units.</p><table class='data-table'><thead><tr><th>Output</th><th>AFC</th><th>TVC</th><th>Profit</th></tr></thead><tbody><tr><td>50</td><td>\\$20</td><td></td><td></td></tr><tr><td>200</td><td></td><td>\\$1600</td><td>\\$1000</td></tr></tbody></table>",
+        "stem": "When the firm produces 200 units, the AFC is",
+        "options": [
+            "\\$0",
+            "\\$5",
+            "\\$8",
+            "\\$20",
+            "\\$80"
+        ]
+    },
+    {
+        "id": 8,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<h4>Questions 7-8 are based on the table provided.</h4><p>The table provided shows a firm's average fixed cost (AFC), total variable cost (TVC), and total economic profit at different levels of output in units.</p><table class='data-table'><thead><tr><th>Output</th><th>AFC</th><th>TVC</th><th>Profit</th></tr></thead><tbody><tr><td>50</td><td>\\$20</td><td></td><td></td></tr><tr><td>200</td><td></td><td>\\$1600</td><td>\\$1000</td></tr></tbody></table>",
+        "stem": "If the marginal revenue of the 201st unit of output is \\$15 and the marginal cost of the 201st unit is \\$20, the total economic profit of producing 201 units will be",
+        "options": [
+            "\\$995",
+            "\\$1,000",
+            "\\$1,005",
+            "\\$1,015",
+            "\\$1,035"
+        ]
+    },
+    {
+        "id": 9,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p>Assume that capital and labor are the only two inputs used by a clinic. The table shows the hourly marginal product and the hourly price of capital and labor at the current output level.</p><table class='data-table'><thead><tr><th></th><th>Capital</th><th>Labor</th></tr></thead><tbody><tr><td>Marginal Product</td><td>25 units</td><td>5 units</td></tr><tr><td>Hourly Price</td><td>\\$200</td><td>\\$50</td></tr></tbody></table>",
+        "stem": "To minimize costs at the current output level, the clinic should change the hiring of capital and labor in which of the following ways?",
+        "options": [
+            "The amount of capital hired should decrease, and the amount of labor hired should increase.",
+            "The amount of capital hired should decrease, and the amount of labor hired should decrease.",
+            "The amount of capital hired should increase, and the amount of labor hired should decrease.",
+            "The amount of capital hired should increase, and the amount of labor hired should increase.",
+            "There should be no change to the quantity of capital or labor hired."
+        ]
+    },
+    {
+        "id": 10,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The project funding decisions made by two interdependent research companies, Creative and Genezyz, resulted in a profit of \\$4 million for Creative and a profit of \\$5 million for Genezyz. Which of the following is required for this combination of project choices to be a Nash equilibrium?",
+        "options": [
+            "Genezyz charges a lower price to its customers than Creative does.",
+            "Neither firm has a dominant strategy.",
+            "Neither firm could earn higher profits by unilaterally changing its project choice.",
+            "Creative could earn a higher profit if it chose a different project when Genezyz chose its initial project.",
+            "The combined profits of the two firms are maximized at the current combination of project choices."
+        ]
+    },
+    {
+        "id": 11,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The cross-price elasticity of demand for Goods X and Y is -2.8. Based on this information, what is true about Good X and Good Y?",
+        "options": [
+            "Good X is a normal good and Good Y is an inferior good.",
+            "The goods are inferior.",
+            "The goods are substitutes.",
+            "The goods are complements.",
+            "The goods have upward-sloping demand curves."
+        ]
+    },
+    {
+        "id": 12,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Zucchini is produced in a perfectly competitive market with a downward-sloping demand curve and an upward-sloping supply curve. Dawson Farm is a typical perfectly competitive farm that produces and sells zucchini at the equilibrium price of \\$1.75 per pound. Which of the following is true?",
+        "options": [
+            "No buyer in the market is willing to pay more than \\$1.75 per pound for zucchini.",
+            "No buyer in the market is willing to pay more than \\$1.75 per pound for zucchini from Dawson Farm.",
+            "Market demand for zucchini will increase if Dawson Farm lowers its price below \\$1.75 per pound.",
+            "Dawson Farm would lose some but not all of its customers if it increases the price above \\$1.75 per pound for zucchini.",
+            "Dawson Farm would likely be able to increase the demand for its zucchini by advertising."
+        ]
+    },
+    {
+        "id": 13,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Over the entire range of output for which a firm's short-run average variable cost is decreasing, which of the following must be true?",
+        "options": [
+            "Short-run marginal cost is falling.",
+            "There are increasing returns to scale.",
+            "There are decreasing returns to scale.",
+            "Short-run marginal cost is less than short-run average variable cost.",
+            "Short-run marginal cost is increasing due to diminishing returns."
+        ]
+    },
+    {
+        "id": 14,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Ice cream is a normal good. Ice cream and hot fudge are complementary goods, while ice cream and gelato are substitute goods. Which of the following could lead to an increase in the equilibrium price and an indeterminate change in the equilibrium quantity of ice cream?",
+        "options": [
+            "Consumer incomes rise, and the price of hot fudge increases.",
+            "Bacteria in ice cream facilities leads to a number of consumers being hospitalized, and increased dairy production leads to lower input costs for ice cream.",
+            "The price of gelato increases, and new technology increases efficiency of ice cream production.",
+            "A new study indicates that ice cream is associated with improved bone health, and a leading ice cream producer declares bankruptcy.",
+            "A newly popular diet includes avoiding dairy products, and the government begins to subsidize ice cream production."
+        ]
+    },
+    {
+        "id": 15,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "As a firm expands its output, it initially experiences economies of scale and then diseconomies of scale. The firm's long-run average cost curve is",
+        "options": [
+            "horizontal and then upward sloping",
+            "horizontal and then downward sloping",
+            "downward sloping and then upward sloping",
+            "continuously upward sloping",
+            "continuously downward sloping"
+        ]
+    },
+    {
+        "id": 16,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "When a firm is experiencing economies of scale, an increase in the firm's output will result in which of the following?",
+        "options": [
+            "A decrease in total cost",
+            "A decrease in long-run average total cost",
+            "A downward shift in the long-run marginal cost curve",
+            "An increase in long-run average variable cost",
+            "An increase in average fixed cost"
+        ]
+    },
+    {
+        "id": 17,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/FxRF/484X470/image.png\' alt='Market with a Per-Unit Tax'>",
+        "stem": "The graph provided shows the imposition of a per-unit tax on producers. Which areas represent government tax revenue, producer surplus, and deadweight loss after the imposition of the tax?",
+        "options": [
+            "The government tax revenue is P₅P₃MJ; The producer surplus is P₃P₁L; The deadweight loss is JNL.",
+            "The government tax revenue is P₅P₂NJ; The producer surplus is P₆P₅J; The deadweight loss is P₄P₅J.",
+            "The government tax revenue is JNL; The producer surplus is P₃P₁NM; The deadweight loss is MLN.",
+            "The government tax revenue is P₅P₂NJ; The producer surplus is P₂P₁N; The deadweight loss is JNL.",
+            "The government tax revenue is P₅P₃MJ; The producer surplus is P₃P₁L; The deadweight loss is JML."
+        ]
+    },
+    {
+        "id": 18,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "When Tom's income increases from \\$100 to \\$120, the quantity of golf balls he purchases increases from 10 to 12. What is Tom's income elasticity of demand, and what type of good is a golf ball for Tom?",
+        "options": [
+            "Income elasticity of demand is 1, and golf balls are a normal good for Tom.",
+            "Income elasticity of demand is -1, and golf balls are an inferior good for Tom.",
+            "Income elasticity of demand is 10, and golf balls are a normal good for Tom.",
+            "Income elasticity of demand is -10, and golf balls are an inferior good for Tom.",
+            "Income elasticity of demand is 20, and golf balls are a normal good for Tom."
+        ]
+    },
+    {
+        "id": 19,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "One reason many governments provide free access to mandatory primary education is because primary education",
+        "options": [
+            "generates negative externalities",
+            "helps to reduce future income inequality",
+            "is only provided by a natural monopoly",
+            "is nonrival and therefore subject to overcrowding",
+            "is nonexcludable and therefore subject to the free rider problem"
+        ]
+    },
+    {
+        "id": 20,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Heggood, Inc., a perfectly competitive firm, produces hats using capital and labor purchased in competitive factor markets. If the demand for hats increases, Heggood, Inc. will",
+        "options": [
+            "decrease the price of hats",
+            "decrease its demand for labor",
+            "decrease the quantity of labor demanded",
+            "increase its demand for capital",
+            "increase the rental price of capital"
+        ]
+    },
+    {
+        "id": 21,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Imperfectly competitive markets do not achieve allocative efficiency because profit maximization for each firm occurs when which of the following is true?",
+        "options": [
+            "Price equals average total cost.",
+            "Price is greater than marginal cost.",
+            "Price equals marginal revenue.",
+            "Price is less than marginal benefit.",
+            "Price is less than marginal revenue."
+        ]
+    },
+    {
+        "id": 22,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following will likely result in an indeterminate change in the equilibrium quantity of a competitive market?",
+        "options": [
+            "An increase in supply along a perfectly inelastic demand curve",
+            "A decrease in supply along a relatively elastic demand curve",
+            "A decrease in demand along a perfectly elastic supply curve",
+            "An increase in demand and a decrease in supply",
+            "An increase in demand and an increase in supply"
+        ]
+    },
+    {
+        "id": 23,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following statements most accurately describes the relationship between corn, an output, and machines, an input, that are used to gather corn?",
+        "options": [
+            "The price of machines used to gather corn increases when the demand for corn increases.",
+            "The price of machines used to gather corn decreases when the demand for corn increases.",
+            "The price of machines used to gather corn increases when the demand for corn decreases.",
+            "The price of machines used to gather corn increases when the price of wheat, a producer substitute for corn, increases.",
+            "The price of machines used to gather corn is unrelated to the demand for corn."
+        ]
+    },
+    {
+        "id": 24,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p>RKB and JCM are two competing firms that are considering which project to develop. RKB will develop either Project Alpha or Project Beta. JCM will develop either Project X or Project Y. The payoff matrix provided shows the payoffs for each combination of strategies, and both players (RKB and JCM) have complete information. The first value in each cell represents the payoff for RKB, and the second value represents the payoff for JCM. Each firm independently and simultaneously chooses its strategy.</p><table class='data-table'><thead><tr><th rowspan='2' style='vertical-align:middle;'>RKB</th><th colspan='2'>JCM</th></tr><tr><th>Project X</th><th>Project Y</th></tr></thead><tbody><tr><th>Project Alpha</th><td>(300, 400)</td><td>(250, 250)</td></tr><tr><th>Project Beta</th><td>(350, 250)</td><td>(400, 300)</td></tr></tbody></table>",
+        "stem": "Which of the following conclusions is supported by the information in the payoff matrix?",
+        "options": [
+            "There is no combination of project choices that results in a Nash equilibrium.",
+            "There are multiple combinations of project choices that result in Nash equilibria.",
+            "RKB has a dominant strategy, but JCM does not.",
+            "JCM has a dominant strategy, but RKB does not.",
+            "Neither firm has a dominant strategy."
+        ]
+    },
+    {
+        "id": 25,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Consider two groups of workers in competitive labor markets. Workers in group X have a skill set unique to producing computers, and workers in group Y have a skill set that can be used to produce either computers or smartphones. When the price of smartphones decreases, the wages paid to workers producing smartphones decrease. Which of the following could happen to the wages of workers in group X?",
+        "options": [
+            "There would be no change in wages because workers in group X do not have the skills to produce smartphones.",
+            "There would be no change in wages because the supply of and demand for workers producing computers would both shift to the left.",
+            "Wages would decrease because the supply of workers producing computers would increase, with more workers from group Y seeking jobs with firms producing computers.",
+            "Wages would decrease because the supply of workers producing computers would decrease, with more workers from group X seeking training to qualify for jobs with firms producing smartphones.",
+            "Wages would increase because workers in group X have specialized skills."
+        ]
+    },
+    {
+        "id": 26,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "If the marginal product of an input is positive and increasing, total product is",
+        "options": [
+            "decreasing at an increasing rate",
+            "increasing at an increasing rate",
+            "increasing at a decreasing rate",
+            "decreasing at a decreasing rate",
+            "increasing at a constant rate"
+        ]
+    },
+    {
+        "id": 27,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "For a firm operating in perfectly competitive product and factor markets, the marginal revenue product of labor is equal to the",
+        "options": [
+            "marginal product of labor",
+            "price of labor multiplied by the marginal product of labor",
+            "price of labor multiplied by the price of the output",
+            "price of the output divided by the price of labor",
+            "price of the output multiplied by the marginal product of labor"
+        ]
+    },
+    {
+        "id": 28,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p><strong>Questions 28-29 are based on the graph provided, which shows the marginal private cost (MPC), marginal social cost (MSC), marginal private benefit (MPB), and marginal social benefit (MSB) in a market for a good that has an external cost.</strong></p><img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/hTvl/330X272/image.png\' alt='Market with External Cost'>",
+        "stem": "What are the socially efficient and market equilibrium quantities?",
+        "options": [
+            "Socially efficient quantity is 6, and market equilibrium quantity is 12.",
+            "Socially efficient quantity is 9, and market equilibrium quantity is 9.",
+            "Socially efficient quantity is 9, and market equilibrium quantity is 12.",
+            "Socially efficient quantity is 12, and market equilibrium quantity is 12.",
+            "Socially efficient quantity is 12, and market equilibrium quantity is 9."
+        ]
+    },
+    {
+        "id": 29,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p><strong>Questions 28-29 are based on the graph provided, which shows the marginal private cost (MPC), marginal social cost (MSC), marginal private benefit (MPB), and marginal social benefit (MSB) in a market for a good that has an external cost.</strong></p><img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/hTvl/330X272/image.png\' alt='Market with External Cost'>",
+        "stem": "What is the dollar value of the marginal external cost?",
+        "options": [
+            "\\$0.25",
+            "\\$0.50",
+            "\\$1.00",
+            "\\$5.00",
+            "\\$5.50"
+        ]
+    },
+    {
+        "id": 30,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "When marginal utility from consuming a good is zero, the total utility from consuming the good is",
+        "options": [
+            "zero",
+            "negative",
+            "maximized",
+            "rising at a constant rate",
+            "equal to marginal utility per dollar spent on the good"
+        ]
+    },
+    {
+        "id": 31,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<table class='data-table'><thead><tr><th>Milkshake Cups</th><th>Total Utility (utils)</th></tr></thead><tbody><tr><td>1</td><td>50</td></tr><tr><td>2</td><td>100</td></tr><tr><td>3</td><td>145</td></tr><tr><td>4</td><td>185</td></tr><tr><td>5</td><td>220</td></tr></tbody></table>",
+        "stem": "Which of the following is true based on Rosco's utility data given in the table provided?",
+        "options": [
+            "Rosco's marginal utility from the fourth cup is 185 utils.",
+            "Rosco's marginal utility from the fifth cup is 35 utils.",
+            "Rosco's marginal utility from the third cup is greater than the marginal utility from the second cup.",
+            "Rosco's marginal utility from the fourth cup is greater than the marginal utility from the third cup.",
+            "Rosco's total utility and marginal utility both increase as he consumes more cups of milkshake."
+        ]
+    },
+    {
+        "id": 32,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is true for a monopolistically competitive firm that is in short-run equilibrium and earning a positive economic profit?",
+        "options": [
+            "Accounting profits are less than economic profits.",
+            "Marginal cost is greater than price.",
+            "Marginal revenue is less than price.",
+            "Average total cost is greater than price.",
+            "Marginal revenue is less than marginal cost."
+        ]
+    },
+    {
+        "id": 33,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is true in the inelastic region of a monopolist's demand curve as output increases?",
+        "options": [
+            "Marginal revenue and total revenue are negative.",
+            "Marginal revenue is increasing and total revenue is positive.",
+            "Marginal revenue is decreasing and total revenue is negative.",
+            "Marginal revenue is positive and total revenue is increasing.",
+            "Marginal revenue is negative and total revenue is decreasing."
+        ]
+    },
+    {
+        "id": 34,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following explains why the marginal factor (resource) cost curve lies above the supply curve for labor in a monopsonistic labor market?",
+        "options": [
+            "The monopsonist must lower its price to sell more output.",
+            "Each worker is paid a different wage, based on individual marginal productivity.",
+            "The monopsonist has market power and pays whatever wage it desires.",
+            "The supply of labor is perfectly elastic.",
+            "The monopsonist must increase the wage for all workers to hire more workers."
+        ]
+    },
+    {
+        "id": 35,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "As an economy moves along its production possibilities curve, which of the following must be true?",
+        "options": [
+            "The marginal benefit of the output is greater than the marginal cost of the output.",
+            "An increase in output results in a decrease in average total cost.",
+            "The marginal social cost of producing an additional output is zero.",
+            "Producing more of one good results in producing less of the other good.",
+            "The economy is producing the socially optimal combination of goods."
+        ]
+    },
+    {
+        "id": 36,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p>The following question is based on the table provided, showing hourly production data and total revenue for a perfectly competitive firm.</p><table class='data-table'><thead><tr><th>Number of Workers Hired</th><th>Total Revenue (\\$)</th><th>Quantity Produced</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>1</td><td>50</td><td>10</td></tr><tr><td>2</td><td>95</td><td>19</td></tr><tr><td>3</td><td>135</td><td>27</td></tr><tr><td>4</td><td>170</td><td>34</td></tr><tr><td>5</td><td>200</td><td>40</td></tr></tbody></table>",
+        "stem": "What is the marginal revenue product of the fourth worker?",
+        "options": [
+            "\\$35",
+            "\\$34",
+            "\\$30",
+            "\\$7",
+            "\\$5"
+        ]
+    },
+    {
+        "id": 37,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Regulating a natural monopoly to set its output price equal to the marginal cost of production will result in economic losses because for the last unit of output produced, marginal cost is",
+        "options": [
+            "less than the marginal willingness to pay and less than average total cost",
+            "greater than the marginal willingness to pay and less than average total cost",
+            "equal to the marginal willingness to pay and less than average total cost",
+            "equal to the marginal willingness to pay and equal to average total cost",
+            "greater than the marginal willingness to pay and equal to average total cost"
+        ]
+    },
+    {
+        "id": 38,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following actions would a government take when regulating a natural monopoly to produce the socially optimal quantity?",
+        "options": [
+            "Impose a lump-sum tax on the monopolist's profit.",
+            "Impose a per-unit tax on the monopolist's profit.",
+            "Open the market for competition to lower the monopoly price.",
+            "Regulate the monopoly to charge a price equal to the average total cost.",
+            "Grant a lump-sum subsidy to the monopoly."
+        ]
+    },
+    {
+        "id": 39,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is true if the production of a good creates negative externalities?",
+        "options": [
+            "The market produces the socially efficient level of output.",
+            "Antitrust laws are violated.",
+            "The market price equals the marginal social cost.",
+            "The marginal social cost exceeds the marginal private cost.",
+            "The good is produced by the public sector."
+        ]
+    },
+    {
+        "id": 40,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/kBQC/576X460/image.png/webp' alt='Market with Price Ceiling'>",
+        "stem": "The graph shows the market supply (S) and demand (D) curves for a particular product. If the government imposes a price ceiling at P₂, which of the following statements is true?",
+        "options": [
+            "The quantity sold in the market falls from Q₂ to Q₁.",
+            "The quantity sold in the market remains at Q₂ because the price ceiling is not binding.",
+            "The price ceiling results in a shortage of (Q₃ - Q₁).",
+            "The price ceiling results in a surplus of (Q₃ - Q₁).",
+            "The price ceiling will benefit sellers at the expense of buyers."
+        ]
+    },
+    {
+        "id": 41,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Assume paper clips are produced in a perfectly competitive industry that is currently in long-run equilibrium. One firm in the industry develops a new production method that reduces its variable cost of production. If its competitors are unable to copy this new method, what will happen to this firm's output and profit in the short run?",
+        "options": [
+            "Output will increase, and profit will increase.",
+            "Output will decrease, and profit will increase.",
+            "Output will not change, and profit will increase.",
+            "Output will increase, and profit will not change.",
+            "Output will not change, and profit will not change."
+        ]
+    },
+    {
+        "id": 42,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p><strong>Questions 42-43 are based on the graph provided, which shows the combinations of donuts and cups of coffee that the country of Deetopia could produce using its currently available resources.</strong></p><img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/TWNh/460X242/image.png\' alt='PPC for Donuts and Coffee'>",
+        "stem": "Which of the following must be true?",
+        "options": [
+            "Combination T is allocatively efficient because customers will consume both donuts and cups of coffee.",
+            "Combination V is allocatively efficient because Deetopia has an absolute advantage in producing cups of coffee.",
+            "The opportunity cost of producing 1 cup of coffee is 2 donuts.",
+            "The opportunity cost of producing 1 cup of coffee is 6 donuts.",
+            "The opportunity cost of producing 1 donut increases as more cups of coffee are produced."
+        ]
+    },
+    {
+        "id": 43,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<p><strong>Questions 42-43 are based on the graph provided, which shows the combinations of donuts and cups of coffee that the country of Deetopia could produce using its currently available resources.<strong></p><img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/TWNh/460X242/image.png\' alt='PPC for Donuts and Coffee'>",
+        "stem": "Suppose the country of Deetopia produces 6 cups of coffee and 12 donuts. Which of the following must be true?",
+        "options": [
+            "The combination leaves some resources unemployed.",
+            "The combination has the highest opportunity cost in production.",
+            "The combination is productively efficient.",
+            "The combination is neither productively nor socially efficient.",
+            "The combination cannot be produced with the given amount of resources."
+        ]
+    },
+    {
+        "id": 44,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "If a monopolist can increase output and profit by engaging in perfect price discrimination, allocative efficiency will",
+        "options": [
+            "improve even though consumer surplus goes to zero",
+            "possibly improve or get worse depending on whether consumer surplus increases or decreases",
+            "possibly improve or get worse depending on whether consumer surplus increases by more or less than the increase in producer surplus",
+            "get worse because producer surplus increases by more than the increase in consumer surplus",
+            "be unchanged because although producer surplus increases, total surplus is unaffected"
+        ]
+    },
+    {
+        "id": 45,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The demand curve for shoes is downward sloping, and the absolute value of the price elasticity of demand is 2. If the price of shoes increases by 3 percent, what will happen to the quantity of shoes demanded?",
+        "options": [
+            "It will decrease by 6%",
+            "It will decrease by 3%",
+            "It will decrease by 2%",
+            "It will increase by 6%",
+            "It will increase by 3%"
+        ]
+    },
+    {
+        "id": 46,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 0,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The postmaster general of a country decides to double the price of first-class stamps, expecting the action to cause the revenues from sales of first-class stamps to double. What absolute value of price elasticity of demand is the postmaster general assuming in making the projection?",
+        "options": [
+            "0",
+            "Between 0 and 1",
+            "1",
+            "Greater than 1",
+            "Infinite"
+        ]
+    },
+    {
+        "id": 47,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Katie's demand for chocolate bars is perfectly inelastic at a quantity of one per week. Maximiliano will consume three chocolate bars per week when the price is \\$1, and he will consume four per week when the price is \\$0.50. Katie and Maximiliano are the only consumers of chocolate bars. Which of the following best describes the price elasticity of market demand beginning at the price of \\$0.50 and ending at the price of \\$1?",
+        "options": [
+            "Perfectly inelastic",
+            "Inelastic",
+            "Unit elastic",
+            "Elastic",
+            "Perfectly elastic"
+        ]
+    },
+    {
+        "id": 48,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "An effective price floor placed on a market for a good will have which of the following effects on the quantity purchased by consumers and the consumer surplus?",
+        "options": [
+            "Quantity will decrease, and consumer surplus will increase",
+            "Quantity will decrease, and consumer surplus will decrease",
+            "Quantity will increase, and consumer surplus will not change",
+            "Quantity will increase, and consumer surplus will increase",
+            "Quantity will not change, and consumer surplus will decrease"
+        ]
+    },
+    {
+        "id": 49,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is true of production in the long run?",
+        "options": [
+            "At least one factor of production is fixed.",
+            "Only one factor of production is fixed.",
+            "Some factors of production are fixed while others are variable.",
+            "All factors of production are variable.",
+            "All factors of production, except technology, are fixed."
+        ]
+    },
+    {
+        "id": 50,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 2,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<table class='data-table'><thead><tr><th>Quantity (units)</th><th>Total Revenue (\\$)</th><th>Total Cost (\\$)</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>100</td></tr><tr><td>1</td><td>200</td><td>150</td></tr><tr><td>2</td><td>250</td><td>190</td></tr><tr><td>3</td><td>275</td><td>210</td></tr><tr><td>4</td><td>290</td><td>225</td></tr><tr><td>5</td><td>300</td><td>255</td></tr><tr><td>6</td><td>305</td><td>300</td></tr></tbody></table>",
+        "stem": "In the table provided, at which quantity is the marginal revenue equal to marginal cost?",
+        "options": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ]
+    },
+    {
+        "id": 51,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "If a pure public good is provided only by a private market, then generally the good will",
+        "options": [
+            "be overproduced relative to the socially optimal quantity",
+            "be underproduced relative to the socially optimal quantity",
+            "be excludable",
+            "be rivalrous",
+            "reduce deadweight loss"
+        ]
+    },
+    {
+        "id": 52,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Which of the following is an example of a violation of antitrust laws?",
+        "options": [
+            "Advertising to increase a firm's market share in an industry",
+            "Making positive economic profits by charging a price above marginal cost",
+            "Making free-trade agreements with other countries",
+            "Engaging in collusive behavior to restrain competition",
+            "Charging a price below the price ceiling"
+        ]
+    },
+    {
+        "id": 53,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Removing a binding price floor on milk will affect the quantity of milk demanded and the quantity of milk supplied in the market in which of the following ways?",
+        "options": [
+            "There will be no change to quantity demanded, and quantity supplied will decrease.",
+            "Quantity demanded will decrease, and quantity supplied will decrease.",
+            "Quantity demanded will decrease, and quantity supplied will increase.",
+            "Quantity demanded will increase, and there will be no change to quantity supplied.",
+            "Quantity demanded will increase, and quantity supplied will decrease."
+        ]
+    },
+    {
+        "id": 54,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Kailas Cars produces cars that are made of both steel and aluminum. Steel and aluminum are substitutes in production. Kailas Cars' demand for steel will increase if which of the following occurs?",
+        "options": [
+            "The supply of aluminum increases.",
+            "The demand for cars increases.",
+            "The supply of gasoline, a complement to cars, decreases.",
+            "The wages of workers in the car industry increase.",
+            "The amount of time that people keep their cars increases."
+        ]
+    },
+    {
+        "id": 55,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "A decrease in the supply of pencils results in which of the following?",
+        "options": [
+            "A surplus of pencils in the market",
+            "An increase in the demand for erasers, a complement in consumption",
+            "An increase in the quantity demanded of pencils",
+            "A decrease in the consumer surplus of pencil buyers",
+            "A decrease in the demand for pencils"
+        ]
+    },
+    {
+        "id": 56,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The fresh fish market is in equilibrium, and the demand is perfectly elastic. The imposition of a per-unit tax on sellers by the government will result in which of the following?",
+        "options": [
+            "The equilibrium price will increase by the full amount of the tax, and consumers will bear the entire burden of the tax.",
+            "The equilibrium price will remain unchanged, and consumers will bear the entire burden of the tax.",
+            "The equilibrium price will increase by the full amount of the tax, and suppliers will bear the entire burden of the tax.",
+            "The equilibrium price will remain unchanged, and suppliers will bear the entire burden of the tax.",
+            "The equilibrium price will increase by the full amount of the tax, and suppliers and consumers will bear the burden of the tax equally."
+        ]
+    },
+    {
+        "id": 57,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "The study of economics is based on the premise that",
+        "options": [
+            "goods and services are scarce but capital is unlimited",
+            "the growth of government is limited but resources are unlimited",
+            "natural resources are scarce but labor is unlimited",
+            "factors of production are scarce but goods and services people desire are unlimited",
+            "consumer products are scarce but resources are unlimited"
+        ]
+    },
+    {
+        "id": 58,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 4,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "<img src='https://tc-new.z.wiki/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20250928/KQKG/464X352/image.png\' alt='Market Equilibrium and Surplus'>",
+        "stem": "The efficient market outcome shown in the graph provided is",
+        "options": [
+            "at price P₁, quantity Q₁, and total economic surplus is J + K",
+            "at price P₂, quantity Q₂, and total economic surplus is B + C + D + E + F + G + H + I",
+            "at price P₀, quantity Q₀, and total economic surplus is B + C + E + F",
+            "at price P₀, quantity Q₀, and total economic surplus is A + B + C + E + F",
+            "at price P₀, quantity Q₀, and total economic surplus is A + B + C + E + F + J"
+        ]
+    },
+    {
+        "id": 59,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 1,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "In the short run, when a profit-maximizing, perfectly competitive firm is producing at the quantity where MR = MC and the firm's total revenue is less than its total variable cost, the firm should",
+        "options": [
+            "continue to produce the same quantity",
+            "shut down",
+            "lower its price",
+            "raise its price",
+            "expect other firms to enter the industry"
+        ]
+    },
+    {
+        "id": 60,
+        "isMarkedForReview": false,
+        "selectedAnswer": null,
+        "correctAnswer": 3,
+        "notes": [],
+        "highlights": { "left": null, "right": null },
+        "leftContent": "",
+        "stem": "Prosper Company is a profit-maximizing monopoly producing toy cubes. Prosper Company is currently earning positive economic profit. Which of the following combinations of events will definitely cause Prosper Company's profit to increase?",
+        "options": [
+            "A decrease in demand for toy cubes and a decrease in fixed costs to produce toy cubes",
+            "A decrease in demand for toy cubes and an increase in fixed costs to produce toy cubes",
+            "A decrease in demand for toy cubes and a decrease in variable costs to produce toy cubes",
+            "An increase in demand for toy cubes and an increase in government subsidies to produce toy cubes",
+            "An increase in demand for toy cubes and an increase in fixed costs to produce toy cubes"
+        ]
+    }
+]
+                    }
+
+                ];
+            }
+            
+            // --- UI ELEMENT SELECTORS ---
+            const startScreen = document.getElementById('start-screen');
+            const transitionScreen = document.getElementById('section-transition-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const mainAppContainer = document.querySelector('.body-new-sat');
+            const leftPanel = document.getElementById('left-panel');
+            const rightPanel = document.getElementById('right-panel');
+            const questionProgressBtn = document.getElementById('question-progress-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            const calculatorBtn = document.getElementById('calculator-btn');
+
+            // --- TIMER ---
+            function startTimer(duration) {
+                let timer = duration;
+                clearInterval(timerInterval);
+                timerInterval = setInterval(function () {
+                    let minutes = parseInt(timer / 60, 10);
+                    let seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    timerDisplay.textContent = minutes + ":" + seconds;
+
+                    if (--timer < 0) {
+                        clearInterval(timerInterval);
+                        if (currentView === 'review' || currentView === 'question') {
+                             handleTimeUp();
+                        }
+                    }
+                }, 1000);
+            }
+
+            function handleTimeUp() {
+                alert("Time's up for this section!");
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+            }
+            
+            // --- UI RENDERING & VIEW MANAGEMENT ---
+            function switchView(viewName) {
+                currentView = viewName;
+                startScreen.classList.add('hidden');
+                transitionScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                mainAppContainer.classList.remove('active', 'review-mode-active');
+                
+                if (['start', 'transition', 'results'].includes(viewName)) {
+                    mainAppContainer.style.display = 'none';
+                } else {
+                    mainAppContainer.style.display = 'flex';
+                }
+
+                switch(viewName) {
+                    case 'start':
+                        startScreen.classList.remove('hidden');
+                        break;
+                    case 'transition':
+                        clearInterval(timerInterval);
+                        document.getElementById('transition-title').textContent = sectionsData[currentSectionIndex].name;
+                        transitionScreen.classList.remove('hidden');
+                        break;
+                    case 'results':
+                        clearInterval(timerInterval);
+                        calculateAndShowResults();
+                        resultsScreen.classList.remove('hidden');
+                        break;
+                    case 'question':
+                    case 'analysis':
+                        mainAppContainer.classList.add('active');
+                        break;
+                    case 'review':
+                        mainAppContainer.classList.add('active', 'review-mode-active');
+                        renderReviewScreen();
+                        break;
+                }
+            }
+
+            function saveCurrentQuestionState() {
+                if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                if (question) {
+                    question.highlights.left = leftPanel.innerHTML;
+                    question.highlights.right = rightPanel.innerHTML;
+                }
+            }
+
+            function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+                currentView = isAnalysisMode ? 'analysis' : 'question';
+                switchView(currentView);
+
+                currentSectionIndex = secIndex;
+                currentQuestionIndex = qIndex;
+                
+                // FIXED: Simplified logic to start the timer at the beginning of any section.
+                if (!isAnalysisMode && qIndex === 0) {
+                    startTimer(sectionsData[currentSectionIndex].time);
+                }
+                
+                // Calculator visibility logic
+                calculatorBtn.style.display = 'flex';
+
+                const section = sectionsData[secIndex];
+                const question = section.questions[qIndex];
+                if (!question) return;
+
+                document.getElementById('main-module-title').textContent = section.name;
+
+                const questionScreen = document.getElementById('question-screen');
+
+                if (question.leftContent && question.leftContent.trim() !== '') {
+                    leftPanel.innerHTML = question.leftContent;
+                    questionScreen.classList.remove('single-column');
+                } else {
+                    leftPanel.innerHTML = '';
+                    questionScreen.classList.add('single-column');
+                }
+
+                rightPanel.innerHTML = isAnalysisMode ? generateAnalysisHTML() : generateQuestionHTML();
+
+                function generateQuestionHTML() {
+                     const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        const isSelected = question.selectedAnswer === i ? 'selected' : '';
+                        return `<div class="question-option ${isSelected}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                    <div class="strikethrough-line" data-struck="false"></div>
+                                    <div class="annotation-control-wrapper"><div class="strikethrough-toggle-btn" data-letter="${letter}">${letter}</div></div>
+                                    <div class="undo-controls"><span class="undo-text">Undo</span></div>
+                                </div>`;
+                    }).join('');
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                            <div class="mark-review">
+                                <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                                <span>Mark for Review</span>
+                            </div>
+                            <div class="annotation-tool">
+                                <svg width="36" height="36" viewBox="0 0 100 100">
+                                    <rect x="5" y="5" width="90" height="90" rx="10" ry="10" fill="none" stroke="#555" stroke-width="4"/>
+                                    <text x="50" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#2d2d2d">ABC</text>
+                                    <line x1="15" y1="80" x2="85" y2="20" stroke="#2d2d2d" stroke-width="6" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list">${optionsHTML}</div>
+                    `;
+                }
+
+                 function generateAnalysisHTML() {
+                    const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        let optionClasses = "question-option";
+                        if(i === question.correctAnswer) optionClasses += ' correct-answer';
+                        if(i === question.selectedAnswer && i !== question.correctAnswer) optionClasses += ' wrong-answer';
+                        return `<div class="${optionClasses}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                </div>`;
+                    }).join('');
+
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list analysis-mode">${optionsHTML}</div>
+                    `;
+                }
+
+
+                if(window.MathJax) {
+                    window.MathJax.typesetPromise([rightPanel, leftPanel]).catch(err => console.error("MathJax typesetting error:", err));
+                }
+
+                updateMarkForReviewButton();
+                addQuestionEventListeners(isAnalysisMode);
+                updateFooter(isAnalysisMode);
+                if(!isAnalysisMode) renderNotes();
+
+                leftPanel.removeEventListener('click', handleZoomClick);
+                leftPanel.addEventListener('click', handleZoomClick);
+            }
+
+            function handleZoomClick(e) {
+                 const target = e.target;
+                if (target.tagName === 'IMG' || target.closest('.data-table')) {
+                    const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+                    openZoomModal(contentTarget);
+                }
+            }
+            
+            function updateFooter(isAnalysisMode = false) {
+                const totalQuestions = sectionsData.flatMap(s => s.questions).length;
+                const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                
+                const questionNumberInExam = sectionsData.slice(0, currentSectionIndex).reduce((acc, section) => acc + section.questions.length, 0) + currentQuestionIndex + 1;
+                questionProgressBtn.textContent = `Question ${questionNumberInExam} of ${totalQuestions}`;
+                
+                const backBtn = document.getElementById('back-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const nextBtnSpan = nextBtn.querySelector('span');
+                const backBtnSpan = backBtn.querySelector('span');
+
+                if (isAnalysisMode) {
+                    backBtn.style.display = 'none';
+                    nextBtn.classList.add('back-to-results-btn');
+                    nextBtnSpan.textContent = 'Back to Results';
+                } else {
+                    nextBtn.classList.remove('back-to-results-btn');
+                    const isLastQuestionOfSection = currentQuestionIndex === sectionsData[currentSectionIndex].questions.length - 1;
+                    const isLastSection = currentSectionIndex === sectionsData.length - 1;
+
+                    if (currentView === 'review') {
+                        nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                        backBtnSpan.textContent = 'Back to Question';
+                    } else {
+                        nextBtnSpan.textContent = isLastQuestionOfSection ? 'Review' : 'Next';
+                        backBtnSpan.textContent = 'Back';
+                    }
+                    backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+                }
+            }
+            
+            function renderReviewScreen() {
+                const section = sectionsData[currentSectionIndex];
+                document.getElementById('review-module-name').textContent = section.name;
+                document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+                renderGrid('review-grid-main');
+                updateFooter();
+            }
+
+            function renderGrid(containerId) {
+                const gridContainer = document.getElementById(containerId);
+                const section = sectionsData[currentSectionIndex];
+                gridContainer.innerHTML = '';
+                section.questions.forEach((q, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('question-grid-item');
+                    item.textContent = q.id;
+                    item.dataset.questionIndex = index;
+
+                    if (q.selectedAnswer !== null) item.classList.add('completed');
+                    else item.classList.add('unanswered');
+                    if (q.isMarkedForReview) item.classList.add('for-review');
+                    if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+                    
+                    gridContainer.appendChild(item);
+                });
+            }
+
+            function updateMarkForReviewButton() {
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                const btn = rightPanel.querySelector('.mark-review');
+                if (!btn) return;
+                btn.classList.toggle('marked', question.isMarkedForReview);
+            }
+            
+            function calculateAndShowResults() {
+                let correctCount = 0;
+                let incorrectCount = 0;
+                let totalCount = 0;
+
+                const resultsGrid = document.getElementById('results-review-grid');
+                resultsGrid.innerHTML = '';
+
+                sectionsData.forEach((section, sIndex) => {
+                    section.questions.forEach((q, qIndex) => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (q.selectedAnswer !== null) {
+                            if (isCorrect) correctCount++;
+                            else incorrectCount++;
+                        } else {
+                            incorrectCount++; // Unanswered are incorrect
+                        }
+                        
+                        const item = document.createElement('div');
+                        item.classList.add('review-item');
+                        item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        item.textContent = q.id;
+                        item.dataset.sectionIndex = sIndex;
+                        item.dataset.questionIndex = qIndex;
+                        resultsGrid.appendChild(item);
+                    });
+                });
+                
+                const scorePercent = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+                document.getElementById('score-text').textContent = `${correctCount} / ${totalCount}`;
+                document.getElementById('score-circle').style.setProperty('--score-percent', `${scorePercent}%`);
+                document.getElementById('correct-count').textContent = correctCount;
+                document.getElementById('incorrect-count').textContent = incorrectCount;
+            }
+
+            // --- EVENT LISTENERS ---
+            function attachGlobalListeners() {
+                document.getElementById('start-exam-btn').addEventListener('click', () => {
+                    loadQuestion(0, 0);
+                });
+                document.getElementById('continue-btn').addEventListener('click', () => {
+                    loadQuestion(currentSectionIndex, 0);
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if (currentView === 'analysis') {
+                        switchView('results');
+                        return;
+                    }
+                    
+                    if (currentView === 'question') {
+                        const section = sectionsData[currentSectionIndex];
+                        if (currentQuestionIndex < section.questions.length - 1) {
+                            currentQuestionIndex++;
+                            loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        } else {
+                            switchView('review');
+                        }
+                        return;
+                    }
+
+                    if (currentView === 'review') {
+                        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                        if (isLastSection) {
+                            switchView('results');
+                        } else {
+                            currentSectionIndex++;
+                            switchView('transition');
+                        }
+                        return;
+                    }
+                });
+
+                document.getElementById('back-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if(currentView === 'review') { 
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        return; 
+                    }
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                    }
+                });
+                 document.getElementById('results-review-grid').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('review-item')) {
+                        const sIndex = parseInt(e.target.dataset.sectionIndex, 10);
+                        const qIndex = parseInt(e.target.dataset.questionIndex, 10);
+                        loadQuestion(sIndex, qIndex, true);
+                    }
+                });
+            }
+            
+            window.onbeforeunload = function(e) {
+                if (currentView === 'question' || currentView === 'review') {
+                    const message = 'You have not finished the exam. Are you sure you want to leave? Your progress will be lost.';
+                    e.returnValue = message; 
+                    return message;
+                }
+            };
+
+            let isAnnotationModeActive = false;
+            function addQuestionEventListeners(isAnalysisMode) {
+                const annotationToolBtn = rightPanel.querySelector('.annotation-tool');
+                if (annotationToolBtn) {
+                     annotationToolBtn.onclick = isAnalysisMode ? null : () => {
+                        isAnnotationModeActive = !isAnnotationModeActive;
+                        annotationToolBtn.classList.toggle('active', isAnnotationModeActive);
+                        rightPanel.querySelectorAll('.question-option').forEach(option => {
+                            const line = option.querySelector('.strikethrough-line');
+                            const wrapper = option.querySelector('.annotation-control-wrapper');
+                            const undo = option.querySelector('.undo-controls');
+                            if (isAnnotationModeActive) {
+                                if (line.dataset.struck === 'true') { line.style.display = 'block'; undo.style.display = 'flex'; wrapper.style.display = 'none';
+                                } else { line.style.display = 'none'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                            } else { [line, wrapper, undo].forEach(el => el.style.display = 'none'); }
+                        });
+                    };
+                }
+
+                const markForReviewBtn = rightPanel.querySelector('.mark-review');
+                if(markForReviewBtn) {
+                    markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                        const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                        q.isMarkedForReview = !q.isMarkedForReview;
+                        updateMarkForReviewButton();
+                        if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                }
+
+                rightPanel.querySelectorAll('.question-option').forEach(option => {
+                    option.onclick = isAnalysisMode ? null : function(e) {
+                         if (isAnnotationModeActive || document.querySelector('#highlight-tool-btn').classList.contains('active')) return;
+                         if (e.target.closest('.annotation-control-wrapper') || e.target.closest('.undo-controls')) return;
+
+                        const selectedIndex = parseInt(this.dataset.optionIndex, 10);
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].selectedAnswer = selectedIndex;
+                        rightPanel.querySelectorAll('.question-option').forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                         if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                });
+                
+                const optionsList = rightPanel.querySelector('.options-list');
+                if (optionsList) {
+                    optionsList.addEventListener('click', function(e) {
+                        const option = e.target.closest('.question-option');
+                        if (!option || !isAnnotationModeActive) return;
+                        const line = option.querySelector('.strikethrough-line'), wrapper = option.querySelector('.annotation-control-wrapper'), undo = option.querySelector('.undo-controls');
+                        if (e.target.closest('.strikethrough-toggle-btn')) { line.style.display = 'block'; line.dataset.struck = 'true'; wrapper.style.display = 'none'; undo.style.display = 'flex'; } 
+                        else if (e.target.closest('.undo-text')) { line.style.display = 'none'; line.dataset.struck = 'false'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                    });
+                }
+            }
+            
+            function handleGridClick(e) {
+                if (e.target.classList.contains('question-grid-item')) {
+                    const index = parseInt(e.target.dataset.questionIndex, 10);
+                    if (currentView === 'review') {
+                        const previewBox = document.getElementById('review-question-preview');
+                        const question = sectionsData[currentSectionIndex].questions[index];
+                        previewBox.innerHTML = `<strong>Question ${question.id}:</strong> ${question.stem}`;
+                        if (window.MathJax) { 
+                            window.MathJax.typesetPromise([previewBox]).catch(err => console.error("MathJax preview typesetting error:", err));
+                        }
+                    } else {
+                        saveCurrentQuestionState();
+                        loadQuestion(currentSectionIndex, index);
+                        closeModal(questionListModal);
+                    }
+                }
+            }
+            document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+            document.getElementById('review-grid-main').addEventListener('click', (e) => {
+                if (e.target.classList.contains('question-grid-item')) {
+                      saveCurrentQuestionState();
+                      const index = parseInt(e.target.dataset.questionIndex, 10);
+                      loadQuestion(currentSectionIndex, index);
+                }
+            });
+
+            document.getElementById('download-txt-btn').addEventListener('click', function() {
+                let correctCount = 0;
+                let totalCount = 0;
+                let incorrectQuestionNumbers = [];
+
+                sectionsData.forEach(section => {
+                    section.questions.forEach(q => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (isCorrect) {
+                            correctCount++;
+                        } else {
+                            incorrectQuestionNumbers.push(q.id);
+                        }
+                    });
+                });
+                const incorrectCount = totalCount - correctCount;
+
+                let summary = `对的个数/总题目数：${correctCount}/${totalCount}\\r\\n` +
+                              `错误个数（包括unanswered）：${incorrectCount}\\r\\n` +
+                              `错误题目题号列举：${incorrectQuestionNumbers.join(', ')}`;
+                
+                const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'exam_summary.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            const directionsModal = document.getElementById('directions-modal');
+            const questionListModal = document.getElementById('question-list-modal');
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomModalContent = document.getElementById('zoom-modal-content');
+            const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+            function openModal(modal) { modal.classList.add('active'); }
+            function closeModal(modal) { modal.classList.remove('active'); }
+
+            function openZoomModal(element) {
+                zoomModalContent.innerHTML = '';
+                const clonedElement = element.cloneNode(true);
+                zoomModalContent.appendChild(clonedElement);
+                openModal(zoomModal);
+            }
+            
+            document.getElementById('directions-btn').addEventListener('click', () => openModal(directionsModal));
+            document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+            directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+            
+            questionProgressBtn.addEventListener('click', (e) => { 
+                e.stopPropagation();
+                document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+                renderGrid('popup-question-grid');
+                questionListModal.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                const qListContent = questionListModal.querySelector('.question-list-content');
+                if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+                    closeModal(questionListModal);
+                }
+            });
+            
+            document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+            
+            zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+            zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+            document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+            document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+            
+            const splitter = document.getElementById('splitter');
+            let isDragging = false;
+            splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const notesPanelEl = document.getElementById('notes-panel');
+                const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+                let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+                const minWidth = 150;
+                const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+                if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+                if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+                leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+            });
+            document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+            const calcContainer = document.getElementById('calculator-container');
+            const calcHeader = calcContainer.querySelector('.draggable-header');
+            let pos1=0,pos2=0,pos3=0,pos4=0;
+            calcHeader.onmousedown = (e) => { e.preventDefault(); pos3=e.clientX; pos4=e.clientY; document.onmouseup=closeDragElement; document.onmousemove=elementDrag; };
+            function elementDrag(e) { e.preventDefault(); pos1=pos3-e.clientX; pos2=pos4-e.clientY; pos3=e.clientX; pos4=e.clientY; calcContainer.style.top=(calcContainer.offsetTop-pos2)+"px"; calcContainer.style.left=(calcContainer.offsetLeft-pos1)+"px"; }
+            function closeDragElement() { document.onmouseup=null; document.onmousemove=null; }
+            calculatorBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const isVisible = calcContainer.style.display === 'block';
+                calcContainer.style.display = isVisible ? 'none' : 'block';
+                btn.classList.toggle('active', !isVisible);
+            });
+            calcContainer.querySelector('.close-btn').addEventListener('click', () => { calcContainer.style.display = 'none'; document.getElementById('calculator-btn').classList.remove('active'); });
+
+            const moreBtn = document.getElementById('more-btn');
+            const moreDropdown = document.getElementById('more-dropdown');
+            const lineReaderOverlay = document.getElementById('line-reader-overlay');
+            moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+            document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+            function toggleLineReader() {
+                const isVisible = lineReaderOverlay.style.display === 'block';
+                lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+                document.removeEventListener('mousemove', moveLineReader);
+                if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+            }
+            function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+            document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+            document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+            const highlightBtn = document.getElementById('highlight-tool-btn');
+            const highlightToolbar = document.getElementById('highlight-toolbar');
+            const notesPanelEl = document.getElementById('notes-panel');
+            const notesContent = document.getElementById('notes-content');
+            const noteInputModal = document.getElementById('note-input-modal');
+            let currentNoteRange = null;
+
+            highlightBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                btn.classList.toggle('active');
+                notesPanelEl.classList.toggle('visible');
+                if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+            });
+            
+            document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+                if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+                setTimeout(() => {
+                    const selection = window.getSelection();
+                    if (selection && !selection.isCollapsed) {
+                        const range = selection.getRangeAt(0);
+                        const rect = range.getBoundingClientRect();
+                        highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                        highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                        highlightToolbar.style.display = 'flex';
+                    } else {
+                        highlightToolbar.style.display = 'none';
+                    }
+                }, 10);
+            });
+            document.addEventListener('mousedown', (e) => {
+                if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+                   highlightToolbar.style.display = 'none';
+                }
+            });
+
+            highlightToolbar.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+                const { color, action } = target.dataset;
+                if (color) wrapSelection('highlighted highlight-' + color);
+                else if (action === 'note') addNoteFromSelection();
+                else if (action === 'remove') removeHighlightAtSelection();
+                highlightToolbar.style.display = 'none';
+            });
+            
+            function wrapSelection(className) {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const wrapper = document.createElement('span');
+                wrapper.className = className;
+                wrapper.appendChild(range.extractContents());
+                range.insertNode(wrapper);
+                selection.removeAllRanges();
+            }
+            
+            function addNoteFromSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                currentNoteRange = selection.getRangeAt(0).cloneRange();
+                document.getElementById('note-modal-text').textContent = selection.toString().trim();
+                document.getElementById('note-textarea').value = '';
+                openModal(noteInputModal);
+            }
+
+            function removeHighlightAtSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+                    if (range.intersectsNode(span)) {
+                        const parent = span.parentNode;
+                        while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                        parent.removeChild(span);
+                        parent.normalize();
+                    }
+                });
+                selection.removeAllRanges();
+            }
+
+            document.getElementById('save-note-btn').addEventListener('click', () => {
+                const noteText = document.getElementById('note-textarea').value.trim();
+                if (noteText && currentNoteRange) {
+                    const highlightedText = document.getElementById('note-modal-text').textContent;
+                    const noteId = 'note_' + Date.now();
+                    const span = document.createElement('span');
+                    span.className = 'highlighted highlight-yellow';
+                    span.dataset.noteId = noteId;
+                    span.appendChild(currentNoteRange.extractContents());
+                    currentNoteRange.insertNode(span);
+                    
+                    const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                    currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+                    renderNotes();
+                }
+                closeModal(noteInputModal);
+            });
+            document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+            
+            function renderNotes() {
+                notesContent.innerHTML = '';
+                if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                currentNotes.forEach(note => {
+                    const noteDiv = document.createElement('div');
+                    noteDiv.className = 'note';
+                    noteDiv.dataset.noteId = note.id;
+                    noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+                    notesContent.appendChild(noteDiv);
+                });
+                notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+                   btn.addEventListener('click', (e) => {
+                        const noteElement = e.target.closest('.note');
+                        const noteId = noteElement.dataset.noteId;
+                        const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                        if (spanToRemove) {
+                            const parent = spanToRemove.parentNode;
+                            while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                            parent.removeChild(spanToRemove);
+                            parent.normalize();
+                        }
+                        const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                        renderNotes();
+                   });
+                });
+            }
+
+            // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>

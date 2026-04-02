@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP English Language and Composition - FRQ Interface</title>
+    <style>
+        /* 引入字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+
+        /* 基础样式变量 */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* 缩放与只读样式 */
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* --- 全屏界面 --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        /* --- 结果页样式 --- */
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover { background-color: #001a33; }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* --- 主程序界面 --- */
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none;
+            flex-direction: column;
+        }
+        .body-new-sat.active { display: flex; }
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#calculator-btn.active span, .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes { position: absolute; left: 30px; width: calc(100% - 60px); bottom: 0; }
+        #footer-dashes { top: 0; bottom: auto; }
+        #question-header-separator { margin-bottom: 25px; width: 100%; left: 0; }
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        
+        .pane-content-left { flex: 0 1 45%; padding: 30px 25px; box-sizing: border-box; font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.7; overflow-y: auto; min-width: 200px; background-color: #ffffff; color: #000000; display: block; }
+        .pane-content-left > * { margin-bottom: 20px; }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 500; font-size: 16px; margin-bottom: 20px; }
+        .pane-content-left h3 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 700; font-size: 18px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; max-width: 100%; margin-left: auto; margin-right: auto;}
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 8px; font-size: 14px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; }
+        .data-table td { text-align: center; }
+        
+        /* 针对阅读文本的特别表格样式(Q2使用) */
+        .passage-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.8; }
+        .passage-table td { vertical-align: top; }
+        .passage-num { width: 50px; text-align: right; padding-right: 15px; color: #555; user-select: none; }
+        .passage-text p { margin: 0 0 15px 0; }
+
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-body img { max-width: 100%; height: auto; }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- 复查页样式 --- */
+        #review-screen { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex-grow: 1; padding: 40px; box-sizing: border-box; }
+        .body-new-sat.review-mode-active .sat-header, .body-new-sat.review-mode-active #question-screen { display: none; }
+        .body-new-sat.review-mode-active .footer-area { position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
+        .body-new-sat.review-mode-active #review-screen { display: flex; padding-bottom: 80px; }
+        .body-new-sat.review-mode-active { height: 100vh; }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        /* 笔记面板样式 */
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); resize: both; overflow: hidden; min-width: 350px; min-height: 200px; }
+        .draggable-header { padding: 10px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .draggable-header .title { font-weight: bold; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .draggable-content { padding: 0; width: 100%; height: calc(100% - 40px); overflow: auto; }
+        #calculator-container .draggable-content { display: flex; flex-direction: column; }
+        .calc-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+        .calc-tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .calc-tab.active { border-bottom-color: var(--primary-blue); font-weight: bold; }
+        .calc-body { flex-grow: 1; }
+        .calc-pane { display: none; width: 100%; height: 100%; }
+        .calc-pane.active { display: block; }
+        .calc-pane iframe { width: 100%; height: 100%; border: none; }
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* 缩放模态框样式 */
+        #zoom-modal { justify-content: center; align-items: center; z-index: 2100; }
+        .zoom-modal-close { position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 2101; line-height: 1; }
+        #zoom-modal-content { max-width: 90vw; max-height: 90vh; overflow: auto; background-color: white; padding: 10px; border-radius: 5px; }
+        #zoom-modal-content img, #zoom-modal-content table { width: 100%; height: auto; display: block; }
+
+        /* --- TABS与来源样式 --- */
+        .tabs { display: flex; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin: 16px 0; background: #fff; flex-wrap: wrap; }
+        .tab { flex: 1; text-align: center; padding: 10px 5px; background: #f3f4f6; cursor: pointer; border-right: 1px solid var(--border-color); user-select: none; font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 14px; min-width: 60px; }
+        .tab:last-child { border-right: 0; }
+        .tab.active { background: var(--bb-dark-blue); color: #fff; font-weight: 700; }
+        .source { display: none; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; line-height: 1.6; margin-top: 10px; }
+        .source.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        .source h4 { margin-top: 0; }
+        .small-muted { color: var(--text-light); font-size: 0.9rem; font-style: italic; margin-bottom: 10px; display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- 编辑器及考题样式 --- */
+        .saq-container { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+        .saq-prompt-box { padding: 0 0 15px 0; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; }
+        .saq-prompt-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.6; color: #2d2d2d; }
+        
+        /* 编辑器工具栏 */
+        .editor-wrapper { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; background: #fff; flex-grow: 1; min-height: 300px; }
+        .editor-toolbar { background: #f3f4f6; border-bottom: 1px solid #ccc; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .tbtn { background: #fff; border: 1px solid #d1d5db; border-radius: 4px; padding: 5px 10px; cursor: pointer; min-width: 32px; text-align: center; font-size: 14px; font-weight: 600; color: #374151; transition: all 0.2s; }
+        .tbtn:hover { border-color: #4a69ff; background-color: #eef2ff; }
+        .tbtn.active { background-color: #2d2d2d; color: #fff; border-color: #000; }
+        .editor-content { flex: 1; padding: 15px; outline: none; font-family: 'Roboto', sans-serif; font-size: 16px; line-height: 1.6; overflow-y: auto; resize: none; }
+
+        /* --- 水印 --- */
+        .watermark { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; background-repeat: repeat; background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo="); }
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+    <div class="watermark"></div>
+
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+            <h1>AP English Language and Composition Exam</h1>
+            <h2>2020 Practice Exam</h2>
+            <hr>
+            <h3>Section II</h3>
+            <!-- 使用系统要求对应的新指示图 -->
+            <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260315/xJXA/1863X1556/2bcbed84452ca6efe1e9e67019cadb00.png/webp" style="width: 100%; height: auto; display: block;" alt="Part II Directions">
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1>Section II Directions</h1>
+            <p><strong>Section II: Free Response</strong></p>
+            <p><strong>Total Time:</strong> 2hr 15min</p>
+            <p><strong>Question 1 (Synthesis):</strong> Suggested reading and writing time: 55 minutes.</p>
+            <p><strong>Question 2 (Rhetorical Analysis):</strong> Suggested time: 40 minutes.</p>
+            <p><strong>Question 3 (Argument):</strong> Suggested time: 40 minutes.</p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Completed</h1>
+            <p>You have submitted your responses for all sections.</p>
+            <div class="download-buttons-container">
+                <button class="download-button" id="download-frq-btn">Download Responses</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section II</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">135:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+                <div class="tool-button" id="calculator-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMSAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICAgICAgZmlsbC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgY2xpcC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgZD0iTTAgMTMuMzg1aDEwLjk1MlYuNUgwdjEyLjg4NXptLjk2Ny0uOTY2aDkuMDJWMS40NjdILjk2NnYxMC45NTJ6Ig0KICAgICAgICAgICAgZmlsbD0iIzFFMUUxRSINCiAgICAvPg0KICAgIDxwYXRoDQogICAgICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBjbGlwLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBkPSJNMS45MzIgNS40OTdoNy4wODd2LTIuOUgxLjkzMnYyLjl6bS45NjctLjk2Mmg1LjE1NHYtLjk2N0gyLjg5OXYuOTY3ek0xLjkzMiA3LjQzMWgxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgNy40MzFINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDYuNDE0SDcuNDFWNy40M2gxLjYxVjYuNDE0ek0xLjkzMiA5LjM1N2gxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgOS4zNTdINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDguMzlINy40MXYuOTY3aDEuNjF2LS45NjZ6TTEuOTM0IDExLjI5M2gxLjYxdi0uOTY3aC0xLjYxdi45Njd6TTQuNjcgMTEuMjkzSDYuMjh2LS45NjdINC42N3YuOTY3ek03LjQwOCAxMS4yOTNoMS42MXYtLjk2N2gtMS42MXYuOTY3eiINCiAgICAgICAgICAgIGZpbGw9IiMxRTFFMUUiDQogICAgLz4NCjwvc3ZnPg0K" alt="Calculator Icon">
+                    <span>计算器</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <!-- 左侧内容区：材料文章放置于此 -->
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <!-- 右侧作答区：考题指导与编辑器 -->
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <!-- 检查与复查界面 -->
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section II</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 弹窗层 -->
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+                <div id="directions-content">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260315/xJXA/1863X1556/2bcbed84452ca6efe1e9e67019cadb00.png/webp" style="width: 100%; height: auto; display: block;" alt="Directions Image">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section II</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="calculator-container" class="draggable" style="display: none; top: 100px; left: 100px; width: 400px; height: 600px;">
+        <div class="draggable-header"><span class="title">Calculator</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content">
+            <div class="calc-tabs"><div class="calc-tab active" data-tab="graphing">Graphing Calculator</div></div>
+            <div class="calc-body"><div id="graphing-pane" class="calc-pane active"><iframe src="https://www.desmos.com/calculator" allow="fullscreen"></iframe></div></div>
+        </div>
+    </div>
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit</button>
+    </div>
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        (function() {
+    // --- 状态管理与数据构建 ---
+    let sectionsData = [];
+    let currentSectionIndex = 0;
+    let currentQuestionIndex = 0;
+    let currentView = 'start'; 
+    let timerInterval;
+
+    function initializeExam() {
+        sectionsData = [
+            {
+                name: "Section II: Free Response",
+                type: "FRQ",
+                time: 135 * 60, // 总计 2小时 15分钟
+                questions: [
+                    // Question 1 (Synthesis)
+                    {
+                        id: "1",
+                        type: "FRQ",
+                        isMarkedForReview: false,
+                        userResponse: "",
+                        notes: [],
+                        highlights: { left: null, right: null },
+                        // 左侧呈现所有阅读资源材料
+                        leftContent: `
+                            <p>Space exploration has historically been led by government programs with public funding, but in 2004 the United States legalized privatized space travel. Since then private industries have been investigating ways to make exploring space both affordable and profitable. Critics of privatized space exploration believe that the costs of space travel are too prohibitive to be worthwhile for the general public.</p>
+                            <p>Carefully read the following six sources, including the introductory information for each source.</p>
+                            <div class="tabs" role="tablist" style="margin-top: 20px;">
+                                <div class="tab active" data-tab="A">Source A</div>
+                                <div class="tab" data-tab="B">Source B</div>
+                                <div class="tab" data-tab="C">Source C</div>
+                                <div class="tab" data-tab="D">Source D</div>
+                                <div class="tab" data-tab="E">Source E</div>
+                                <div class="tab" data-tab="F">Source F</div>
+                            </div>
+                            
+                            <article id="src-A" class="source active">
+                                <h4>Source A (McCarthy)</h4>
+                                <p class="small-muted">McCarthy, Kevin. "Commercial Space: Hearing Before the Subcommittee on Space, Committee on Science, Space, and Technology." 20 Nov. 2013, www.govinfo.gov/content/pkg/CHRG-113hhrg86894/pdf/CHRG-113hhrg86894.pdf.</p>
+                                <p><em>The following is excerpted from the testimony of a United States representative during a congressional hearing.</em></p>
+                                <p>America is built on a strong heritage of exploration, discovery, and innovation. From President Thomas Jefferson's commissioning of the Lewis and Clark Expedition to exploring the American West, to the Transcontinental Railway linking east and west together, to the public-private partnership that helped the airline industry grow to become a safe mode of travel all over the world, to the internet, which has generated as much economic growth in 15 years as the Industrial Revolution did in 50.</p>
+                                <p>Space, like the internet before the dot-com boom of the 1990s, was originally a government-run enterprise. Many believe that the commercial spaceflight is poised to have its own dot-com moment in the near future. NASA's Commercial Crew and Cargo program alone has already created thousands of high-quality jobs here in America, including many at the NASA Dryden Flight Research Center, which I represent. My district is also home to Mojave Air and Space Port where many commercial spaceflight companies have located to research, develop, and test their hardware that will soon take Americans back to space.</p>
+                                <p>This is why I support the commercial spaceflight industry: the creation of thousands of good paying jobs on U.S. soil and the continuation of America's legacy in space exploration and innovative technologies. Think about this: Over the last 50 years, about 500 humans have been to space. With the commercial space market, the number could double over the next ten years with the government only serving as a customer. The next U.S. astronauts to fly to space on American rockets will do so because of this new model.</p>
+                                <p>The use of innovative public-private partnerships offers the government new ways of solving problems. A study shows these partnerships benefit the taxpayer, by providing space services at nearly 1/10 the cost of traditional contracting methods, getting results for less money, getting innovation, growth, and risk-sharing in the private sector. As NASA leads continued exploration missions and related technology development, entrepreneurs will follow, spending their own money and creating new industries.</p>
+                                <p>However, it is up to us as legislators to ensure our current regulatory environment is appropriate for the needs of the 21st Century and to make sure safety is paramount in the commercial spaceflight industry's endeavors. This is why I introduced H.R. 3038 to ensure that the U.S. commercial spaceflight industry has a clear path ahead as it continues to innovate and generate high-quality American manufacturing jobs. A robust commercial space industry will also help attract students to the STEM fields of education by inspiring the next generation to literally reach for the stars.</p>
+                            </article>
+                            
+                            <article id="src-B" class="source">
+                                <h4>Source B (Schwartz)</h4>
+                                <p class="small-muted">Schwartz, John. "Thrillionaires: The New Space Capitalists." The New York Times, 14 June 2005, www.nytimes.com/2005/06/14/science/space/thrillionaires-the-new-space-capitalists.html.</p>
+                                <p><em>The following is excerpted from a newspaper article about space entrepreneurship.</em></p>
+                                <p>[Paul G.] Allen, who became a co-founder of Microsoft, is responsible for SpaceShipOne, the pint-size manned rocket that won the $10 million Ansari X Prize competition last year as the first privately financed craft to fly to the cusp of space-nearly 70 miles up.</p>
+                                <p>Mr. Allen is not the designer; that is Burt Rutan, the legendary aeronautical engineer with the sideburns that look like sweeping air scoops. He is not one of the test pilots who made the competition-winning flights; they are Michael Melvill and Brian Binnie. Mr. Allen is, instead, the one who gets little glory but without whom nothing is possible he is the guy who signs the checks. And he did what the rich do: he hired good people.</p>
+                                <p>The SpaceShipOne flight made him the best-known member of a growing club of high-tech thrillionaires, including the Amazon founder Jeff Bezos, who find themselves with money enough to fulfill their childhood fascination with space. Rick N. Tumlinson, co-founder of the Space Frontier Foundation, a group that promotes public access to space, said the effort had become a geeky status symbol. "It's not good enough to have a Gulfstream V," he said. "Now you've got to have a rocket."</p>
+                                <p>Many self-professed "space geeks" say the possibility that entrepreneurs like Richard Branson of the Virgin Group may help regular people see the black sky-well, regular rich people, at least has drawn away much of the excitement that government-financed human space efforts long enjoyed.</p>
+                                <p>"It's completely shifted," said Charles Lurio, a space consultant with an interest in private efforts that goes way beyond ardent. "This is where the action is, not at NASA."</p>
+                                <p>The new generation of deep-pockets space entrepreneurs includes Mr. Bezos, who founded Blue Origin, in Washington State, and quietly announced this year that he had bought 165,000 acres of land in West Texas as a base for his eventual launching operations.</p>
+                                <p>Elon Musk, the founder of PayPal, created the rocket company SpaceX, and John Carmack, the creator of computer games like Doom and Quake, has been testing rocket designs through his company, Armadillo Aerospace near Dallas.</p>
+                                <p>The engine for Mr. Allen's craft was developed by SpaceDev, a company formed as a second act by another computer entrepreneur turned space man, Jim Benson. And Larry Page, a co-founder of Google, recently joined the board of the X Prize Foundation.</p>
+                                <p>The rise of the space money men is a unique moment in history, said Dr. Peter H. Diamandis, a co-founder of the X Prize. "There is sufficient wealth controlled by individuals to start serious space efforts," he said.</p>
+                                <p>What's more, they are frustrated, he went on, adding: "The dreams and expectations that Apollo launched for all these entrepreneurs have failed to materialize. And in fact, those who look into it realize that the cost of going into space has gone up and the reliability has, effectively, gone down."</p>
+                                <p>For Mr. Allen, 52, SpaceShipOne was no set-it-and-forget-it bauble of a project. It was an expression of a lifelong passion, he said, a "love of science and technology, and what can be done with engineering."</p>
+                            </article>
+                            
+                            <article id="src-C" class="source">
+                                <h4>Source C (Pappalardo)</h4>
+                                <p class="small-muted">Pappalardo, Joe. Spaceport Earth: The Reinvention of Spaceflight. Abrams Press, 2017.</p>
+                                <p><em>The following is excerpted from a book about advances in spaceflight.</em></p>
+                                <p>SpaceX's footprint at Cape Canaveral is getting larger. The company is planning a new launch control center, the details of which became public in the form on an environmental review. The first renders resemble a giant water tower with the curves of a Martian vehicle from The War of the Worlds, standing as high as three hundred feet over Kennedy Space Center. SpaceX calls it "a very uniquely shaped building with limited windows" and adds that, "mitigation to reduce bird collisions will be addressed in the final design."</p>
+                                <p>Why does it have to be so big? "The launch and landing control center would be of sufficient size to host a data center; firing room; engineering room; control center for Falcon 9, Falcon Heavy and Dragon; customer control center; temporary customer offices; and indoor and outdoor meeting space," the company says in the environmental impact report.</p>
+                                <p>SpaceX's expansion at Kennedy anticipates a ferocious satellite launch schedule. "There are over 70 missions on its manifest from commercial and government customers in the U.S. and countries around the world, representing more than $10 billion under contract," SpaceX says in the report.</p>
+                                <p>SpaceX plans on building a 133,000-square-foot hangar to handle these customers. "With plans to refurbish and reuse Falcon vehicles to support manifest rate, an additional vehicle processing and storage facility is required," the report says.</p>
+                                <p>Fitting the company's sense of its place in history, SpaceX company is reserving an area to serve as a "rocket garden" to display its retired, trailblazing spacecraft to visitors. There's a similar such garden at Kennedy Space Center's visitor's center, which tells you something about the place SpaceX sees itself in aerospace history.</p>
+                                <p>This is not just hubris. Musk and SpaceX have changed the trajectory of spaceflight, not just in the United States but across the world. The increase in launch competition and drop in launch prices is called the "SpaceX effect" for good reason. And the company is poised to keep going, using the profits from paying customers to create even more ambitious rockets and spacecraft meant to carry people.</p>
+                                <p>In 2019 the company will launch astronauts to the International Space Station, proving its human-rated Dragon capsule is ready for customer rental. What the company does with a crew-rated capsule will be sure to capture headlines, and already has.</p>
+                                <p>In fall 2018, SpaceX announces the identity of the first private passenger it intends to shoot into space: Japanese billionaire Yusaku Maezawa. The passenger comes on stage to reveal that he will fund a trip around the moon and will take six others with him as part of a global art project in 2023. "I choose to go to the moon," Maezawa says during the announcement. "With artists!"</p>
+                                <p>This isn't a stunt, this is a customer. The whole point of the private space movement is that anyone could pay for a ticket for any reason. The old idea that space is reserved for stern-faced scientists and military pilots and any other flight is silly-is an archaic, vanishing distinction.</p>
+                            </article>
+                            
+                            <article id="src-D" class="source">
+                                <h4>Source D (table)</h4>
+                                <p class="small-muted">Federal Aviation Administration. The Annual Compendium of Commercial Space Transportation: 2018. Jan. 2018...</p>
+                                <p><em>The following is excerpted from a government report about commercial flights to space. Suborbital reusable vehicles (SRVs) are commercially developed reusable space vehicles that travel just beyond the threshold of space, about 100 km (62 mi) above the Earth.</em></p>
+                                <h5 style="text-align: center; font-family: 'Roboto', sans-serif;">U.S.-based providers of SRVs</h5>
+                                <table class="data-table">
+                                    <tr><th>Operator</th><th>Vehicle</th><th>Seats*</th><th>Maximum Payload kg (lb)</th><th>Price</th><th>Announced Operational Year</th></tr>
+                                    <tr><td>Blue Origin</td><td>New Shepard</td><td>6</td><td>22.7 (50)**</td><td>TBD</td><td>2017</td></tr>
+                                    <tr><td>Masten Space Systems</td><td>Xodiac</td><td>N/A</td><td>TBD</td><td>TBD</td><td>2016</td></tr>
+                                    <tr><td>UP Aerospace</td><td>SpaceLoft XL</td><td>N/A</td><td>36 (79)</td><td>$350,000 per launch</td><td>2006 (actual)</td></tr>
+                                    <tr><td>Virgin Galactic</td><td>SpaceShipTwo</td><td>6 passengers 2 crew</td><td>600 (1,323)</td><td>$250,000 per seat</td><td>2018</td></tr>
+                                    <tr><td>World View</td><td>Voyager</td><td>6 passengers 2 crew</td><td>TBD</td><td>$75,000</td><td>2018</td></tr>
+                                </table>
+                                <p class="small-muted">* Spaceflight participants only; several vehicles are piloted. <br>** Net of payload infrastructure</p>
+                            </article>
+                            
+                            <article id="src-E" class="source">
+                                <h4>Source E (cartoon)</h4>
+                                <p class="small-muted">Toos, Andrew. "Their Lowest Cost Vacation Yet." 4 Nov. 2011...</p>
+                                <p><em>The following is a cartoon about space tourism.</em></p>
+                                <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260315/AxxY/850X826/image.png/webp" style="width: 100%; height: auto; display: block;" alt="Resort Area on Moon Cartoon">
+                            </article>
+                            
+                            <article id="src-F" class="source">
+                                <h4>Source F (Al-Rodhan)</h4>
+                                <p class="small-muted">Al-Rodhan, Nayef. "The Privatization of Space: When Things Go Wrong." Center for Security Studies 14 Aug. 2015...</p>
+                                <p><em>The following is excerpted from an editorial by a member of an international security policies think tank.</em></p>
+                                <p>A few weeks ago, SpaceX's Falcon 9 rocket carrying an unmanned Dragon capsule destined for the International Space Station (ISS) exploded. The explosion was likely caused by a failed strut. In October of last year, Orbital Sciences had a rocket destined for the ISS explode for unrelated reasons, just after they were awarded a $1.9 billion contract with NASA. In the wake of these incidents, it may be time to assess the implications of private sector involvement in state-sponsored space programs.</p>
+                                <p>Over the past few years, private companies such as SpaceX and Virgin Galactic have been hailed as the new major players in space. Indeed, they are effectively changing how space exploration is conducted and how related technology is developed and implemented. From an operational point of view, private companies are able to implement decisions and fund projects much faster than most governments can.</p>
+                                <p>These companies have been able to complete missions that only governments had been able to previously, and have garnered major contracts with NASA. But although this takes pressure off of governments and introduces a more competitive environment for space-related innovation, outsourcing government projects can lead to complications, or at the very least, a shift in how space exploration is conducted.</p>
+                                <p>The most cited benefit of the shift to private space exploration is cost. These companies must bid for NASA contracts, which lowers the taxpayer cost of these missions, as some research and development R&D costs are absorbed by the company. Governments and private companies also function differently in terms of the different interest groups to whom they are responsible. NASA is beholden to the government and the taxpayer, while private companies must deal with a more complex web of investors/shareholders, the bottom line, and the need to keep a secure contract. Yet with these benefits, there are new challenges that must be addressed; perhaps the greatest of which is "what happens when something goes wrong"? Rocket missions and space travel are inherently difficult and risky; it's only a matter of time before this becomes a bigger issue.</p>
+                                <p>So far, SpaceX has had a practically flawless track record: under contract with NASA, it has already made seven trips to the ISS. NASA has a strong vested interest in these companies, even geopolitically speaking, as they end the Russian monopoly in supplying the ISS. SpaceX plans on sending humans to space in 2017, and NASA has publicly said that this last incident will not hinder that goal.</p>
+                                <p>So far, so good. While these companies remain private, they still have to answer to their investors, and to governments, but otherwise have quite a large amount of freedom. What will happen when they go on the market? Overnight, the company would have to answer to its shareholders and function in a very different dynamic. The bottom line for a company is arguably more intensely scrutinized than where a government is investing its tax dollars. Given the benefits of private space exploration, it would behoove the government to stand behind such companies when things do go wrong.</p>
+                            </article>
+                        `,
+                        // 右侧题干及指导说明部分
+                        stem: `
+                            <p style="font-size: 16px;">Write an essay that synthesizes material from at least three of the sources and develops your position on the extent to which privatizing space exploration is beneficial.</p>
+                            <p style="margin-top: 20px; font-size: 16px;">In your response you should do the following:</p>
+                            <ul style="padding-left: 20px; font-size: 16px; line-height: 1.6;">
+                                <li>Respond to the prompt with a thesis that presents a defensible position.</li>
+                                <li>Select and use evidence from at least three of the provided sources to support your line of reasoning. Indicate clearly the sources used through direct quotation, paraphrase, or summary. Sources may be cited as Source A, Source B, etc., or by using the description in parentheses.</li>
+                                <li>Explain how the evidence supports your line of reasoning.</li>
+                                <li>Use appropriate grammar and punctuation in communicating your argument.</li>
+                            </ul>
+                        `
+                    },
+                    // Question 2 (Rhetorical Analysis)
+                    {
+                        id: "2",
+                        type: "FRQ",
+                        isMarkedForReview: false,
+                        userResponse: "",
+                        notes: [],
+                        highlights: { left: null, right: null },
+                        // 左侧利用Table和段落格式精确还原PDF原文与行号
+                        leftContent: `
+                            <p>The United States participation in the Second World War began in 1941 and lasted until the Axis powers surrendered in 1945. During that period, on September 24, 1942, Congresswoman Clare Boothe Luce delivered the following address, "The Role of American Women in Wartime," to a women's banking committee. Read the passage carefully.</p>
+                            <table class="passage-table">
+                              <tr>
+                                <td class="passage-num">
+                                   <br><br><br>Line<br>5<br><br><br><br><br>10<br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>And now I am going to say something which I<br>
+                                  could only say among us girls. So far in this war we<br>
+                                  are still the luckiest women in the whole world. For<br>
+                                  instance we still have lipsticks, and even some silk<br>
+                                  stockings. And although many of us have gone into<br>
+                                  uniforms, they are still made of good cloth and are<br>
+                                  well cut. Sisters, for a lot of us, perhaps too many of<br>
+                                  us, important though the part we have played in it so<br>
+                                  far, it is still easy and I almost said "glamorous" for<br>
+                                  us. But, believe me, for each of us these are the good<br>
+                                  old days now, my friends.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br><br>15<br><br><br><br><br>20<br><br><br><br><br>25<br><br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>Now we have got to face a great, big fact. We have<br>
+                                  got to face the fact that the 'interesting' part of our<br>
+                                  participation in this war effort is just about over.<br>
+                                  There isn't going to be any glamour in what we have<br>
+                                  to do from here on in. I realize that for most women<br>
+                                  there is little that is glamorous in a war, any war. But<br>
+                                  we have to be frank enough with ourselves to admit<br>
+                                  that in our effort to help, we have still managed to do<br>
+                                  a lot of things that are both helpful and, by a<br>
+                                  remarkable coincidence, attractive. We've been able,<br>
+                                  as we went about our wartime activities, to find time<br>
+                                  to wonder, as I say, a little about those uniforms.<br>
+                                  We've had time to be disturbed a bit about the<br>
+                                  freezing of fashion designs, about the lack of silk<br>
+                                  stockings. Yes, we've found time to look a little for<br>
+                                  glamorous.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br>30<br><br><br><br><br>35<br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>But, from here on in to victory, glamour is out and<br>
+                                  toughness is in. From here on in to victory, girls, the<br>
+                                  way is going to be hard. From here on in, women and<br>
+                                  men and children, too, for that matter, are going to<br>
+                                  have to take on the serious task of winning this war.<br>
+                                  Our president has called this the "toughest war in<br>
+                                  history" and whether you here tonight class yourself<br>
+                                  as a political follower of the president or one of his<br>
+                                  political opponents, you must accept that definition as<br>
+                                  completely accurate.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br>40<br><br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>What, then are we women going to do in the tough<br>
+                                  days that lie ahead? Well, we're going to do a lot of<br>
+                                  the things we are doing right now, but we are going to<br>
+                                  do them a lot more intensely and, if you will pardon<br>
+                                  me, a lot more intelligently.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br>45<br><br><br><br><br>50<br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>With our men, we're going to work and fight for<br>
+                                  victory. We're going to submit, but we're going to<br>
+                                  understand why we submit to, rules and regulations;<br>
+                                  we're going to take, and manage with, more and more<br>
+                                  rationing. We're going to have colder homes, different<br>
+                                  foods, less clothing—we're going to accept the<br>
+                                  challenges imposed by these conditions. We're going<br>
+                                  to keep our homes and jobs going because we know,<br>
+                                  being women, what happens if we don't keep them<br>
+                                  going.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br>55<br><br><br><br><br>60<br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>The women of the next few years—and please<br>
+                                  believe that my use of the plural 'years' while<br>
+                                  pessimistic, is honest—the women of the next few<br>
+                                  crucial years are going to see that their children, those<br>
+                                  precious treasures for whom we fight, are kept healthy<br>
+                                  and warm and well fed and well schooled and as<br>
+                                  happy as possible under conditions which are bound<br>
+                                  to become less and less favorable and not at all<br>
+                                  glamorous for anyone from here on in.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br><br><br>65<br><br><br><br><br>70<br><br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>Yes, ladies, the road ahead is going to be a bumpy<br>
+                                  one. It is going to be full of ruts and rocks, the ruts of<br>
+                                  endless, colorless effort, and the rocks of almost<br>
+                                  insurmountable obstacles. It takes no gifted prophet<br>
+                                  to foresee this road to victory. A soft war leads to a<br>
+                                  hard peace. A hard war leads to a happy peace. We<br>
+                                  must fight a hard war. I think we will not much long<br>
+                                  kid ourselves that this war can be won by an effort<br>
+                                  which, though extremely great, is still a comfortable<br>
+                                  one. I think we are coming to the grim realization that<br>
+                                  such dreams of comfort are insidious saboteurs of our<br>
+                                  war effort.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="passage-num">
+                                  <br>75<br><br><br><br><br><br>
+                                </td>
+                                <td class="passage-text">
+                                  <p>We have got to come to some grim conclusions in<br>
+                                  the days that lie ahead. We have got to come to the<br>
+                                  conclusion that it will not be won until we all fight to<br>
+                                  win it, every minute of every hour of every day, from<br>
+                                  here on in. We dare not measure our effort by its drain<br>
+                                  on our comforts; we dare to measure it only by its<br>
+                                  contribution toward the victory for which we fight.</p>
+                                </td>
+                              </tr>
+                            </table>
+                        `,
+                        // 右侧题干
+                        stem: `
+                            <p style="font-size: 16px;">Write an essay that analyzes the rhetorical choices Luce makes to convey her message that women needed to prepare to make more sacrifices as the war effort continued.</p>
+                            <p style="margin-top: 20px; font-size: 16px;">In your response you should do the following:</p>
+                            <ul style="padding-left: 20px; font-size: 16px; line-height: 1.6;">
+                                <li>Respond to the prompt with a thesis that analyzes the writer's rhetorical choices.</li>
+                                <li>Select and use evidence to support your line of reasoning.</li>
+                                <li>Explain how the evidence supports your line of reasoning.</li>
+                                <li>Demonstrate an understanding of the rhetorical situation.</li>
+                                <li>Use appropriate grammar and punctuation in communicating your argument.</li>
+                            </ul>
+                        `
+                    },
+                    // Question 3 (Argument)
+                    {
+                        id: "3",
+                        type: "FRQ",
+                        isMarkedForReview: false,
+                        userResponse: "",
+                        notes: [],
+                        highlights: { left: null, right: null },
+                        // 左侧短文背景
+                        leftContent: `
+                            <p>One of the first-year-student orientation initiatives at a local university is to collect incoming students' cell phones and keep them for 48 hours. The purpose of the initiative is to give students an opportunity to integrate into their new school culture and make friends on campus. Carefully consider the effects of this initiative and the extent to which they might support, complicate, or contradict its intended goals.</p>
+                        `,
+                        // 右侧题干
+                        stem: `
+                            <p style="font-size: 16px;">Write an essay that argues your position on the advisability of the 48-hour cell phone ban.</p>
+                            <p style="margin-top: 20px; font-size: 16px;">In your response you should do the following:</p>
+                            <ul style="padding-left: 20px; font-size: 16px; line-height: 1.6;">
+                                <li>Respond to the prompt with a thesis that presents a defensible position.</li>
+                                <li>Provide evidence to support your line of reasoning.</li>
+                                <li>Explain how the evidence supports your line of reasoning.</li>
+                                <li>Use appropriate grammar and punctuation in communicating your argument.</li>
+                            </ul>
+                        `
+                    }
+                ]
+            }
+        ];
+    }
+
+    // --- UI 选择器 ---
+    const startScreen = document.getElementById('start-screen');
+    const transitionScreen = document.getElementById('section-transition-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const mainAppContainer = document.querySelector('.body-new-sat');
+    const leftPanel = document.getElementById('left-panel');
+    const rightPanel = document.getElementById('right-panel');
+    const questionProgressBtn = document.getElementById('question-progress-btn');
+    const timerDisplay = document.getElementById('timer-display');
+    const calculatorBtn = document.getElementById('calculator-btn');
+
+    // --- 选项卡逻辑 ---
+    function selectTab(letter) {
+        const leftPane = document.getElementById('left-panel');
+        if (!leftPane) return;
+        
+        const tabs = leftPane.querySelectorAll('.tab');
+        if (tabs.length === 0) return;
+
+        tabs.forEach(t => t.classList.remove('active'));
+        leftPane.querySelectorAll('.source').forEach(s => s.classList.remove('active'));
+
+        const t = leftPane.querySelector(`.tab[data-tab="${letter}"]`);
+        const s = leftPane.querySelector(`#src-${letter}`);
+        if(t && s) {
+            t.classList.add('active');
+            s.classList.add('active');
+        }
+    }
+
+    function initTabs() {
+        const leftPane = document.getElementById('left-panel');
+        const tabs = leftPane.querySelectorAll('.tab');
+        if (tabs.length > 0) {
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    selectTab(e.target.dataset.tab);
+                });
+            });
+        }
+    }
+
+    // --- 计时器 ---
+    function startTimer(duration) {
+        let timer = duration;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(function () {
+            let minutes = parseInt(timer / 60, 10);
+            let seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                if (currentView === 'review' || currentView === 'question') {
+                     handleTimeUp();
+                }
+            }
+        }, 1000);
+    }
+
+    function handleTimeUp() {
+        alert("Time's up for this section!");
+        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+        if (isLastSection) {
+            switchView('results');
+        } else {
+            currentSectionIndex++;
+            switchView('transition');
+        }
+    }
+    
+    // --- 渲染与视图管理 ---
+    function switchView(viewName) {
+        currentView = viewName;
+        startScreen.classList.add('hidden');
+        transitionScreen.classList.add('hidden');
+        resultsScreen.classList.add('hidden');
+        mainAppContainer.classList.remove('active', 'review-mode-active');
+        
+        if (['start', 'transition', 'results'].includes(viewName)) {
+            mainAppContainer.style.display = 'none';
+        } else {
+            mainAppContainer.style.display = 'flex';
+        }
+
+        switch(viewName) {
+            case 'start':
+                startScreen.classList.remove('hidden');
+                break;
+            case 'transition':
+                clearInterval(timerInterval);
+                const nextSection = sectionsData[currentSectionIndex];
+                document.querySelector('#section-transition-screen h1').textContent = "Section Completed";
+                document.querySelector('#section-transition-screen p').innerHTML = `You are about to begin <strong>${nextSection.name}</strong>.<br>Click Continue to proceed.`;
+                transitionScreen.classList.remove('hidden');
+                break;
+            case 'results':
+                clearInterval(timerInterval);
+                resultsScreen.classList.remove('hidden');
+                break;
+            case 'question':
+            case 'analysis':
+                mainAppContainer.classList.add('active');
+                break;
+            case 'review':
+                mainAppContainer.classList.add('active', 'review-mode-active');
+                renderReviewScreen();
+                break;
+        }
+    }
+
+    function saveCurrentQuestionState() {
+        if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        
+        if (question) {
+            question.highlights.left = leftPanel.innerHTML;
+        }
+
+        const editor = document.getElementById(`editor-${question.id}`);
+        if (editor) question.userResponse = editor.innerHTML;
+    }
+
+    function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+        currentView = isAnalysisMode ? 'analysis' : 'question';
+        switchView(currentView);
+
+        currentSectionIndex = secIndex;
+        currentQuestionIndex = qIndex;
+        
+        const section = sectionsData[secIndex];
+        const question = section.questions[qIndex];
+        if (!question) return;
+
+        calculatorBtn.style.display = 'none';
+
+        document.getElementById('main-module-title').textContent = section.name;
+        const questionScreen = document.getElementById('question-screen');
+
+        const leftContentToRender = question.highlights.left || question.leftContent;
+        if (leftContentToRender && leftContentToRender.trim() !== '') {
+            leftPanel.innerHTML = leftContentToRender;
+            questionScreen.classList.remove('single-column');
+            initTabs();
+        } else {
+            leftPanel.innerHTML = '';
+            questionScreen.classList.add('single-column');
+        }
+
+        // Render Right Panel (Stem as instructed, with built-in prompt & bullets)
+        rightPanel.innerHTML = generateEditorHTML(question, isAnalysisMode);
+        initEditor(question.id, isAnalysisMode);
+        
+        addCommonEventListeners(isAnalysisMode);
+
+        updateMarkForReviewButton();
+        updateFooter(isAnalysisMode);
+        if(!isAnalysisMode) renderNotes();
+
+        leftPanel.removeEventListener('click', handleZoomClick);
+        leftPanel.addEventListener('click', handleZoomClick);
+    }
+
+    // --- HTML 生成模块 ---
+    function generateHeader(question) {
+        return `<div class="question-header">
+                    <div class="question-number">${question.id}</div>
+                    <div class="mark-review">
+                        <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Mark for Review</span>
+                    </div>
+                    </div>
+                <div class="separator-container" id="question-header-separator"></div>`;
+    }
+
+    function generateToolbar(id) {
+        return `
+        <div class="editor-toolbar" id="toolbar-${id}">
+            <button class="tbtn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="tbtn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="tbtn" data-cmd="underline" title="Underline"><u>U</u></button>
+            <button class="tbtn" data-cmd="insertUnorderedList" title="Bulleted List">•</button>
+            <button class="tbtn" data-cmd="insertOrderedList" title="Numbered List">1.</button>
+            <button class="tbtn" data-cmd="cut" title="Cut">✂</button>
+            <button class="tbtn" data-cmd="copy" title="Copy">📋</button>
+            <button class="tbtn" data-cmd="paste" title="Paste">📝</button>
+            <button class="tbtn" data-cmd="undo" title="Undo">↶</button>
+            <button class="tbtn" data-cmd="redo" title="Redo">↷</button>
+        </div>`;
+    }
+
+    // 更新右侧内容结构：完全由 stem 接管所有指导内容，再接上编辑器
+    function generateEditorHTML(question, isAnalysis) {
+        const content = isAnalysis ? (question.userResponse || "No response.") : question.userResponse;
+        
+        return generateHeader(question) + `
+        <div class="saq-container">
+            <div class="saq-prompt-box">
+                <div class="saq-prompt-text">${question.stem}</div>
+            </div>
+            <div class="editor-wrapper">
+                ${!isAnalysis ? generateToolbar(question.id) : ''}
+                <div id="editor-${question.id}" class="editor-content" contenteditable="${!isAnalysis}">${content}</div>
+            </div>
+        </div>`;
+    }
+
+    // --- 编辑器核心逻辑 ---
+    function initEditor(id, isAnalysis) {
+        if(isAnalysis) return;
+        
+        const toolbar = document.getElementById(`toolbar-${id}`);
+        if(toolbar) {
+            toolbar.querySelectorAll('.tbtn[data-cmd]').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const cmd = btn.dataset.cmd;
+                    
+                    if (cmd === 'paste') {
+                        try {
+                            const text = await navigator.clipboard.readText();
+                            document.execCommand('insertText', false, text);
+                        } catch (err) {
+                            alert('Browser security blocks direct paste access. Please use Ctrl+V (Windows) or Cmd+V (Mac) to paste.');
+                        }
+                    } else if (cmd === 'copy' || cmd === 'cut') {
+                            document.execCommand(cmd);
+                    } else {
+                        document.execCommand(cmd, false, null);
+                    }
+                    
+                    if (['bold', 'italic', 'underline'].includes(cmd)) {
+                        btn.classList.toggle('active');
+                    } else {
+                        btn.classList.add('active');
+                        setTimeout(() => btn.classList.remove('active'), 200);
+                    }
+                });
+            });
+        }
+    }
+
+    function addCommonEventListeners(isAnalysisMode) {
+        const markForReviewBtn = rightPanel.querySelector('.mark-review');
+        if(markForReviewBtn) {
+            markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                q.isMarkedForReview = !q.isMarkedForReview;
+                updateMarkForReviewButton();
+                if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+            };
+        }
+    }
+
+    // --- 界面共用逻辑 ---
+    function handleZoomClick(e) {
+        const target = e.target;
+        if (target.tagName === 'IMG' || target.closest('.data-table')) {
+            const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+            openZoomModal(contentTarget);
+        }
+    }
+    
+    function updateFooter(isAnalysisMode = false) {
+        const currentSection = sectionsData[currentSectionIndex];
+        const totalQuestionsInSection = currentSection.questions.length;
+        const questionNumberInSection = currentQuestionIndex + 1;
+
+        questionProgressBtn.textContent = `Question ${questionNumberInSection} of ${totalQuestionsInSection}`;
+        
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const nextBtnSpan = nextBtn.querySelector('span');
+
+        if (isAnalysisMode) {
+            backBtn.style.display = 'none';
+            nextBtn.classList.add('back-to-results-btn');
+            nextBtnSpan.textContent = 'Back to Results';
+        } else {
+            nextBtn.classList.remove('back-to-results-btn');
+            const isLastSection = currentSectionIndex === sectionsData.length - 1;
+            const isLastQuestion = currentQuestionIndex === currentSection.questions.length - 1;
+
+            if (currentView === 'review') {
+                nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                backBtn.style.display = 'inline-block';
+            } else {
+                nextBtnSpan.textContent = isLastQuestion ? 'Review' : 'Next';
+                backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+            }
+        }
+    }
+    
+    function renderReviewScreen() {
+        const section = sectionsData[currentSectionIndex];
+        document.getElementById('review-module-name').textContent = section.name;
+        document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+        renderGrid('review-grid-main');
+        updateFooter();
+    }
+
+    function renderGrid(containerId) {
+        const gridContainer = document.getElementById(containerId);
+        const section = sectionsData[currentSectionIndex];
+        gridContainer.innerHTML = '';
+        section.questions.forEach((q, index) => {
+            const item = document.createElement('div');
+            item.classList.add('question-grid-item');
+            item.textContent = q.id;
+            item.dataset.questionIndex = index;
+
+            let isAnswered = false;
+            if (q.userResponse && q.userResponse.trim().length > 0) isAnswered = true;
+
+            if (isAnswered) item.classList.add('completed');
+            else item.classList.add('unanswered');
+            
+            if (q.isMarkedForReview) item.classList.add('for-review');
+            if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+            
+            gridContainer.appendChild(item);
+        });
+    }
+
+    function updateMarkForReviewButton() {
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        const btn = rightPanel.querySelector('.mark-review');
+        if (!btn) return;
+        btn.classList.toggle('marked', question.isMarkedForReview);
+    }
+    
+    document.getElementById('download-frq-btn').addEventListener('click', function() {
+        let content = "AP English Language - Exam Responses\n\n";
+        
+        sectionsData.forEach(section => {
+            content += `=== ${section.name} ===\n\n`;
+            section.questions.forEach(q => {
+                content += `--- Question ${q.id} ---\n`;
+                content += stripHtml(q.userResponse || "[No Answer]") + "\n\n";
+            });
+        });
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Exam_Responses.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+
+    function stripHtml(html) {
+       let tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+
+    // --- 页面监听器注册 ---
+    function attachGlobalListeners() {
+        document.getElementById('start-exam-btn').addEventListener('click', () => {
+            startTimer(sectionsData[0].time);
+            loadQuestion(0, 0);
+        });
+        
+        // 转换页面的继续按钮
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            currentQuestionIndex = 0; 
+            startTimer(sectionsData[currentSectionIndex].time);
+            loadQuestion(currentSectionIndex, 0);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if (currentView === 'analysis') {
+                switchView('results');
+                return;
+            }
+            
+            if (currentView === 'question') {
+                const section = sectionsData[currentSectionIndex];
+                if (currentQuestionIndex < section.questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion(currentSectionIndex, currentQuestionIndex);
+                } else {
+                    switchView('review');
+                }
+                return;
+            }
+
+            if (currentView === 'review') {
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+                return;
+            }
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if(currentView === 'review') { 
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+                return; 
+            }
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+            }
+        });
+    }
+    
+    window.onbeforeunload = function(e) {
+        if (currentView === 'question' || currentView === 'review') {
+            const message = 'Leave site? Changes you made may not be saved.';
+            e.returnValue = message; 
+            return message;
+        }
+    };
+
+    function handleGridClick(e) {
+        if (e.target.classList.contains('question-grid-item')) {
+            const index = parseInt(e.target.dataset.questionIndex, 10);
+            if (currentView === 'review') {
+                const previewBox = document.getElementById('review-question-preview');
+                const question = sectionsData[currentSectionIndex].questions[index];
+                // Strip HTML tag temporarily for brief view
+                let content = `<strong>Question ${question.id}:</strong> ${question.stem.substring(0, 200)}...`;
+                previewBox.innerHTML = content;
+            } else {
+                saveCurrentQuestionState();
+                loadQuestion(currentSectionIndex, index);
+                closeModal(questionListModal);
+            }
+        }
+    }
+    document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+    document.getElementById('review-grid-main').addEventListener('click', (e) => {
+        if (e.target.classList.contains('question-grid-item')) {
+                saveCurrentQuestionState();
+                const index = parseInt(e.target.dataset.questionIndex, 10);
+                loadQuestion(currentSectionIndex, index);
+        }
+    });
+
+    // --- 模态框及工具管理 ---
+    const directionsModal = document.getElementById('directions-modal');
+    const questionListModal = document.getElementById('question-list-modal');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomModalContent = document.getElementById('zoom-modal-content');
+    const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+    function openModal(modal) { modal.classList.add('active'); }
+    function closeModal(modal) { modal.classList.remove('active'); }
+
+    function openZoomModal(element) {
+        zoomModalContent.innerHTML = '';
+        const clonedElement = element.cloneNode(true);
+        zoomModalContent.appendChild(clonedElement);
+        openModal(zoomModal);
+    }
+    
+    document.getElementById('directions-btn').addEventListener('click', () => {
+        openModal(directionsModal);
+    });
+    document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+    directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+    
+    questionProgressBtn.addEventListener('click', (e) => { 
+        e.stopPropagation();
+        document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+        renderGrid('popup-question-grid');
+        questionListModal.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+        const qListContent = questionListModal.querySelector('.question-list-content');
+        if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+            closeModal(questionListModal);
+        }
+    });
+    
+    document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+    
+    zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+    zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+    document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+    document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+    
+    const splitter = document.getElementById('splitter');
+    let isDragging = false;
+    splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const notesPanelEl = document.getElementById('notes-panel');
+        const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+        let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+        const minWidth = 150;
+        const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+        if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+        if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+        leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+    // 计算器拖拽
+    const calcContainer = document.getElementById('calculator-container');
+    const calcHeader = calcContainer.querySelector('.draggable-header');
+    let pos1=0,pos2=0,pos3=0,pos4=0;
+    calcHeader.onmousedown = (e) => { e.preventDefault(); pos3=e.clientX; pos4=e.clientY; document.onmouseup=closeDragElement; document.onmousemove=elementDrag; };
+    function elementDrag(e) { e.preventDefault(); pos1=pos3-e.clientX; pos2=pos4-e.clientY; pos3=e.clientX; pos4=e.clientY; calcContainer.style.top=(calcContainer.offsetTop-pos2)+"px"; calcContainer.style.left=(calcContainer.offsetLeft-pos1)+"px"; }
+    function closeDragElement() { document.onmouseup=null; document.onmousemove=null; }
+    calculatorBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        const isVisible = calcContainer.style.display === 'block';
+        calcContainer.style.display = isVisible ? 'none' : 'block';
+        btn.classList.toggle('active', !isVisible);
+    });
+    calcContainer.querySelector('.close-btn').addEventListener('click', () => { calcContainer.style.display = 'none'; document.getElementById('calculator-btn').classList.remove('active'); });
+
+    // 更多菜单及行阅读器
+    const moreBtn = document.getElementById('more-btn');
+    const moreDropdown = document.getElementById('more-dropdown');
+    const lineReaderOverlay = document.getElementById('line-reader-overlay');
+    moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+    document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+    function toggleLineReader() {
+        const isVisible = lineReaderOverlay.style.display === 'block';
+        lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+        document.removeEventListener('mousemove', moveLineReader);
+        if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+    }
+    function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+    document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+    document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+    // 高亮与笔记管理
+    const highlightBtn = document.getElementById('highlight-tool-btn');
+    const highlightToolbar = document.getElementById('highlight-toolbar');
+    const notesPanelEl = document.getElementById('notes-panel');
+    const notesContent = document.getElementById('notes-content');
+    const noteInputModal = document.getElementById('note-input-modal');
+    let currentNoteRange = null;
+
+    highlightBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        btn.classList.toggle('active');
+        notesPanelEl.classList.toggle('visible');
+        if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+    });
+    
+    document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+        if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+        setTimeout(() => {
+            const selection = window.getSelection();
+            if (selection && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                highlightToolbar.style.display = 'flex';
+            } else {
+                highlightToolbar.style.display = 'none';
+            }
+        }, 10);
+    });
+    document.addEventListener('mousedown', (e) => {
+        if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+           highlightToolbar.style.display = 'none';
+        }
+    });
+
+    highlightToolbar.addEventListener('click', (e) => {
+        const target = e.target.closest('button');
+        if (!target) return;
+        const { color, action } = target.dataset;
+        if (color) wrapSelection('highlighted highlight-' + color);
+        else if (action === 'note') addNoteFromSelection();
+        else if (action === 'remove') removeHighlightAtSelection();
+        highlightToolbar.style.display = 'none';
+    });
+    
+    function wrapSelection(className) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const wrapper = document.createElement('span');
+        wrapper.className = className;
+        wrapper.appendChild(range.extractContents());
+        range.insertNode(wrapper);
+        selection.removeAllRanges();
+    }
+    
+    function addNoteFromSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        currentNoteRange = selection.getRangeAt(0).cloneRange();
+        document.getElementById('note-modal-text').textContent = selection.toString().trim();
+        document.getElementById('note-textarea').value = '';
+        openModal(noteInputModal);
+    }
+
+    function removeHighlightAtSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+            if (range.intersectsNode(span)) {
+                const parent = span.parentNode;
+                while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                parent.removeChild(span);
+                parent.normalize();
+            }
+        });
+        selection.removeAllRanges();
+    }
+
+    document.getElementById('save-note-btn').addEventListener('click', () => {
+        const noteText = document.getElementById('note-textarea').value.trim();
+        if (noteText && currentNoteRange) {
+            const highlightedText = document.getElementById('note-modal-text').textContent;
+            const noteId = 'note_' + Date.now();
+            const span = document.createElement('span');
+            span.className = 'highlighted highlight-yellow';
+            span.dataset.noteId = noteId;
+            span.appendChild(currentNoteRange.extractContents());
+            currentNoteRange.insertNode(span);
+            
+            const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+            currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+            renderNotes();
+        }
+        closeModal(noteInputModal);
+    });
+    document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+    
+    function renderNotes() {
+        notesContent.innerHTML = '';
+        if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+        currentNotes.forEach(note => {
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            noteDiv.dataset.noteId = note.id;
+            noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+            notesContent.appendChild(noteDiv);
+        });
+        notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+           btn.addEventListener('click', (e) => {
+                const noteElement = e.target.closest('.note');
+                const noteId = noteElement.dataset.noteId;
+                const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                if (spanToRemove) {
+                    const parent = spanToRemove.parentNode;
+                    while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                    parent.removeChild(spanToRemove);
+                    parent.normalize();
+                }
+                const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                renderNotes();
+           });
+        });
+    }
+
+    // --- 系统初始化 ---
+    // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Psychology - FRQ Interface</title>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+
+        /* Base Styles Variables */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* Zoom & Select styles */
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* --- FULL PAGE SCREENS --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        /* --- RESULTS SCREEN --- */
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover { background-color: #001a33; }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* --- MAIN EXAM UI --- */
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none;
+            flex-direction: column;
+        }
+        .body-new-sat.active { display: flex; }
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes { position: absolute; left: 30px; width: calc(100% - 60px); bottom: 0; }
+        #footer-dashes { top: 0; bottom: auto; }
+        #question-header-separator { margin-bottom: 25px; width: 100%; left: 0; }
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        
+        .pane-content-left { flex: 0 1 45%; padding: 30px 25px; box-sizing: border-box; font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.7; overflow-y: auto; min-width: 200px; background-color: #ffffff; color: #000000; display: block; }
+        .pane-content-left > * { margin-bottom: 20px; }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 18px; margin-bottom: 20px; color: var(--bb-dark-blue); }
+        .pane-content-left h3 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 700; font-size: 18px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; max-width: 100%; margin-left: auto; margin-right: auto;}
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 8px; font-size: 14px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; }
+        .data-table td { text-align: left; }
+        .data-table th { text-align: left; }
+
+        /* --- TABS AND SOURCES --- */
+        .tabs { display: flex; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin: 16px 0; background: #fff; flex-wrap: wrap; }
+        .tab { flex: 1; text-align: center; padding: 10px 5px; background: #f3f4f6; cursor: pointer; border-right: 1px solid var(--border-color); user-select: none; font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 14px; min-width: 60px; }
+        .tab:last-child { border-right: 0; }
+        .tab.active { background: var(--bb-dark-blue); color: #fff; font-weight: 700; }
+        .source { display: none; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: #fcfcfd; line-height: 1.6; margin-top: 10px; }
+        .source.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        .source h4 { margin-top: 0; }
+        .small-muted { color: var(--text-light); font-size: 0.9rem; font-style: italic; margin-bottom: 10px; display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; font-weight: bold; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-body img { max-width: 100%; height: auto; }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- REVIEW SCREEN --- */
+        #review-screen { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex-grow: 1; padding: 40px; box-sizing: border-box; }
+        .body-new-sat.review-mode-active .sat-header, .body-new-sat.review-mode-active #question-screen { display: none; }
+        .body-new-sat.review-mode-active .footer-area { position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
+        .body-new-sat.review-mode-active #review-screen { display: flex; padding-bottom: 80px; }
+        .body-new-sat.review-mode-active { height: 100vh; }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        /* NOTES & HIGHLIGHT STYLES */
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* Zoom Modal Styles */
+        #zoom-modal { justify-content: center; align-items: center; z-index: 2100; }
+        .zoom-modal-close { position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 2101; line-height: 1; }
+        #zoom-modal-content { max-width: 90vw; max-height: 90vh; overflow: auto; background-color: white; padding: 10px; border-radius: 5px; }
+        #zoom-modal-content img, #zoom-modal-content table { width: 100%; height: auto; display: block; }
+
+        /* --- EDITOR & PROMPT STYLES --- */
+        .saq-container { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+        .saq-prompt-box { padding: 0 0 15px 0; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; }
+        .saq-prompt-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.6; color: #2d2d2d; }
+        
+        .editor-wrapper { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; background: #fff; flex-grow: 1; min-height: 300px; }
+        .editor-toolbar { background: #f3f4f6; border-bottom: 1px solid #ccc; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .tbtn { background: #fff; border: 1px solid #d1d5db; border-radius: 4px; padding: 5px 10px; cursor: pointer; min-width: 32px; text-align: center; font-size: 14px; font-weight: 600; color: #374151; transition: all 0.2s; }
+        .tbtn:hover { border-color: #4a69ff; background-color: #eef2ff; }
+        .tbtn.active { background-color: #2d2d2d; color: #fff; border-color: #000; }
+        .editor-content { flex: 1; padding: 15px; outline: none; font-family: 'Roboto', sans-serif; font-size: 16px; line-height: 1.6; overflow-y: auto; resize: none; }
+
+                        /* --- WATERMARK --- */
+        .watermark { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; background-repeat: repeat; background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo="); }
+
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+
+    <div class="watermark"></div>
+
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+            <h1>AP Psychology Exam</h1>
+            <h2>2024 Practice Exam #1</h2>
+            <hr>
+            <h3>Section II</h3>
+            <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260316/2AsF/1503X1364/7c9148dc17545184a473070d886ec426.png/webp" style="width: 100%; height: auto; display: block;" alt="Part II Directions">
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1>Section II Directions</h1>
+            <p><strong>Section II: Free Response</strong></p>
+            <p><strong>Total Time:</strong> 1 hour and 10 minutes</p>
+            <p><strong>Question 1 (AAQ):</strong> Suggested time: 25 minutes.</p>
+            <p><strong>Question 2 (EBQ):</strong> Suggested time: 45 minutes.</p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Completed</h1>
+            <p>You have submitted your responses for all sections.</p>
+            <div class="download-buttons-container">
+                <button class="download-button" id="download-frq-btn">Download Responses</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section II</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">70:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="downTime-time-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section II</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+                <div id="directions-content">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260316/2AsF/1503X1364/7c9148dc17545184a473070d886ec426.png/webp" style="width: 100%; height: auto; display: block;" alt="Directions Image">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section II</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit</button>
+    </div>
+    
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        (function() {
+    // --- STATE MANAGEMENT ---
+    let sectionsData = [];
+    let currentSectionIndex = 0;
+    let currentQuestionIndex = 0;
+    let currentView = 'start'; 
+    let timerInterval;
+
+    function initializeExam() {
+        const q1Left = `
+            <h4 style="margin-top:0;">Question 1: Article Analysis Question (AAQ)</h4>
+            <p><strong>Introduction</strong></p>
+            <p>Sleep is important for adolescent mental and physical development. This study examined the effects of sleep quality and sleep duration in the lives of adolescents.</p>
+            <p><strong>Participants</strong></p>
+            <p>Participants were 193 parent-adolescent pairs who were recruited in one of several ways (in person, via email, or through a health science volunteer database). Adolescents had to be in the 9th-11th grades in a public or private day school in the United States, be between the ages of 14 and 17, and live full-time with the parent participating in the study. Both the parent and the adolescent had to agree to participate.</p>
+            <p>The ages of the parents and adolescents are presented in Table 1.</p>
+            <p><strong>Table 1: Participant Ages</strong></p>
+            <table class="data-table">
+              <tr><th>Group</th><th>Mean Age</th><th>Standard Deviation</th></tr>
+              <tr><td>Parents</td><td>47.6</td><td>5.40</td></tr>
+              <tr><td>Adolescents</td><td>15.7</td><td>0.94</td></tr>
+            </table>
+            <p>Of the parents, 80% were female. Of the adolescents, 54.4% were female. The adolescents reported being in 9th grade (37%), 10th grade (32%), and 11th grade (31%).</p>
+            <p>Participants' racial/ethnic identification is presented in Table 2.</p>
+            <p><strong>Table 2: Participant Racial/Ethnic Identification</strong></p>
+            <table class="data-table">
+              <tr><th></th><th>Parent</th><th>Adolescent</th></tr>
+              <tr><td>White/European American</td><td>79%</td><td>71%</td></tr>
+              <tr><td>Black/African American</td><td>14%</td><td>14%</td></tr>
+              <tr><td>Multiracial</td><td>2%</td><td>8%</td></tr>
+              <tr><td>Hispanic or Latino/a</td><td>3%</td><td>2%</td></tr>
+              <tr><td>Asian/Asian American</td><td>2%</td><td>2%</td></tr>
+              <tr><td>Other</td><td>1%</td><td>2%</td></tr>
+            </table>
+            <p>The education levels of the parents who participated in the study are shown in Table 3.</p>
+            <p><strong>Table 3: Parent Participant Education Levels</strong></p>
+            <table class="data-table">
+              <tr><th>Highest Education Level</th><th>Percentage</th></tr>
+              <tr><td>Graduate degree</td><td>42%</td></tr>
+              <tr><td>Bachelor's degree (4-year degree)</td><td>35%</td></tr>
+              <tr><td>Associate's degree (2-year degree) or some college classes (no degree)</td><td>19%</td></tr>
+              <tr><td>High school diploma, GED, or less</td><td>4%</td></tr>
+            </table>
+            <p><strong>Method</strong></p>
+            <p>Researchers from a university in New York measured four factors during this study:</p>
+            <p>1. Family environment was measured using the Confusion, Hubbub, and Order Scale (CHAOS) which evaluates the level of family disorganization and chaos (called environmental confusion). Environmental confusion is rated on a 5-point scale ranging from "definitely untrue" to "definitely true." Higher scores indicated higher levels of chaos in the family environment.</p>
+            <p>2. Daily sleep quality was self-reported by the adolescents using a 4-item survey each morning for 7 consecutive days. This survey measured overall sleep quality (1 = very restless to 5 = very sound); sleep latency (approximate number of minutes before falling asleep); how rested participants were (1 = exhausted to 5 = very refreshed); and number of wake-after-sleep episodes. Higher scores indicated better sleep quality.</p>
+            <p>3. Daily sleep duration was calculated for each day by finding the difference between the time the adolescent reported going to sleep and their reported waking time the next morning.</p>
+            <p>4. Daily psychological functioning was self-reported by the adolescents in a survey. Two items assessed anxiety symptoms, and two items assessed depressive symptoms using a 4-point scale (1 = not at all to 4 = nearly all day). Higher scores indicated higher levels of anxiety and depressive symptoms.</p>
+            <p>The baseline survey completed by all participants also included the following measurements: amount of parents' use of inconsistent discipline, child age and gender, adolescent-reported daily daytime naps (in minutes), school start time, and family socioeconomic status (SES).</p>
+            <p>Participants used an online survey platform to complete a morning diary survey (e.g., sleep-related measures). Each entry was time-stamped, and researchers asked participants to complete the morning diary survey within an hour of waking up and to complete the evening diary survey within an hour before going to sleep. A total of 186 adolescents (96.4%) completed at least 2 days of the daily diaries, and 178 adolescents (92.2%) completed at least 4 days of the daily diaries.</p>
+            <p>All participants were paid $10 for completing the baseline survey. Adolescents were compensated $15 for completing at least 4 days of the sleep diary. The study was approved by the university's Research Subjects Review Board, and informed consent from parents and assent from adolescents were obtained before participation.</p>
+            <p><strong>Results and Discussion</strong></p>
+            <p>Family chaos did not predict adolescents' sleep duration, according to this study. When comparing each participant's sleep duration with their anxiety and depressive symptoms, researchers found that sleep duration did predict those symptoms (p < .05). Longer sleep durations from the previous night that were reported in the morning were associated with less anxiety and depressive symptoms reported later that evening. This association emerged after controlling for average levels of sleep duration and average levels of anxiety and depressive symptoms for each participant. However, when comparing one participant to another participant, researchers found that sleep duration did not predict anxiety and depressive symptoms.</p>
+            <p>Family chaos significantly predicted adolescents' sleep quality such that more chaotic and disorganized family environments were associated with lower levels of sleep quality (p < .05), according to this study. When comparing each participant's sleep quality with their anxiety and depressive symptoms, researchers found that better sleep quality significantly predicted a negative association with adolescents anxiety and depressive symptoms (p < .01). Better quality sleep from the previous night that was reported in the morning was associated with fewer anxiety and depressive symptoms reported later that evening.</p>
+            <p>This association was also significant when comparing participants to one another (p < .001), suggesting that higher levels of sleep quality for an adolescent across the morning diaries predicted lower levels of anxiety and depressive symptoms for that adolescent across the evening diaries.</p>
+            <p class="small-muted">Adapted from American Psychological Association.<br>O'Connor, T.G., Peltz, J.S., & Rogge, R.D. (2019). Adolescent sleep quality mediates family chaos and adolescent mental health: A daily diary-based study., Journal of Family Psychology, 33(3), 259-269.</p>
+            <p class="small-muted">The p-value is a measure of statistical significance. A p-value less than 0.05 indicates that the difference between the means of the two groups is more likely due to the independent variable from the study than to chance.</p>
+        `;
+
+        const q1Prefix = `
+            <p style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">Using the source provided, respond to all parts of the question.</p>
+            <p style="font-size: 16px; margin-bottom: 15px; color: #555;">Your response to the question should be provided in six parts: A, B, C, D, E, and F. Write the response to each part of the question in complete sentences. Use appropriate psychological terminology in your response.</p>
+        `;
+
+        const q2Left = `
+            <h4 style="margin-top:0;">Question 2: Evidence-Based Question (EBQ)</h4>
+            <div class="tabs" role="tablist" style="margin-top: 20px;">
+                <div class="tab active" data-tab="A">Source A</div>
+                <div class="tab" data-tab="B">Source B</div>
+                <div class="tab" data-tab="C">Source C</div>
+            </div>
+            
+            <article id="src-A" class="source active">
+                <p><strong>Introduction</strong><br>In this study, researchers examined whether taking notes on a laptop led to better memory recall than taking handwritten notes.</p>
+                <p><strong>Participants</strong><br>Sixty-seven students (33 men, 33 women, 1 not reported) were recruited from a participant pool at a university in New Jersey.</p>
+                <p><strong>Method</strong><br>Researchers chose five prerecorded lectures that lasted approximately 15 minutes each. Although these lectures did not cover common knowledge, the researchers chose topics that would be interesting to participants.</p>
+                <p>In general, two participants viewed the lecture videos together in the same room, though some participants completed the study alone. The study room was preset with either laptops for computer-based notetaking or paper notebooks for handwritten notetaking, according to condition. The laptops had full-size keyboards (11 in x 4 in) and were not connected to the Internet.</p>
+                <p>The lectures were projected onto a screen at the front of the room. Participants were instructed to use their preferred note-taking strategy of either writing notes by hand or taking notes using a laptop. The experimenter left the room while the lectures played.</p>
+                <p>Next, participants were taken to a lab to complete a distractor task and a challenging memory task. For the distractor task, using a laptop, participants were shown several arithmetic equations and asked to indicate for each one whether the answer was correct. For the memory task, they were given several letters to remember for later recall. After several presentations of unrelated material, a grid with letters was presented. Participants were asked to click on the letters they saw earlier during the task in the correct order.</p>
+                <p>By the end of these tasks, approximately 30 minutes had elapsed since the end of the lecture participants had seen. Participants were asked both factual-recall questions (e.g., "Approximately how many years ago did the Indus civilization exist?") and conceptual-application questions (e.g., "How do Japan and Sweden differ in their approaches to equality within their societies?") related to the topics covered in the lectures; participants also completed several demographic measures. The responses were scored by raters unaware of the conditions. Ratings were consistent, but any disputes between the raters were resolved by discussion.</p>
+                <p><strong>Results and Discussion</strong><br>Participants performed equally well across conditions for factual-recall questions. However, on conceptual-application questions, participants who took notes using a laptop performed significantly worse than participants who took handwritten notes (p = 0.03).</p>
+                <p>For each participant, the researchers determined the number of words in their lecture notes and the degree to which three-word chunks of text from a transcript of the lecture were present in those notes to determine the extent to which the notes from the lecture were verbatim. Researchers found that notes taken using a laptop had a 14.6% verbatim overlap with the lecture, while notes taken by hand averaged an 8.8% verbatim overlap. Participants whose handwritten notes overlapped less with the verbatim lecture performed better on factual-recall and conceptual-application questions.</p>
+                <p class="small-muted">Adapted from Association for Psychological Science.<br>Mueller, P.A., & Oppenheimer, D.M. (2014). The pen is mightier than the keyboard: Advantages of handwritten notes over laptop notetaking. Psychological Science, 25(6), 1159-1168.</p>
+                <p class="small-muted">A distractor task is one where participants complete a task that is unrelated to the primary memory task before they are asked to recall the target information.<br>The p-value is a measure of statistical significance. A p-value less than 0.05 indicates that the difference between the means of the two groups is more likely due to the independent variable from the study to chance.<br>verbatim: word-for-word</p>
+            </article>
+
+            <article id="src-B" class="source">
+                <p><strong>Introduction</strong><br>In this study, researchers examined whether taking notes on a laptop led to better memory recall than taking handwritten notes. This study is a replication of the study from Source A.</p>
+                <p><strong>Participants</strong><br>A total of 145 undergraduate students from a university in Boston, Massachusetts, participated in the experiment. Participants received $15 in compensation. The demographic information of the participants is listed in the table.</p>
+                <table class="data-table">
+                  <tr><th colspan="2">Participant Demographics</th></tr>
+                  <tr><th>Demographic</th><th>Percentage of Participants</th></tr>
+                  <tr><td colspan="2" style="background-color:#eee; text-align:left; font-weight:bold;">Year in School</td></tr>
+                  <tr><td>First-years</td><td>12%</td></tr>
+                  <tr><td>Sophomores</td><td>49%</td></tr>
+                  <tr><td>Juniors</td><td>23%</td></tr>
+                  <tr><td>Seniors</td><td>17%</td></tr>
+                  <tr><td colspan="2" style="background-color:#eee; text-align:left; font-weight:bold;">Gender</td></tr>
+                  <tr><td>Women</td><td>62%</td></tr>
+                  <tr><td>Men</td><td>37%</td></tr>
+                  <tr><td colspan="2" style="background-color:#eee; text-align:left; font-weight:bold;">Race/Ethnicity</td></tr>
+                  <tr><td>Black/African American</td><td>5%</td></tr>
+                  <tr><td>Asian/Asian American</td><td>24%</td></tr>
+                  <tr><td>White/European American</td><td>58%</td></tr>
+                  <tr><td>Hispanic/Latino/a</td><td>5%</td></tr>
+                  <tr><td>Multiracial</td><td>7%</td></tr>
+                </table>
+                <p><strong>Method</strong><br>After participants provided written informed consent, the researchers allowed each participant to choose either a pen and paper or a researcher-owned laptop for taking notes. Participants were randomly assigned to view one of five prerecorded lectures used in the original study and asked to take notes while watching. Each lecture lasted approximately 15 minutes. The researcher moved to an area of the room where they could not be seen by participants.</p>
+                <p>After the participants took notes while watching the entire lecture, the researcher collected the tools used for note-taking. The participants then completed a set of distractor tasks, including a typing test, a questionnaire, and a reading span task. The distraction period lasted approximately 30 minutes and did not vary by note-taking condition. After completing the distractor tasks, each participant responded to the same quiz questions for the particular lecture they saw. The researchers divided quiz questions into two types: factual-recall and conceptual-application.</p>
+                <p>There were 68 participants in the laptop note-taking condition (12 to 14 participants per lecture) and 74 participants in the handwritten note-taking condition (13 to 18 participants per lecture).</p>
+                <p>The researchers determined the total number of words in each participant's lecture notes and the degree to which three-word chunks of text from a transcript of the lecture were present in those notes to determine how verbatim the notes were from the lecture.</p>
+                <p><strong>Results and Discussion</strong><br>Consistent with the original study, the difference in the mean number of factual questions recalled between the laptop and handwritten conditions was not significant. Contrary to the original study, the difference in the mean number of conceptual-application questions recalled was not statistically significant.</p>
+                <p>The mean number of factual questions correctly answered in the laptop condition was 0.63 (standard deviation = 0.20); the mean number of factual questions correctly answered in the handwritten condition was 0.62 (standard deviation = 0.23). The mean number of conceptual-application questions correctly answered in the laptop condition was 0.74 (standard deviation = 0.19); the mean number of conceptual-application questions correctly answered in the handwritten condition was 0.70 (standard deviation = 0.23).</p>
+                <p>Consistent with the original study, the total word count for notes taken using a laptop (mean = 230.69, standard deviation = 133.87) was higher than the total word count for notes taken by hand (mean = 136.16, standard deviation = 66.26; p < 0.001). Again, consistent with the original study, the amount of verbatim overlap for notes taken using a laptop (mean = 12.97, standard deviation = 6.53) was higher than verbatim overlap for notes taken by hand (mean = 8.13, standard deviation = 4.73; p < 0.001).</p>
+                <p>The results of this replication study are consistent with the original study in that they demonstrate that notes taken using a laptop showed more of a verbatim overlap with the assigned lecture than did handwritten notes. These results also showed that the type of note-taking condition did not affect factual quiz performance. However, not all the replication results are consistent with the results of the original study in that they do not demonstrate that taking handwritten notes leads to higher scores on the conceptual quiz.</p>
+                <p>Researchers suggested that it would be tempting to conclude that taking more notes causes better quiz performance or that taking verbatim notes causes worse performance. However, the researchers did not manipulate word count or the extent to which the notes exhibited verbatim overlap with the lecture; thus, alternative explanations are plausible. Higher word count or lower verbatim overlap may reflect other variables that could prompt students to take more notes in their own words and answer more questions correctly on the test.</p>
+                <p class="small-muted">Adapted from Association for Psychological Science.<br>Urry, H.L. et al. (2021). Don't ditch the laptop just yet: A direct replication of Mueller and Oppenheimer's (2014) study 1 plus mini meta-analyses across similar studies. Psychological Science, 32(3), 326-339.</p>
+            </article>
+
+            <article id="src-C" class="source">
+                <p><strong>Introduction</strong><br>The traditional method of handwriting notes has largely been replaced by taking notes using tablets, smartphones, and laptops. It has been theorized that writing notes by hand requires more complex cognitive processes and may lead to better retention. However, few studies have investigated the use of tablet-based note-taking, which incorporates typing, drawing, and highlighting, and its effect on recall compared to laptop or handwritten note-taking.</p>
+                <p><strong>Participants</strong><br>Sixty-eight medical students participated in the study (31 men and 37 women). The participants ranged in age from 21 to 29 years old, with an average age of 24 years.</p>
+                <p><strong>Method</strong><br>The participants were divided into groups based on their note-taking preference: handwritten, laptop, or tablet. The researchers felt that the most accurate representation of note-taking efficacy would be achieved by having participants use the format with which they were most comfortable. The tablet group was encouraged to use their preference of typing, using a stylus, or using a note-taking application.</p>
+                <p>Participants were allowed to self-select into groups depending on their preferred method of notetaking; the groups consisted of 19 participants in the handwritten group, 7 participants in the laptop group, and 42 participants in the tablet group.</p>
+                <p>Participants watched a prerecorded lecture on a subject they had no prior knowledge of and were advised to take notes using their chosen method in preparation for a quiz afterward. After the video, students were asked to turn in their notes by either email or paper copy to the study coordinator. Following this intervention, students watched a different prerecorded lecture to distract them before taking a final quiz. After watching the second video, students were given a 10-question short answer quiz about factual and conceptual concepts covered in the first video. Students were given 30 minutes to complete the quiz.</p>
+                <p><strong>Results and Discussion</strong><br>There was no significant difference in the factual-recall scores on the quiz across the handwritten, laptop, and tablet note-taking conditions. There was no significant difference in the conceptual-application scores on the quiz across handwritten, laptop, and tablet note-taking. The median word count of notes taken was 121.0 for handwriting, 297.0 for laptops, and 131.5 for tablets, and the difference among these groups was statistically significant. The total number of drawings, highlighting, or other media/tools was 3 (15.8%) in the handwriting group, 0 (0.0%) in the laptop group, and 17 (40.5%) in the tablet group.</p>
+                <p>Results demonstrated that there was no significant difference between the use of handwriting, laptops, and tablets in factual or conceptual comprehension, suggesting they are similar in effectiveness. It is important to note that the sample size of the laptop students was extremely small and unlikely to generate statistically significant results. These results suggest that taking notes using a tablet is as effective as taking notes by hand.</p>
+                <p class="small-muted">Adapted from Korea Health Personnel Licensing Examination Institute.<br>Wiechmann, W. et al. (2022). No difference in factual or conceptual recall comprehension for tablet, laptop, and handwritten notetaking by medical students in the United States: A survey-based observational study. Journal of Educational Evaluation for Health Professions, 19(8).</p>
+            </article>
+        `;
+
+        const q2Prefix = `
+            <p style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">Using the sources provided, develop and justify an argument about a note-taking technique that is more likely to improve memory retrieval.</p>
+            <p style="font-size: 16px; margin-bottom: 15px; color: #555;">This question has three parts: Part A, Part B, and Part C. Use the three sources provided to answer all parts of the question. For Part B and Part C, you must cite the source that you used to answer the question. You can do this in two different ways:</p>
+            <ul style="padding-left: 20px; font-size: 16px; line-height: 1.6; margin-bottom: 15px; color: #555;">
+                <li>Parenthetical Citation: For example: "... (Source A)"</li>
+                <li>Embedded Citation: For example: "According to Source A..."</li>
+            </ul>
+            <p style="font-size: 16px; margin-bottom: 15px; color: #555;">Write the response to each part of the question in complete sentences. Use appropriate psychological terminology.</p>
+        `;
+
+        sectionsData = [
+            {
+                name: "Section II: Free Response",
+                type: "FRQ",
+                time: 70 * 60, // 1 hour 10 minutes
+                questions: [
+                    {
+                        id: "1a", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>A. Identify</strong> the research method used in the study.</p>`
+                    },
+                    {
+                        id: "1b", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>B. State</strong> the operational definition of daily sleep duration.</p>`
+                    },
+                    {
+                        id: "1c", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>C. Describe</strong> the meaning of standard deviation of the parents' age in the study.</p>`
+                    },
+                    {
+                        id: "1d", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>D. Identify</strong> at least one ethical guideline applied by the researchers.</p>`
+                    },
+                    {
+                        id: "1e", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>E. Explain</strong> the extent to which the research findings may or may not be generalizable using specific and relevant evidence from the study.</p>`
+                    },
+                    {
+                        id: "1f", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q1Left,
+                        stem: q1Prefix + `<p style="font-size: 16px;"><strong>F. Explain</strong> how at least one of the research findings supports or refutes the idea that the quality of sleep is more important than the duration of sleep.</p>`
+                    },
+                    {
+                        id: "2a", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q2Left,
+                        stem: q2Prefix + `<p style="font-size: 16px;"><strong>A. Propose</strong> a specific and defensible claim based in psychological science that responds to the question.</p>`
+                    },
+                    {
+                        id: "2b", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q2Left,
+                        stem: q2Prefix + `<p style="font-size: 16px;"><strong>B. i. Support</strong> your claim using at least one piece of specific and relevant evidence from one of the sources.</p><p style="font-size: 16px;"><strong>ii. Explain</strong> how the evidence from Part B i. supports your claim using a psychological perspective, theory, concept, or research finding learned in AP Psychology.</p>`
+                    },
+                    {
+                        id: "2c", type: "FRQ", isMarkedForReview: false, userResponse: "", notes: [], highlights: { left: null, right: null },
+                        leftContent: q2Left,
+                        stem: q2Prefix + `<p style="font-size: 16px;"><strong>C. i. Support</strong> your claim using an additional piece of specific and relevant evidence from a different source than the one that was used in Part B i.</p><p style="font-size: 16px;"><strong>ii. Explain</strong> how the evidence from Part C i. supports your claim using a different psychological perspective, theory, concept, or research finding learned in AP Psychology than the one that was used in Part B ii.</p>`
+                    }
+                ]
+            }
+        ];
+    }
+
+    // --- UI SELECTORS ---
+    const startScreen = document.getElementById('start-screen');
+    const transitionScreen = document.getElementById('section-transition-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const mainAppContainer = document.querySelector('.body-new-sat');
+    const leftPanel = document.getElementById('left-panel');
+    const rightPanel = document.getElementById('right-panel');
+    const questionProgressBtn = document.getElementById('question-progress-btn');
+    const timerDisplay = document.getElementById('timer-display');
+
+    // --- TABS LOGIC ---
+    function selectTab(letter) {
+        const leftPane = document.getElementById('left-panel');
+        if (!leftPane) return;
+        
+        const tabs = leftPane.querySelectorAll('.tab');
+        if (tabs.length === 0) return;
+
+        tabs.forEach(t => t.classList.remove('active'));
+        leftPane.querySelectorAll('.source').forEach(s => s.classList.remove('active'));
+
+        const t = leftPane.querySelector(`.tab[data-tab="${letter}"]`);
+        const s = leftPane.querySelector(`#src-${letter}`);
+        if(t && s) {
+            t.classList.add('active');
+            s.classList.add('active');
+        }
+    }
+
+    function initTabs() {
+        const leftPane = document.getElementById('left-panel');
+        const tabs = leftPane.querySelectorAll('.tab');
+        if (tabs.length > 0) {
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    selectTab(e.target.dataset.tab);
+                });
+            });
+        }
+    }
+
+    // --- TIMER ---
+    function startTimer(duration) {
+        let timer = duration;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(function () {
+            let minutes = parseInt(timer / 60, 10);
+            let seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                if (currentView === 'review' || currentView === 'question') {
+                     handleTimeUp();
+                }
+            }
+        }, 1000);
+    }
+
+    function handleTimeUp() {
+        alert("Time's up for this section!");
+        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+        if (isLastSection) {
+            switchView('results');
+        } else {
+            currentSectionIndex++;
+            switchView('transition');
+        }
+    }
+    
+    // --- RENDERING & VIEW MANAGEMENT ---
+    function switchView(viewName) {
+        currentView = viewName;
+        startScreen.classList.add('hidden');
+        transitionScreen.classList.add('hidden');
+        resultsScreen.classList.add('hidden');
+        mainAppContainer.classList.remove('active', 'review-mode-active');
+        
+        if (['start', 'transition', 'results'].includes(viewName)) {
+            mainAppContainer.style.display = 'none';
+        } else {
+            mainAppContainer.style.display = 'flex';
+        }
+
+        switch(viewName) {
+            case 'start':
+                startScreen.classList.remove('hidden');
+                break;
+            case 'transition':
+                clearInterval(timerInterval);
+                const nextSection = sectionsData[currentSectionIndex];
+                document.querySelector('#section-transition-screen h1').textContent = "Section Completed";
+                document.querySelector('#section-transition-screen p').innerHTML = `You are about to begin <strong>${nextSection.name}</strong>.<br>Click Continue to proceed.`;
+                transitionScreen.classList.remove('hidden');
+                break;
+            case 'results':
+                clearInterval(timerInterval);
+                resultsScreen.classList.remove('hidden');
+                break;
+            case 'question':
+            case 'analysis':
+                mainAppContainer.classList.add('active');
+                break;
+            case 'review':
+                mainAppContainer.classList.add('active', 'review-mode-active');
+                renderReviewScreen();
+                break;
+        }
+    }
+
+    function saveCurrentQuestionState() {
+        if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        
+        if (question) {
+            question.highlights.left = leftPanel.innerHTML;
+        }
+
+        const editor = document.getElementById(`editor-${question.id}`);
+        if (editor) question.userResponse = editor.innerHTML;
+    }
+
+    function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+        currentView = isAnalysisMode ? 'analysis' : 'question';
+        switchView(currentView);
+
+        currentSectionIndex = secIndex;
+        currentQuestionIndex = qIndex;
+        
+        const section = sectionsData[secIndex];
+        const question = section.questions[qIndex];
+        if (!question) return;
+
+        document.getElementById('main-module-title').textContent = section.name;
+        const questionScreen = document.getElementById('question-screen');
+
+        const leftContentToRender = question.highlights.left || question.leftContent;
+        if (leftContentToRender && leftContentToRender.trim() !== '') {
+            leftPanel.innerHTML = leftContentToRender;
+            questionScreen.classList.remove('single-column');
+            initTabs();
+        } else {
+            leftPanel.innerHTML = '';
+            questionScreen.classList.add('single-column');
+        }
+
+        // Render Right Panel
+        rightPanel.innerHTML = generateEditorHTML(question, isAnalysisMode);
+        initEditor(question.id, isAnalysisMode);
+        
+        addCommonEventListeners(isAnalysisMode);
+
+        updateMarkForReviewButton();
+        updateFooter(isAnalysisMode);
+        if(!isAnalysisMode) renderNotes();
+
+        leftPanel.removeEventListener('click', handleZoomClick);
+        leftPanel.addEventListener('click', handleZoomClick);
+    }
+
+    // --- HTML GENERATORS ---
+    function generateHeader(question) {
+        return `<div class="question-header">
+                    <div class="question-number">${question.id}</div>
+                    <div class="mark-review">
+                        <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Mark for Review</span>
+                    </div>
+                    </div>
+                <div class="separator-container" id="question-header-separator"></div>`;
+    }
+
+    function generateToolbar(id) {
+        return `
+        <div class="editor-toolbar" id="toolbar-${id}">
+            <button class="tbtn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="tbtn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="tbtn" data-cmd="underline" title="Underline"><u>U</u></button>
+            <button class="tbtn" data-cmd="insertUnorderedList" title="Bulleted List">•</button>
+            <button class="tbtn" data-cmd="insertOrderedList" title="Numbered List">1.</button>
+            <button class="tbtn" data-cmd="cut" title="Cut">✂</button>
+            <button class="tbtn" data-cmd="copy" title="Copy">📋</button>
+            <button class="tbtn" data-cmd="paste" title="Paste">📝</button>
+            <button class="tbtn" data-cmd="undo" title="Undo">↶</button>
+            <button class="tbtn" data-cmd="redo" title="Redo">↷</button>
+        </div>`;
+    }
+
+    function generateEditorHTML(question, isAnalysis) {
+        const content = isAnalysis ? (question.userResponse || "No response.") : question.userResponse;
+        
+        return generateHeader(question) + `
+        <div class="saq-container">
+            <div class="saq-prompt-box">
+                <div class="saq-prompt-text">${question.stem}</div>
+            </div>
+            <div class="editor-wrapper">
+                ${!isAnalysis ? generateToolbar(question.id) : ''}
+                <div id="editor-${question.id}" class="editor-content" contenteditable="${!isAnalysis}">${content}</div>
+            </div>
+        </div>`;
+    }
+
+    // --- EDITOR LOGIC ---
+    function initEditor(id, isAnalysis) {
+        if(isAnalysis) return;
+        
+        const toolbar = document.getElementById(`toolbar-${id}`);
+        if(toolbar) {
+            toolbar.querySelectorAll('.tbtn[data-cmd]').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const cmd = btn.dataset.cmd;
+                    
+                    if (cmd === 'paste') {
+                        try {
+                            const text = await navigator.clipboard.readText();
+                            document.execCommand('insertText', false, text);
+                        } catch (err) {
+                            alert('Browser security blocks direct paste access. Please use Ctrl+V (Windows) or Cmd+V (Mac) to paste.');
+                        }
+                    } else if (cmd === 'copy' || cmd === 'cut') {
+                            document.execCommand(cmd);
+                    } else {
+                        document.execCommand(cmd, false, null);
+                    }
+                    
+                    if (['bold', 'italic', 'underline'].includes(cmd)) {
+                        btn.classList.toggle('active');
+                    } else {
+                        btn.classList.add('active');
+                        setTimeout(() => btn.classList.remove('active'), 200);
+                    }
+                });
+            });
+        }
+    }
+
+    function addCommonEventListeners(isAnalysisMode) {
+        const markForReviewBtn = rightPanel.querySelector('.mark-review');
+        if(markForReviewBtn) {
+            markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                q.isMarkedForReview = !q.isMarkedForReview;
+                updateMarkForReviewButton();
+                if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+            };
+        }
+    }
+
+    // --- UI HELPERS ---
+    function handleZoomClick(e) {
+        const target = e.target;
+        if (target.tagName === 'IMG' || target.closest('.data-table')) {
+            const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+            openZoomModal(contentTarget);
+        }
+    }
+    
+    function updateFooter(isAnalysisMode = false) {
+        const currentSection = sectionsData[currentSectionIndex];
+        const totalQuestionsInSection = currentSection.questions.length;
+        const currentQId = currentSection.questions[currentQuestionIndex].id;
+
+        questionProgressBtn.innerHTML = `Question ${currentQId} <span style="margin-left: 5px; font-weight: normal; font-size: 12px; color: #ccc;">(${currentQuestionIndex + 1}/${totalQuestionsInSection})</span>`;
+        
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const nextBtnSpan = nextBtn.querySelector('span');
+
+        if (isAnalysisMode) {
+            backBtn.style.display = 'none';
+            nextBtn.classList.add('back-to-results-btn');
+            nextBtnSpan.textContent = 'Back to Results';
+        } else {
+            nextBtn.classList.remove('back-to-results-btn');
+            const isLastSection = currentSectionIndex === sectionsData.length - 1;
+            const isLastQuestion = currentQuestionIndex === currentSection.questions.length - 1;
+
+            if (currentView === 'review') {
+                nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                backBtn.style.display = 'inline-block';
+            } else {
+                nextBtnSpan.textContent = isLastQuestion ? 'Review' : 'Next';
+                backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+            }
+        }
+    }
+    
+    function renderReviewScreen() {
+        const section = sectionsData[currentSectionIndex];
+        document.getElementById('review-module-name').textContent = section.name;
+        document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+        renderGrid('review-grid-main');
+        updateFooter();
+    }
+
+    function renderGrid(containerId) {
+        const gridContainer = document.getElementById(containerId);
+        const section = sectionsData[currentSectionIndex];
+        gridContainer.innerHTML = '';
+        section.questions.forEach((q, index) => {
+            const item = document.createElement('div');
+            item.classList.add('question-grid-item');
+            item.textContent = q.id;
+            item.dataset.questionIndex = index;
+
+            let isAnswered = false;
+            if (q.userResponse && q.userResponse.trim().length > 0) isAnswered = true;
+
+            if (isAnswered) item.classList.add('completed');
+            else item.classList.add('unanswered');
+            
+            if (q.isMarkedForReview) item.classList.add('for-review');
+            if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+            
+            gridContainer.appendChild(item);
+        });
+    }
+
+    function updateMarkForReviewButton() {
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        const btn = rightPanel.querySelector('.mark-review');
+        if (!btn) return;
+        btn.classList.toggle('marked', question.isMarkedForReview);
+    }
+    
+    document.getElementById('download-frq-btn').addEventListener('click', function() {
+        let content = "AP Psychology - Exam Responses\n\n";
+        
+        sectionsData.forEach(section => {
+            content += `=== ${section.name} ===\n\n`;
+            section.questions.forEach(q => {
+                content += `--- Question ${q.id} ---\n`;
+                content += stripHtml(q.userResponse || "[No Answer]") + "\n\n";
+            });
+        });
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Exam_Responses.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+
+    function stripHtml(html) {
+       let tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+
+    // --- GLOBAL LISTENERS ---
+    function attachGlobalListeners() {
+        document.getElementById('start-exam-btn').addEventListener('click', () => {
+            startTimer(sectionsData[0].time);
+            loadQuestion(0, 0);
+        });
+        
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            currentQuestionIndex = 0; 
+            startTimer(sectionsData[currentSectionIndex].time);
+            loadQuestion(currentSectionIndex, 0);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if (currentView === 'analysis') {
+                switchView('results');
+                return;
+            }
+            
+            if (currentView === 'question') {
+                const section = sectionsData[currentSectionIndex];
+                if (currentQuestionIndex < section.questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion(currentSectionIndex, currentQuestionIndex);
+                } else {
+                    switchView('review');
+                }
+                return;
+            }
+
+            if (currentView === 'review') {
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+                return;
+            }
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if(currentView === 'review') { 
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+                return; 
+            }
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+            }
+        });
+    }
+    
+    window.onbeforeunload = function(e) {
+        if (currentView === 'question' || currentView === 'review') {
+            const message = 'Leave site? Changes you made may not be saved.';
+            e.returnValue = message; 
+            return message;
+        }
+    };
+
+    function handleGridClick(e) {
+        if (e.target.classList.contains('question-grid-item')) {
+            const index = parseInt(e.target.dataset.questionIndex, 10);
+            if (currentView === 'review') {
+                const previewBox = document.getElementById('review-question-preview');
+                const question = sectionsData[currentSectionIndex].questions[index];
+                let content = `<strong>Question ${question.id}:</strong> ${question.stem.substring(0, 200)}...`;
+                previewBox.innerHTML = content;
+            } else {
+                saveCurrentQuestionState();
+                loadQuestion(currentSectionIndex, index);
+                closeModal(questionListModal);
+            }
+        }
+    }
+    document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+    document.getElementById('review-grid-main').addEventListener('click', (e) => {
+        if (e.target.classList.contains('question-grid-item')) {
+                saveCurrentQuestionState();
+                const index = parseInt(e.target.dataset.questionIndex, 10);
+                loadQuestion(currentSectionIndex, index);
+        }
+    });
+
+    // --- MODALS & TOOLS ---
+    const directionsModal = document.getElementById('directions-modal');
+    const questionListModal = document.getElementById('question-list-modal');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomModalContent = document.getElementById('zoom-modal-content');
+    const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+    function openModal(modal) { modal.classList.add('active'); }
+    function closeModal(modal) { modal.classList.remove('active'); }
+
+    function openZoomModal(element) {
+        zoomModalContent.innerHTML = '';
+        const clonedElement = element.cloneNode(true);
+        zoomModalContent.appendChild(clonedElement);
+        openModal(zoomModal);
+    }
+    
+    document.getElementById('directions-btn').addEventListener('click', () => {
+        openModal(directionsModal);
+    });
+    document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+    directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+    
+    questionProgressBtn.addEventListener('click', (e) => { 
+        e.stopPropagation();
+        document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+        renderGrid('popup-question-grid');
+        questionListModal.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+        const qListContent = questionListModal.querySelector('.question-list-content');
+        if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+            closeModal(questionListModal);
+        }
+    });
+    
+    document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+    
+    zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+    zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+    document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+    document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+    
+    const splitter = document.getElementById('splitter');
+    let isDragging = false;
+    splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const notesPanelEl = document.getElementById('notes-panel');
+        const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+        let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+        const minWidth = 150;
+        const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+        if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+        if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+        leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+    // More dropdown & Line Reader
+    const moreBtn = document.getElementById('more-btn');
+    const moreDropdown = document.getElementById('more-dropdown');
+    const lineReaderOverlay = document.getElementById('line-reader-overlay');
+    moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+    document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+    function toggleLineReader() {
+        const isVisible = lineReaderOverlay.style.display === 'block';
+        lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+        document.removeEventListener('mousemove', moveLineReader);
+        if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+    }
+    function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+    document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+    document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+    // Highlight & Notes Management
+    const highlightBtn = document.getElementById('highlight-tool-btn');
+    const highlightToolbar = document.getElementById('highlight-toolbar');
+    const notesPanelEl = document.getElementById('notes-panel');
+    const notesContent = document.getElementById('notes-content');
+    const noteInputModal = document.getElementById('note-input-modal');
+    let currentNoteRange = null;
+
+    highlightBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        btn.classList.toggle('active');
+        notesPanelEl.classList.toggle('visible');
+        if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+    });
+    
+    document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+        if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+        setTimeout(() => {
+            const selection = window.getSelection();
+            if (selection && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                highlightToolbar.style.display = 'flex';
+            } else {
+                highlightToolbar.style.display = 'none';
+            }
+        }, 10);
+    });
+    document.addEventListener('mousedown', (e) => {
+        if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+           highlightToolbar.style.display = 'none';
+        }
+    });
+
+    highlightToolbar.addEventListener('click', (e) => {
+        const target = e.target.closest('button');
+        if (!target) return;
+        const { color, action } = target.dataset;
+        if (color) wrapSelection('highlighted highlight-' + color);
+        else if (action === 'note') addNoteFromSelection();
+        else if (action === 'remove') removeHighlightAtSelection();
+        highlightToolbar.style.display = 'none';
+    });
+    
+    function wrapSelection(className) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const wrapper = document.createElement('span');
+        wrapper.className = className;
+        wrapper.appendChild(range.extractContents());
+        range.insertNode(wrapper);
+        selection.removeAllRanges();
+    }
+    
+    function addNoteFromSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        currentNoteRange = selection.getRangeAt(0).cloneRange();
+        document.getElementById('note-modal-text').textContent = selection.toString().trim();
+        document.getElementById('note-textarea').value = '';
+        openModal(noteInputModal);
+    }
+
+    function removeHighlightAtSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+            if (range.intersectsNode(span)) {
+                const parent = span.parentNode;
+                while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                parent.removeChild(span);
+                parent.normalize();
+            }
+        });
+        selection.removeAllRanges();
+    }
+
+    document.getElementById('save-note-btn').addEventListener('click', () => {
+        const noteText = document.getElementById('note-textarea').value.trim();
+        if (noteText && currentNoteRange) {
+            const highlightedText = document.getElementById('note-modal-text').textContent;
+            const noteId = 'note_' + Date.now();
+            const span = document.createElement('span');
+            span.className = 'highlighted highlight-yellow';
+            span.dataset.noteId = noteId;
+            span.appendChild(currentNoteRange.extractContents());
+            currentNoteRange.insertNode(span);
+            
+            const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+            currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+            renderNotes();
+        }
+        closeModal(noteInputModal);
+    });
+    document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+    
+    function renderNotes() {
+        notesContent.innerHTML = '';
+        if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+        currentNotes.forEach(note => {
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            noteDiv.dataset.noteId = note.id;
+            noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+            notesContent.appendChild(noteDiv);
+        });
+        notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+           btn.addEventListener('click', (e) => {
+                const noteElement = e.target.closest('.note');
+                const noteId = noteElement.dataset.noteId;
+                const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                if (spanToRemove) {
+                    const parent = spanToRemove.parentNode;
+                    while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                    parent.removeChild(spanToRemove);
+                    parent.normalize();
+                }
+                const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                renderNotes();
+           });
+        });
+    }
+
+    // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>

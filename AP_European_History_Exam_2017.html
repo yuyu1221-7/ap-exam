@@ -1,0 +1,3029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP European History 2017 - PRACTICE EXAM</title>
+    <script>
+        // MathJax Configuration
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+
+        /* Base Styles */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* Improve MathJax formula size */
+        mjx-container {
+            font-size: 1.1em !important;
+            margin: 5px 0;
+        }
+
+        /* Read-only & Zoom styles */
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }
+        
+        /* --- FULL PAGE SCREENS --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .info-card ul li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #e0e0e0;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        /* --- RESULTS PAGE STYLES --- */
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .score-summary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(var(--correct-green) 0% var(--score-percent, 0%), #e9ecef var(--score-percent, 0%) 100%);
+            position: relative;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+        .score-text { z-index: 1; font-size: 32px; font-weight: bold; color: var(--text-dark); }
+        .score-label { z-index: 1; font-size: 14px; color: var(--text-light); margin-top: 5px; }
+        
+        .stats-boxes {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-box.correct { background-color: rgba(40, 167, 69, 0.1); }
+        .stat-box.incorrect { background-color: rgba(220, 53, 69, 0.1); }
+        .stat-box .count { font-size: 28px; font-weight: bold; }
+        .stat-box.correct .count { color: var(--correct-green); }
+        .stat-box.incorrect .count { color: var(--incorrect-red); }
+        .stat-box .label { font-size: 14px; color: var(--text-light); }
+
+        .review-questions-list {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        .review-questions-list h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: 24px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 15px;
+        }
+        .review-item {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .review-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .review-item.correct { background-color: var(--correct-green); }
+        .review-item.incorrect { background-color: rgba(220, 53, 69, 0.85); }
+        
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover {
+            background-color: #001a33;
+        }
+        .download-button.txt {
+             background-color: #6c757d;
+        }
+        .download-button.txt:hover {
+            background-color: #5a6268;
+        }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* --- Main Application --- */
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+        }
+        .body-new-sat.active {
+            display: flex;
+        }
+        
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#calculator-btn.active span, .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        /* --- Dashed Separator (CSS Method) --- */
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes {
+            position: absolute;
+            left: 30px;
+            width: calc(100% - 60px);
+            bottom: 0;
+        }
+        #footer-dashes {
+             top: 0;
+             bottom: auto;
+        }
+        #question-header-separator {
+             margin-bottom: 25px;
+             width: 100%;
+             left: 0;
+        }
+
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        .pane-content-left { 
+            flex: 0 1 45%; 
+            padding: 30px 25px; 
+            box-sizing: border-box; 
+            font-family: 'Noto Serif', serif; 
+            font-size: 16px; 
+            line-height: 1.7; 
+            overflow-y: auto; 
+            min-width: 200px; 
+            background-color: #ffffff; 
+            color: #000000; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+        }
+        .pane-content-left > * {
+            margin-bottom: 20px;
+        }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 500; font-size: 16px; margin-bottom: 20px; }
+        .pane-content-left h3 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 700; font-size: 18px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; max-width: 400px; margin-left: auto; margin-right: auto;}
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 10px 15px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; }
+        .data-table td { text-align: center; }
+        .data-table td:first-child { text-align: center; }
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        
+        /* ANNOTATION TOOL (ABC ELIMINATOR) CSS START */
+        .annotation-tool { margin-left: auto; cursor: pointer; }
+        .annotation-tool svg { width: 36px; height: 36px; }
+        .annotation-tool.active svg rect { fill: var(--primary-blue); }
+        .annotation-tool.active svg text, .annotation-tool.active svg line { stroke: white; fill: white; }
+        /* ANNOTATION TOOL CSS END */
+
+        .sat-stem { font-family: 'Noto Serif', serif; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+        .question-option { display: flex; align-items: center; padding: 16px; border: 1.5px solid var(--border-color); border-radius: 10px; background-color: #ffffff; cursor: pointer; position: relative; }
+        .options-list.analysis-mode .question-option { cursor: default; }
+        .question-option.selected { border: 2px solid #324DC7; box-shadow: none; }
+        .sat-radio-num { width: 28px; height: 28px; border: 2px solid var(--text-light); border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; margin-right: 15px; flex-shrink: 0; }
+        .question-option.selected .sat-radio-num { border-color: #324DC7; background-color: #324DC7; color: white; }
+        .option-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.5; flex-grow: 1; }
+        .option-text img { max-width: 100%; display: block; margin: 10px auto; }
+        
+        /* --- ANALYSIS VIEW STYLES (NO CHECKMARK) --- */
+        .question-option.correct-answer { border: 2px solid var(--correct-green); background-color: rgba(40, 167, 69, 0.05); }
+        .question-option.wrong-answer { border: 2px solid var(--incorrect-red); background-color: rgba(220, 53, 69, 0.05); }
+        .question-option.correct-answer .sat-radio-num { border-color: var(--correct-green); background-color: var(--correct-green); color: white; }
+        
+        .annotation-control-wrapper { position: absolute; right: -40px; top: 50%; transform: translateY(-50%); display: none; align-items: center; }
+        .strikethrough-toggle-btn { width: 22px; height: 22px; border: 1px solid #000000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; cursor: pointer; background-color: white; color: #000000; transition: all 0.1s ease-in-out; position: relative; }
+        .strikethrough-toggle-btn::after { content: ''; position: absolute; width: 140%; height: 2px; background-color: #000000; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .strikethrough-line { position: absolute; left: -15px; right: -15px; top: 50%; height: 2px; background-color: #000; transform: translateY(-50%); z-index: 2; display: none; pointer-events: none; }
+        .undo-controls { display: flex; align-items: center; position: absolute; right: -60px; top: 50%; transform: translateY(-50%); display: none; }
+        .undo-text { font-size: 14px; font-weight: bold; text-decoration: underline; color: #555; cursor: pointer; margin-left: -10px; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- REVIEW SCREEN --- */
+        #review-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1; 
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active .sat-header,
+        .body-new-sat.review-mode-active #question-screen {
+            display: none;
+        }
+        .body-new-sat.review-mode-active .footer-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active #review-screen {
+            display: flex;
+            padding-bottom: 80px; /* space for footer */
+        }
+        .body-new-sat.review-mode-active {
+            height: 100vh;
+        }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        span.underline-dashed { border-bottom: 2px dashed var(--text-dark); }
+        span.underline-wavy { text-decoration: underline wavy var(--text-dark); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); resize: both; overflow: hidden; min-width: 350px; min-height: 200px; }
+        .draggable-header { padding: 10px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .draggable-header .title { font-weight: bold; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .draggable-content { padding: 0; width: 100%; height: calc(100% - 40px); overflow: auto; }
+        #calculator-container .draggable-content { display: flex; flex-direction: column; }
+        .calc-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+        .calc-tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .calc-tab.active { border-bottom-color: var(--primary-blue); font-weight: bold; }
+        .calc-body { flex-grow: 1; }
+        .calc-pane { display: none; width: 100%; height: 100%; }
+        .calc-pane.active { display: block; }
+        .calc-pane iframe { width: 100%; height: 100%; border: none; }
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* Zoom Modal Styles */
+        #zoom-modal {
+            justify-content: center;
+            align-items: center;
+            z-index: 2100; /* Higher than other elements */
+        }
+        .zoom-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2101;
+            line-height: 1;
+        }
+        #zoom-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #zoom-modal-content img, #zoom-modal-content table {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* --- EDITOR & SAQ STYLES --- */
+.saq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.saq-prompt-box {
+    padding: 0 0 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.saq-prompt-text {
+    font-family: 'Noto Serif', serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2d2d2d;
+}
+
+.saq-sub-prompts {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.saq-sub-prompts li {
+    margin-bottom: 8px;
+}
+
+/* Editor Toolbar */
+.editor-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    flex-grow: 1; 
+    min-height: 300px;
+}
+
+.editor-toolbar {
+    background: #f3f4f6;
+    border-bottom: 1px solid #ccc;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tbtn {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    min-width: 32px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    transition: all 0.2s;
+}
+
+.tbtn:hover {
+    border-color: #4a69ff;
+    background-color: #eef2ff;
+}
+
+/* Active state for toolbar buttons */
+.tbtn.active {
+    background-color: #2d2d2d;
+    color: #fff;
+    border-color: #000;
+}
+
+.editor-content {
+    flex: 1;
+    padding: 15px;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+    resize: none;
+}
+
+/* For Q3/Q4 Choice Layout */
+.saq-choice-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 50px;
+}
+
+.saq-divider {
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    margin: 10px 0;
+}
+
+.saq-label {
+    background-color: #333;
+    color: white;
+    padding: 4px 10px;
+    font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+/* --- WATERMARK STYLE --- */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Makes the watermark click-through */
+            z-index: 99999; /* Ensures it's on top of other content */
+            background-repeat: repeat;
+            background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo=");
+        }
+
+        
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+    
+    <div class="watermark"></div>
+
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+            <h1>AP European History Exam</h1>
+            <h2>2017 Practice Exam</h2>
+            <hr>
+<h3>Section I: Multiple Choice</h3>
+<ul>
+    <li><b>55 multiple-choice questions</b> | <b>55mins</b> | <b>40% of score</b></li>
+
+    <li>Analyze the provided sources</li>
+    <li>Analyze the historical developments and processes described in the sources</li>
+</ul>
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1>Section I, Part B Directions</h1>
+            <p>The directions that follow are what you will see on exam day. This untimed preview is intended to represent the different question types you will encounter on exam day, but does not provide an option to choose between questions.</p>
+            <p style="text-align:center;"><strong>European History</strong><br>Section I, Part B has 3 short-answer questions and lasts 40 minutes.</p>
+            <p>In this part, answer Question 1 and Question 2 and <strong>either</strong> Question 3 <strong>or</strong> Question 4.</p>
+            <p>In your responses, be sure to address <strong>all</strong> parts of the questions you answer. Use complete sentences; an outline or bulleted list alone is not acceptable.</p>
+            <p>You may pace yourself as you answer the questions in this part, or you may use these optional timing recommendations:</p>
+            <p>It is suggested that you spend an equal amount of time, approximately 13 minutes, on each question.</p>
+            <p>You may use scratch paper for notes and planning, but credit will only be given for responses entered in this application. Text you enter as an annotation will <strong>not</strong> be included as part of your answer. You can go back and forth between questions in this part until time expires. The clock will turn red when 5 minutes remain—<strong>the proctor will not give you any time updates or warnings.</strong></p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Results</h1>
+            <div class="score-summary">
+                <div class="score-circle" id="score-circle">
+                    <span class="score-text" id="score-text">0/45</span>
+                    <span class="score-label">Total Score</span>
+                </div>
+                <div class="stats-boxes">
+                    <div class="stat-box correct">
+                        <div class="count" id="correct-count">0</div>
+                        <div class="label">Correct</div>
+                    </div>
+                    <div class="stat-box incorrect">
+                        <div class="count" id="incorrect-count">0</div>
+                        <div class="label">Incorrect</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-questions-list">
+                <h2>Review Questions</h2>
+                <div class="review-grid" id="results-review-grid">
+                    </div>
+            </div>
+            <div class="download-buttons-container">
+                <button class="download-button txt" id="download-txt-btn">Download Summary (TXT)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section I, Part A</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">60:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+                <div class="tool-button" id="calculator-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMSAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICAgICAgZmlsbC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgY2xpcC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgZD0iTTAgMTMuMzg1aDEwLjk1MlYuNUgwdjEyLjg4NXptLjk2Ny0uOTY2aDkuMDJWMS40NjdILjk2NnYxMC45NTJ6Ig0KICAgICAgICAgICAgZmlsbD0iIzFFMUUxRSINCiAgICAvPg0KICAgIDxwYXRoDQogICAgICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBjbGlwLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBkPSJNMS45MzIgNS40OTdoNy4wODd2LTIuOUgxLjkzMnYyLjl6bS45NjctLjk2Mmg1LjE1NHYtLjk2N0gyLjg5OXYuOTY3ek0xLjkzMiA3LjQzMWgxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgNy40MzFINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDYuNDE0SDcuNDFWNy40M2gxLjYxVjYuNDE0ek0xLjkzMiA5LjM1N2gxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgOS4zNTdINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDguMzlINy40MXYuOTY3aDEuNjF2LS45NjZ6TTEuOTM0IDExLjI5M2gxLjYxdi0uOTY3aC0xLjYxdi45Njd6TTQuNjcgMTEuMjkzSDYuMjh2LS45NjdINC42N3YuOTY3ek03LjQwOCAxMS4yOTNoMS42MXYtLjk2N2gtMS42MXYuOTY3eiINCiAgICAgICAgICAgIGZpbGw9IiMxRTFFMUUiDQogICAgLz4NCjwvc3ZnPg0K" alt="Calculator Icon">
+                    <span>Calculator</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d">
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <circle cx="12" cy="19" r="2"></circle>
+                    </svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section I, Part A</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1 of 45</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+<p><strong>The directions that follow are what you will see on exam day. This untimed preview is intended to represent the different question types and functionality you will encounter on exam day and has fewer multiple-choice questions than the exam.</strong></p>
+
+<p><strong>European History</strong>   Section I, Part A has 55 multiple-choice questions and lasts 55 minutes.</p>
+
+<p>You can go back and forth between questions in this part until time expires. The clock will turn red when 5 minutes remain—the <strong>proctor will not give you any time updates or warnings</strong></p>            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section I, Part A</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    <div id="calculator-container" class="draggable" style="display: none; top: 100px; left: 100px; width: 400px; height: 600px;">
+        <div class="draggable-header"><span class="title">Calculator</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content">
+            <div class="calc-tabs"><div class="calc-tab active" data-tab="graphing">Graphing Calculator</div></div>
+            <div class="calc-body"><div id="graphing-pane" class="calc-pane active"><iframe src="https://www.desmos.com/calculator" allow="fullscreen"></iframe></div></div>
+        </div>
+    </div>
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit Line Reader</button>
+    </div>
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        (function() {
+    // --- STATE MANAGEMENT ---
+    let sectionsData = [];
+    let currentSectionIndex = 0;
+    let currentQuestionIndex = 0;
+    let currentView = 'start'; // start, question, review, transition, results, analysis
+    let timerInterval;
+
+    function initializeExam() {
+        sectionsData = [
+            // --- SECTION I, PART A (MCQ) ---
+            {
+                name: "Section I, Part A",
+                type: "MCQ",
+                time: 55 * 60,
+                questions: 
+                    [
+  {
+    "id": 1,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 1 - 4 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/5a4v/1106X1270/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Incidents such as the one depicted in Vasari's painting contributed most directly to which of the following?",
+    "options": [
+      "The exacerbation of conflicts between the Valois monarchy and various noble factions",
+      "The establishment of royal absolutism under Louis XIII and Louis XIV",
+      "The entry of France in the Thirty Years' War on the side of the Protestants",
+      "The intensification of the grievances of the Third Estate against the nobility and the clergy"
+    ]
+  },
+  {
+    "id": 2,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 1 - 4 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/5a4v/1106X1270/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following was most directly intended to resolve the conflict illustrated in Vasari's painting?",
+    "options": [
+      "The Peace of Augsburg",
+      "The Edict of Nantes",
+      "The Pragmatic Sanction",
+      "The Civil Constitution of the Clergy"
+    ]
+  },
+  {
+    "id": 3,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 1 - 4 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/5a4v/1106X1270/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Based on the imagery and intended audience of Vasari's painting, the artist's most likely purpose was to portray the events in the painting as",
+    "options": [
+      "a terrible misunderstanding",
+      "a horrific abuse of royal power",
+      "an example of divine retribution",
+      "a cautionary tale against the dangers of mob violence"
+    ]
+  },
+  {
+    "id": 4,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 1 - 4 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/5a4v/1106X1270/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Vasari's interpretation of the events depicted in the painting would most likely have been shared by which of the following groups in the sixteenth century?",
+    "options": [
+      "High clergy in the Church of England",
+      "The rebels in the German Peasants' War",
+      "The delegates at the Council of Trent",
+      "Christian humanists such as Erasmus of Rotterdam"
+    ]
+  },
+  {
+    "id": 5,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 5 - 7 refer to the passage below.</b></p><p>\"All the dregs of humanity produced in the provinces make up the population of this city, and in this lies its greatness: not in fine buildings, and not in great merchants and thinkers and men of letters, as make Paris, London, Lisbon, and Amsterdam great cities; but in those of the lowest behavior and dishonesty, who, by intermarrying increase and multiply so that each generation is worse than the one before.\"</p><p><i>Bernardo Tanucci, satirical description of his home city of Naples, Italy, Epistolario, 1742</i></p>",
+    "stem": "Which of the following can best be inferred from Tanucci's sarcastic reference to Naples' greatness?",
+    "options": [
+      "Naples was facing unique social problems that other cities were not facing during this period.",
+      "The mercantilist policies implemented by the city's ruling class had failed to develop Naples' economy.",
+      "The spread of print materials in vernacular languages threatened Italy's intellectual monopoly.",
+      "Some southern European intellectuals felt that their societies were falling behind those of Atlantic Europe."
+    ]
+  },
+  {
+    "id": 6,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 5 - 7 refer to the passage below.</b></p><p>\"All the dregs of humanity produced in the provinces make up the population of this city, and in this lies its greatness: not in fine buildings, and not in great merchants and thinkers and men of letters, as make Paris, London, Lisbon, and Amsterdam great cities; but in those of the lowest behavior and dishonesty, who, by intermarrying increase and multiply so that each generation is worse than the one before.\"</p><p><i>Bernardo Tanucci, satirical description of his home city of Naples, Italy, Epistolario, 1742</i></p>",
+    "stem": "Tanucci's opinion of the people of Naples most clearly exemplifies which of the following?",
+    "options": [
+      "Concern about the erosion of traditional values as a result of urbanization",
+      "The belief that southern Italy was falling behind northern Italy economically",
+      "Fears that Italy was reaching Malthusian population limits",
+      "The Enlightenment belief in the perfectability of humanity"
+    ]
+  },
+  {
+    "id": 7,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 5 - 7 refer to the passage below.</b></p><p>\"All the dregs of humanity produced in the provinces make up the population of this city, and in this lies its greatness: not in fine buildings, and not in great merchants and thinkers and men of letters, as make Paris, London, Lisbon, and Amsterdam great cities; but in those of the lowest behavior and dishonesty, who, by intermarrying increase and multiply so that each generation is worse than the one before.\"</p><p><i>Bernardo Tanucci, satirical description of his home city of Naples, Italy, Epistolario, 1742</i></p>",
+    "stem": "The growth of Naples' population as described by Tanucci is most likely a result of which of the following?",
+    "options": [
+      "The expansion of cottage industry and the putting-out system",
+      "The development of new financial institutions",
+      "The imposition of guild restrictions on labor",
+      "The expansion of commercial agriculture"
+    ]
+  },
+  {
+    "id": 8,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 8 and 9 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/L1Lk/986X794/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The features of seventeenth-century Dutch life reflected in the painting were largely a result of which of the following?",
+    "options": [
+      "Dutch territorial gains in the Thirty Years' War",
+      "Dutch financial innovation and overseas trade",
+      "The accession of a member of the Dutch House of Orange to the throne of England",
+      "The successful raids of Dutch privateers against Spanish treasure fleets"
+    ]
+  },
+  {
+    "id": 9,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 8 and 9 refer to the image below.</b><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/L1Lk/986X794/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The painting reflects which of the following conflicts?",
+    "options": [
+      "Urban wealth versus rural poverty",
+      "Catholic extravagance versus Protestant austerity",
+      "French sophistication versus Dutch simplicity",
+      "Traditional morality versus new consumerism"
+    ]
+  },
+  {
+    "id": 10,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 10 - 13 refer to the passage below.</b></p><p>\"I wrote this book in the [1930s], against the background of depression at home and mounting tension abroad. The preoccupations of that unhappy time cast their shadows over its pages. I wrote with the knowledge, sometimes intimate, sometimes more distant, of conditions in depressed and derelict areas, of the sufferings of the unwanted and uprooted—the two million unemployed at home, the Jewish and liberal fugitives from Germany. . . . Admittedly, the atmosphere of the [1930s] had something to do with my choice of subject as well as with my methods of treatment. Many of my generation who grew up under the shadow of the First World War had a sincere, if mistaken, conviction that all wars were unnecessary and useless. I no longer think that all wars are unnecessary; but some are, and I still think that the Thirty Years War was one of these. It need not have happened and it settled nothing worth settling.\"</p><p><i>Cicely Veronica Wedgwood, British historian, The Thirty Years War, originally published in 1938, excerpt from the revised introduction published as part of the 1956 reprint</i></p>",
+    "stem": "The author's conclusion regarding the significance of the Thirty Years' War most directly challenged which of the following historical interpretations?",
+    "options": [
+      "The Thirty Years' War was a uniquely devastating conflict in pre-twentieth-century European history.",
+      "The Thirty Years' War marked a decisive turning point in European history.",
+      "Although ostensibly a conflict driven by religious differences, the Thirty Years' War resulted from a variety of factors.",
+      "The devastation of the Thirty Years' War undermined the theological justification for the concept of just war."
+    ]
+  },
+  {
+    "id": 11,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 10 - 13 refer to the passage below.</b></p><p>\"I wrote this book in the [1930s], against the background of depression at home and mounting tension abroad. The preoccupations of that unhappy time cast their shadows over its pages. I wrote with the knowledge, sometimes intimate, sometimes more distant, of conditions in depressed and derelict areas, of the sufferings of the unwanted and uprooted—the two million unemployed at home, the Jewish and liberal fugitives from Germany. . . . Admittedly, the atmosphere of the [1930s] had something to do with my choice of subject as well as with my methods of treatment. Many of my generation who grew up under the shadow of the First World War had a sincere, if mistaken, conviction that all wars were unnecessary and useless. I no longer think that all wars are unnecessary; but some are, and I still think that the Thirty Years War was one of these. It need not have happened and it settled nothing worth settling.\"</p><p><i>Cicely Veronica Wedgwood, British historian, The Thirty Years War, originally published in 1938, excerpt from the revised introduction published as part of the 1956 reprint</i></p>",
+    "stem": "Based on the passage and the historical context in which Wedgwood's book was originally published, which of the following most heavily influenced the author's view of the Thirty Years' War?",
+    "options": [
+      "The emergence of second-wave feminism in Europe",
+      "The spread of existentialist thought in Britain during the Great Depression",
+      "Growing international tensions in Europe as a result of aggressive nationalism",
+      "Increasing tensions between the United States and the Soviet Union during the Cold War"
+    ]
+  },
+  {
+    "id": 12,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 10 - 13 refer to the passage below.</b></p><p>\"I wrote this book in the [1930s], against the background of depression at home and mounting tension abroad. The preoccupations of that unhappy time cast their shadows over its pages. I wrote with the knowledge, sometimes intimate, sometimes more distant, of conditions in depressed and derelict areas, of the sufferings of the unwanted and uprooted—the two million unemployed at home, the Jewish and liberal fugitives from Germany. . . . Admittedly, the atmosphere of the [1930s] had something to do with my choice of subject as well as with my methods of treatment. Many of my generation who grew up under the shadow of the First World War had a sincere, if mistaken, conviction that all wars were unnecessary and useless. I no longer think that all wars are unnecessary; but some are, and I still think that the Thirty Years War was one of these. It need not have happened and it settled nothing worth settling.\"</p><p><i>Cicely Veronica Wedgwood, British historian, The Thirty Years War, originally published in 1938, excerpt from the revised introduction published as part of the 1956 reprint</i></p>",
+    "stem": "Which of the following best explains why, in the 1956 edition of the book, the author stated, \"I no longer think that all wars are unnecessary\"?",
+    "options": [
+      "The Second World War opened up new economic and social opportunities for women.",
+      "The Second World War led more writers to question literary conventions and bourgeois social values.",
+      "The Second World War opened up Europe to increased American cultural and economic influence.",
+      "The Second World War had to be fought to stop the expansion of Nazi Germany in Europe."
+    ]
+  },
+  {
+    "id": 13,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 10 - 13 refer to the passage below.</b></p><p>\"I wrote this book in the [1930s], against the background of depression at home and mounting tension abroad. The preoccupations of that unhappy time cast their shadows over its pages. I wrote with the knowledge, sometimes intimate, sometimes more distant, of conditions in depressed and derelict areas, of the sufferings of the unwanted and uprooted—the two million unemployed at home, the Jewish and liberal fugitives from Germany. . . . Admittedly, the atmosphere of the [1930s] had something to do with my choice of subject as well as with my methods of treatment. Many of my generation who grew up under the shadow of the First World War had a sincere, if mistaken, conviction that all wars were unnecessary and useless. I no longer think that all wars are unnecessary; but some are, and I still think that the Thirty Years War was one of these. It need not have happened and it settled nothing worth settling.\"</p><p><i>Cicely Veronica Wedgwood, British historian, The Thirty Years War, originally published in 1938, excerpt from the revised introduction published as part of the 1956 reprint</i></p>",
+    "stem": "Which of the following most directly undermines the author's argument that the Thirty Years' War \"settled nothing worth settling\"?",
+    "options": [
+      "The Thirty Years War had a devastating impact on civilian populations in many parts of northern Europe.",
+      "The ideal of a universal Christendom was effectively abandoned as religion largely ceased to be the major cause for warfare between European states.",
+      "The rulers of the German states maintained the right to designate the official religion of their territories.",
+      "Charles II was restored as the king of England after the interregnum of Oliver Cromwell's Puritan military dictatorship."
+    ]
+  },
+  {
+    "id": 14,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 14 - 16 are based on the passage below.</b></p><p>\"The 9th [of June, 1789]. The business going forward at present in the pamphlet shops of Paris is incredible. I went to the Palais Royal [where many pamphleteers' shops were located] to see what new things were published and to procure a catalogue of all. Every hour produces something new. Thirteen came out today, sixteen yesterday, and ninety-two last week. . . .<br><br>\"The spirit of reading political tracts, they say, spread into the provinces, so that all the presses of France are equally employed. Nineteen out of twenty of these productions are in favor of liberty, and commonly violent against the clergy and nobility; . . . but enquiring for such as had appeared on the other side of the question, to my astonishment I find that there are but two or three that have merit enough to be known. Is it not [surprising], that while the press teems with the most leveling and seditious principles, that if put in execution would overturn the monarchy, nothing in reply appears, and not the least step is taken by the court to restrain these publications?\"</p><p><i>Arthur Young, English writer, account of travels in France, published 1792</i></p>",
+    "stem": "Young's account provides potential information about the origins of the French Revolution. A historian wishing to evaluate the usefulness of his account would likely be interested in all the following questions EXCEPT:",
+    "options": [
+      "What was the typical amount of labor required to run a printing press?",
+      "What was the typical number of copies printed per pamphlet?",
+      "What was the literacy rate in France on the eve of the Revolution?",
+      "What was the typical retail price of a pamphlet, relative to average wages?"
+    ]
+  },
+  {
+    "id": 15,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 14 - 16 are based on the passage below.</b></p><p>\"The 9th [of June, 1789]. The business going forward at present in the pamphlet shops of Paris is incredible. I went to the Palais Royal [where many pamphleteers' shops were located] to see what new things were published and to procure a catalogue of all. Every hour produces something new. Thirteen came out today, sixteen yesterday, and ninety-two last week. . . .<br><br>\"The spirit of reading political tracts, they say, spread into the provinces, so that all the presses of France are equally employed. Nineteen out of twenty of these productions are in favor of liberty, and commonly violent against the clergy and nobility; . . . but enquiring for such as had appeared on the other side of the question, to my astonishment I find that there are but two or three that have merit enough to be known. Is it not [surprising], that while the press teems with the most leveling and seditious principles, that if put in execution would overturn the monarchy, nothing in reply appears, and not the least step is taken by the court to restrain these publications?\"</p><p><i>Arthur Young, English writer, account of travels in France, published 1792</i></p>",
+    "stem": "Since 1699 all printed materials in France had been subject to the approval of royal censors. Young's account most likely implies that",
+    "options": [
+      "producers of pamphlets were reluctant to discuss the activities of censors, for fear of having their shops closed down",
+      "coming from Britain, with its free press, Young was unfamiliar with the concept of state censorship of books",
+      "by 1789 the system of royal censorship in France had largely ceased to function as originally intended",
+      "because of the large number of titles involved, political pamphlets were not subject to the same laws and regulations regarding censorship as books"
+    ]
+  },
+  {
+    "id": 16,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 14 - 16 are based on the passage below.</b></p><p>\"The 9th [of June, 1789]. The business going forward at present in the pamphlet shops of Paris is incredible. I went to the Palais Royal [where many pamphleteers' shops were located] to see what new things were published and to procure a catalogue of all. Every hour produces something new. Thirteen came out today, sixteen yesterday, and ninety-two last week. . . .<br><br>\"The spirit of reading political tracts, they say, spread into the provinces, so that all the presses of France are equally employed. Nineteen out of twenty of these productions are in favor of liberty, and commonly violent against the clergy and nobility; . . . but enquiring for such as had appeared on the other side of the question, to my astonishment I find that there are but two or three that have merit enough to be known. Is it not [surprising], that while the press teems with the most leveling and seditious principles, that if put in execution would overturn the monarchy, nothing in reply appears, and not the least step is taken by the court to restrain these publications?\"</p><p><i>Arthur Young, English writer, account of travels in France, published 1792</i></p>",
+    "stem": "In addition to the political pamphlets described in the passage, which of the following did the most to turn public opinion against the Old Regime?",
+    "options": [
+      "French physiocrats' critique of mercantilism",
+      "Adam Smith's Wealth of Nations",
+      "Discussions in French salons and coffeehouses",
+      "The paintings of Jacques-Louis David"
+    ]
+  },
+  {
+    "id": 17,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 17 and 18 refer to the painting below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/jrXW/1088X974/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The painting most strongly suggests a link between nationalism and which of the following?",
+    "options": [
+      "Anarchism",
+      "Conservatism",
+      "Neoclassicism",
+      "Romanticism"
+    ]
+  },
+  {
+    "id": 18,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 17 and 18 refer to the painting below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/jrXW/1088X974/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Pils' choice of subject matter and his treatment of it were probably most strongly influenced by which of the following contemporary developments?",
+    "options": [
+      "The publication of Marxist theory on the causes and course of future revolutions",
+      "The outbreak of revolution in France in the previous year",
+      "The ongoing economic crisis in Europe known as the \"Hungry '40s\"",
+      "The institution of a more representative form of government in Great Britain as a result of the Reform Bills"
+    ]
+  },
+  {
+    "id": 19,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 19 - 21 refer to the maps below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/Qy08/684X1084/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following contributed most to the overall trend represented on the maps?",
+    "options": [
+      "The increased immigration to Europe from colonial territories",
+      "The relative peacefulness of international relations within Europe",
+      "The unification of major European ethnic groups into nation-states",
+      "The development of industrialized economies"
+    ]
+  },
+  {
+    "id": 20,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 19 - 21 refer to the maps below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/Qy08/684X1084/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The trend represented on the maps led most European governments in the period to adopt policies to",
+    "options": [
+      "subsidize agriculture in an attempt to limit migration to the cities",
+      "place additional restrictions on the political rights of urban residents",
+      "establish police forces and enact public health measures",
+      "encourage emigration to overseas colonies to ease overcrowding within Europe"
+    ]
+  },
+  {
+    "id": 21,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 19 - 21 refer to the maps below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/Qy08/684X1084/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The disparity on the 1910 map between the eastern region of Europe and the western and central regions was primarily the result of which of the following?",
+    "options": [
+      "Differences in the frequency and scale of military conflicts",
+      "Differences in the degree of political centralization",
+      "Differences in the numbers of emigrants",
+      "Differences in landholding patterns and agricultural practices"
+    ]
+  },
+  {
+    "id": 22,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 22 - 24 refer to the song below.</b></p><p>\"Father Stalin, look at this<br>Collective farming is just bliss<br>The hut's in ruins, the barn's all sagged<br>All the horses broken nags<br>And on the hut a hammer and sickle<br>And in the hut death and famine<br>No cows left, no pigs at all<br>Just your picture on the wall<br>Daddy and mommy are in the kolkhoz*<br>The poor child cries as alone he goes<br>There's no bread and there's no fat<br>The Party's ended all of that<br>The Party man he beats and stamps<br>And sends us to Siberian camps.\"</p><p>*collective farm</p><p><i>Ukrainian underground protest song, 1930s</i></p>",
+    "stem": "The famine described in the song was a consequence of which of the following?",
+    "options": [
+      "The civil war between the Bolsheviks and their opponents",
+      "The drive to modernize the Soviet economy",
+      "The implementation of the New Economic Policy",
+      "The onset of the Great Depression"
+    ]
+  },
+  {
+    "id": 23,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 22 - 24 refer to the song below.</b></p><p>\"Father Stalin, look at this<br>Collective farming is just bliss<br>The hut's in ruins, the barn's all sagged<br>All the horses broken nags<br>And on the hut a hammer and sickle<br>And in the hut death and famine<br>No cows left, no pigs at all<br>Just your picture on the wall<br>Daddy and mommy are in the kolkhoz*<br>The poor child cries as alone he goes<br>There's no bread and there's no fat<br>The Party's ended all of that<br>The Party man he beats and stamps<br>And sends us to Siberian camps.\"</p><p>*collective farm</p><p><i>Ukrainian underground protest song, 1930s</i></p>",
+    "stem": "The Soviet government's agricultural policies referred to in the song directly resulted in which of the following?",
+    "options": [
+      "The embrace of free-market reforms",
+      "The campaign to liquidate the kulaks",
+      "The rise of authoritarian dictatorships in eastern Europe and Spain in the 1930s",
+      "The strengthening of right-wing parties in western Europe"
+    ]
+  },
+  {
+    "id": 24,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 22 - 24 refer to the song below.</b></p><p>\"Father Stalin, look at this<br>Collective farming is just bliss<br>The hut's in ruins, the barn's all sagged<br>All the horses broken nags<br>And on the hut a hammer and sickle<br>And in the hut death and famine<br>No cows left, no pigs at all<br>Just your picture on the wall<br>Daddy and mommy are in the kolkhoz*<br>The poor child cries as alone he goes<br>There's no bread and there's no fat<br>The Party's ended all of that<br>The Party man he beats and stamps<br>And sends us to Siberian camps.\"</p><p>*collective farm</p><p><i>Ukrainian underground protest song, 1930s</i></p>",
+    "stem": "Sending people to Siberian camps was part of which of the following?",
+    "options": [
+      "The collapse of the Russian government at the end of the First World War",
+      "Large-scale emigration as a result of the First World War",
+      "Stalin's efforts to purge political rivals",
+      "Colonization of land to increase fur and timber production"
+    ]
+  },
+  {
+    "id": 25,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 25 - 27 refer to the following passage.</b></p><p>\"We see our people threatened by a mortal danger. The danger is that of a new religion. The church knows that it will have to account before God if the German people, unwarned, should turn away from Christ.<br><br>The first commandment reads: I am the Lord Thy God. Thou shalt have no other gods before me. The new religion is a rebellion against the first commandment:<br>• In it, the racial and folkish ideology becomes a myth. In it, blood and race, nationality, national honor, and the nation's freedom of action become idols.<br>• The faith in an 'eternal Germany' demanded by this religion replaces the faith in the eternal kingdom of our Lord and Savior Jesus Christ.<br>• This false faith creates its gods in man's image and essence. Such idolatry has nothing in common with positive Christianity. It is the expression of the Anti-Christ...<br>• The church must not bow to the new religion's claim that the state can bind the individual's conscience... [Jesus Christ] alone can bind and loosen a man's conscience.<br>• Therefore the church must not allow itself to be pushed from the public sphere into some quiet corner of private piety, where, self-satisfied, it would betray its mission.\"</p><p><i>Declaration of a group of German Protestant pastors, Berlin, 1935</i></p>",
+    "stem": "Based on the passage and the context in which it was created, it can be inferred that German authorities likely viewed the group of pastors who made the declaration as",
+    "options": [
+      "a politically useful group that could further the Nazification of the German religious establishment",
+      "a tradition-based group whose members would be a receptive audience to Nazism's political and social ideas",
+      "a harmless pacifist group that could safely be left to its own devices",
+      "a dangerous dissident group whose leaders must be targeted for reprisals and persecution"
+    ]
+  },
+  {
+    "id": 26,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 25 - 27 refer to the following passage.</b></p><p>\"We see our people threatened by a mortal danger. The danger is that of a new religion. The church knows that it will have to account before God if the German people, unwarned, should turn away from Christ.<br><br>The first commandment reads: I am the Lord Thy God. Thou shalt have no other gods before me. The new religion is a rebellion against the first commandment:<br>• In it, the racial and folkish ideology becomes a myth. In it, blood and race, nationality, national honor, and the nation's freedom of action become idols.<br>• The faith in an 'eternal Germany' demanded by this religion replaces the faith in the eternal kingdom of our Lord and Savior Jesus Christ.<br>• This false faith creates its gods in man's image and essence. Such idolatry has nothing in common with positive Christianity. It is the expression of the Anti-Christ...<br>• The church must not bow to the new religion's claim that the state can bind the individual's conscience... [Jesus Christ] alone can bind and loosen a man's conscience.<br>• Therefore the church must not allow itself to be pushed from the public sphere into some quiet corner of private piety, where, self-satisfied, it would betray its mission.\"</p><p><i>Declaration of a group of German Protestant pastors, Berlin, 1935</i></p>",
+    "stem": "The passage is an example of which of the following regarding twentieth-century Christianity?",
+    "options": [
+      "Attempts by Christian churches to formulate responses to the pressing political issues of the period",
+      "An emphasis on social work and helping those in need in the works of church leaders and theologians",
+      "Christian leaders' adherence to conservative positions on matters related to gender roles and family life",
+      "Debates over Christian churches' role in the social and political life of an increasingly multicultural Europe"
+    ]
+  },
+  {
+    "id": 27,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 25 - 27 refer to the following passage.</b></p><p>\"We see our people threatened by a mortal danger. The danger is that of a new religion. The church knows that it will have to account before God if the German people, unwarned, should turn away from Christ.<br><br>The first commandment reads: I am the Lord Thy God. Thou shalt have no other gods before me. The new religion is a rebellion against the first commandment:<br>• In it, the racial and folkish ideology becomes a myth. In it, blood and race, nationality, national honor, and the nation's freedom of action become idols.<br>• The faith in an 'eternal Germany' demanded by this religion replaces the faith in the eternal kingdom of our Lord and Savior Jesus Christ.<br>• This false faith creates its gods in man's image and essence. Such idolatry has nothing in common with positive Christianity. It is the expression of the Anti-Christ...<br>• The church must not bow to the new religion's claim that the state can bind the individual's conscience... [Jesus Christ] alone can bind and loosen a man's conscience.<br>• Therefore the church must not allow itself to be pushed from the public sphere into some quiet corner of private piety, where, self-satisfied, it would betray its mission.\"</p><p><i>Declaration of a group of German Protestant pastors, Berlin, 1935</i></p>",
+    "stem": "All of the following statements are factually accurate. Which would best explain why appeals such as the one in the passage had a limited effect on German public opinion in the 1930s?",
+    "options": [
+      "Nazi ideology was also criticized by some leaders of the Catholic Church.",
+      "Several other central and eastern European regimes espoused ideological positions similar to those criticized in the appeal.",
+      "Protestantism was the religion of the majority of the German population.",
+      "The German economy was in the process of recovering from the Great Depression."
+    ]
+  },
+  {
+    "id": 28,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 28 - 30 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/DPCg/1030X1062/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The image is best understood in the context of which of the following developments during the Renaissance?",
+    "options": [
+      "The emergence of Mannerist and Baroque artistic styles",
+      "The development of cultural expressions that reflected nationalist values",
+      "The revival of Greek and Roman classical styles",
+      "The growth of individualist humanism in artistic expression"
+    ]
+  },
+  {
+    "id": 29,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 28 - 30 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/DPCg/1030X1062/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Based upon the image and its historical context, which of the following groups would have been most likely to commission paintings similar to Dürer's Self-Portrait?",
+    "options": [
+      "Commercial elites who sponsored art that emphasized everyday life and naturalist style",
+      "Religious authorities who wished to emphasize the emotional aspects of Christian faith",
+      "Government officials who sought to be portrayed as figures from classical mythology",
+      "Protestant religious dissidents who favored art that broke with traditional Catholic motifs"
+    ]
+  },
+  {
+    "id": 30,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 28 - 30 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/DPCg/1030X1062/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "By the late nineteenth century, artists' self-portraits would increasingly emphasize which of the following?",
+    "options": [
+      "Realist themes, which drew the audience's attention to the suffering of the working class",
+      "Exotic themes, which reflected Europe's increased interaction with foreign cultures",
+      "Positivist themes, which emphasized the improvement and perfectibility of humankind",
+      "Subjective themes, which emphasized the portrayal of the artist's inner emotional state"
+    ]
+  },
+  {
+    "id": 31,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><p><b>Questions 31 - 34 refer to the following list of demands made by the rebel leaders of the War of the Communities of Castile, a joint commoner-noble revolt against the heavy taxes imposed in Spain by Holy Roman Emperor Charles V in 1520.</b></p><p>\"Officials: When a Cortes [the traditional advisory council of Castile] must be called, each district shall choose two officials to go to the Cortes, one from the nobility and one from the commoners . . . and each bishopric shall choose one cleric to go to the Cortes, and the knights shall choose two knights, and the [religious] orders shall choose two members of the orders, one Franciscan and one Dominican; and without all of these [representatives] there can be no Cortes.<br><br>\"Justice: The king shall not be able to name a correigdor [district judge] in any place; instead, each city and town shall on the first day of the year nominate three nobles and three commoners, and the king or his governor shall choose one noble and one commoner [from among these nominees]; these two shall then be civil and criminal judges for three years.<br><br>\"Money: The king shall not be allowed to take any coins out of the kingdom, nor gold or silver dust, and no coin can circulate or have value in Castile if it was not minted in the kingdom.<br><br>\"War: Whenever the king wishes to make war he shall summon a Cortes, and inform its members... explaining the reasons for the war, so that they can see whether it is just or capricious. Without their consent the king cannot fight any war.\"</p>",
+    "stem": "In which of the following European powers in the early modern period was a consultative body similar to the Castilian Cortes most firmly entrenched?",
+    "options": [
+      "France",
+      "The Holy Roman Empire",
+      "England",
+      "The Ottoman Empire"
+    ]
+  },
+  {
+    "id": 32,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><p><b>Questions 31 - 34 refer to the following list of demands made by the rebel leaders of the War of the Communities of Castile, a joint commoner-noble revolt against the heavy taxes imposed in Spain by Holy Roman Emperor Charles V in 1520.</b></p><p>\"Officials: When a Cortes [the traditional advisory council of Castile] must be called, each district shall choose two officials to go to the Cortes, one from the nobility and one from the commoners . . . and each bishopric shall choose one cleric to go to the Cortes, and the knights shall choose two knights, and the [religious] orders shall choose two members of the orders, one Franciscan and one Dominican; and without all of these [representatives] there can be no Cortes.<br><br>\"Justice: The king shall not be able to name a correigdor [district judge] in any place; instead, each city and town shall on the first day of the year nominate three nobles and three commoners, and the king or his governor shall choose one noble and one commoner [from among these nominees]; these two shall then be civil and criminal judges for three years.<br><br>\"Money: The king shall not be allowed to take any coins out of the kingdom, nor gold or silver dust, and no coin can circulate or have value in Castile if it was not minted in the kingdom.<br><br>\"War: Whenever the king wishes to make war he shall summon a Cortes, and inform its members... explaining the reasons for the war, so that they can see whether it is just or capricious. Without their consent the king cannot fight any war.\"</p>",
+    "stem": "All of the following statements are factually accurate. Which would best explain the rebels' demands in the passage concerning money?",
+    "options": [
+      "The massive inflow of silver from the Americas to Spain did not start until the second half of the sixteenth century.",
+      "A significant number of economic transactions in sixteenth-century Castile were still in the form of barters or exchanges in kind.",
+      "Charles's election as Holy Roman Emperor in 1519 involved him in many expensive commitments outside Spain.",
+      "Charles's economic policies in Castile were consistent with the principles of mercantilism."
+    ]
+  },
+  {
+    "id": 33,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><p><b>Questions 31 - 34 refer to the following list of demands made by the rebel leaders of the War of the Communities of Castile, a joint commoner-noble revolt against the heavy taxes imposed in Spain by Holy Roman Emperor Charles V in 1520.</b></p><p>\"Officials: When a Cortes [the traditional advisory council of Castile] must be called, each district shall choose two officials to go to the Cortes, one from the nobility and one from the commoners . . . and each bishopric shall choose one cleric to go to the Cortes, and the knights shall choose two knights, and the [religious] orders shall choose two members of the orders, one Franciscan and one Dominican; and without all of these [representatives] there can be no Cortes.<br><br>\"Justice: The king shall not be able to name a correigdor [district judge] in any place; instead, each city and town shall on the first day of the year nominate three nobles and three commoners, and the king or his governor shall choose one noble and one commoner [from among these nominees]; these two shall then be civil and criminal judges for three years.<br><br>\"Money: The king shall not be allowed to take any coins out of the kingdom, nor gold or silver dust, and no coin can circulate or have value in Castile if it was not minted in the kingdom.<br><br>\"War: Whenever the king wishes to make war he shall summon a Cortes, and inform its members... explaining the reasons for the war, so that they can see whether it is just or capricious. Without their consent the king cannot fight any war.\"</p>",
+    "stem": "The rebel leaders' insistence on the importance of the Cortes best exemplifies which of the following processes in early modern Europe?",
+    "options": [
+      "Attempts by corporate groups to use existing institutions of shared governance to resist royal encroachment",
+      "Attempts by commercial and professional groups to obtain political power commensurate with their economic and social standing",
+      "Attempts by the peasantry to maintain access to common lands and other resources threatened by privatization by members of the nobility",
+      "Attempts by members of the landed aristocracy to reverse the trend toward greater use of professional or mercenary armies"
+    ]
+  },
+  {
+    "id": 34,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><p><b>Questions 31 - 34 refer to the following list of demands made by the rebel leaders of the War of the Communities of Castile, a joint commoner-noble revolt against the heavy taxes imposed in Spain by Holy Roman Emperor Charles V in 1520.</b></p><p>\"Officials: When a Cortes [the traditional advisory council of Castile] must be called, each district shall choose two officials to go to the Cortes, one from the nobility and one from the commoners . . . and each bishopric shall choose one cleric to go to the Cortes, and the knights shall choose two knights, and the [religious] orders shall choose two members of the orders, one Franciscan and one Dominican; and without all of these [representatives] there can be no Cortes.<br><br>\"Justice: The king shall not be able to name a correigdor [district judge] in any place; instead, each city and town shall on the first day of the year nominate three nobles and three commoners, and the king or his governor shall choose one noble and one commoner [from among these nominees]; these two shall then be civil and criminal judges for three years.<br><br>\"Money: The king shall not be allowed to take any coins out of the kingdom, nor gold or silver dust, and no coin can circulate or have value in Castile if it was not minted in the kingdom.<br><br>\"War: Whenever the king wishes to make war he shall summon a Cortes, and inform its members... explaining the reasons for the war, so that they can see whether it is just or capricious. Without their consent the king cannot fight any war.\"</p>",
+    "stem": "Based on the rebels' demands, it can be concluded that Charles V sought to implement in Castile policies characteristic of",
+    "options": [
+      "constitutional monarchs",
+      "Enlightened monarchs",
+      "New monarchs",
+      "elective monarchs"
+    ]
+  },
+  {
+    "id": 35,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 35 - 37 refer to the tables below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/hi7k/984X694/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following best accounts for the changes indicated in the tables between the literacy rates of the sixteenth century and those of the seventeenth century?",
+    "options": [
+      "The revival of Classical humanist texts during the Renaissance",
+      "Jesuit efforts to encourage the reading of the Bible",
+      "The development of mandatory public education systems",
+      "The development and spread of cheap printed educational materials, such as books for learning to read"
+    ]
+  },
+  {
+    "id": 36,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 35 - 37 refer to the tables below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/hi7k/984X694/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following best accounts for the consistent difference between the male and the female literacy rates recorded in the tables?",
+    "options": [
+      "The growth of monastic orders for women during the Catholic Reformation, such as the Ursulines",
+      "The expectation that women would engage in different social and economic activities than men",
+      "The weakening of traditional Catholic institutions as a result of the Protestant Reformation",
+      "The practice of delaying marriage and postponing having children to improve economic prospects"
+    ]
+  },
+  {
+    "id": 37,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 35 - 37 refer to the tables below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/hi7k/984X694/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "A historian might use data such as those in the table to attempt to determine actual literacy rates in Spain in the period 1500-1700. All of the following statements are factually accurate. Which would LEAST limit the value of the data in the tables as a means of determining literacy rates?",
+    "options": [
+      "The data in the tables cover a period of about 120 years (1540-1661).",
+      "The defendants in cases brought by the Spanish Inquisition were not a representative sample of the Spanish population at the time.",
+      "The compilers of the data in the table defined literacy as the ability to sign one's name to a document.",
+      "The percentages in the tables were based on a very small number of cases."
+    ]
+  },
+  {
+    "id": 38,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 38 - 40 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/fV8A/1094X816/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The system portrayed in the image best represents which of the following processes?",
+    "options": [
+      "The expansion of capitalist investment in joint-stock companies",
+      "The continuation of small-scale systems of production",
+      "The development of mercantilist trade practices",
+      "The periodic business downturns in industrial economies"
+    ]
+  },
+  {
+    "id": 39,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 38 - 40 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/fV8A/1094X816/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following would most directly transform the production method depicted in the image?",
+    "options": [
+      "The abolition of traditional guild restrictions",
+      "The implementation of laissez-faire trade policies",
+      "The development of mercantilist economic theories",
+      "The mechanization of manufacturing"
+    ]
+  },
+  {
+    "id": 40,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 38 - 40 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/fV8A/1094X816/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following was the likely purpose of the publication the image appeared in?",
+    "options": [
+      "To advocate for socialist revolution",
+      "To encourage French nationalism",
+      "To spread Enlightenment principles",
+      "To appeal to new consumer markets"
+    ]
+  },
+  {
+    "id": 41,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 41 - 43 refer to the passages below.</b></p><p><b>Source 1</b></p><p>\"It is said that people have no more reason to fear forestalling, engrossing, and regrating* than they have to fear witchcraft. It is easy for a man to write a treatise in his closet; but if he would go to the distance of 200 miles from London and observe people at every avenue of a country town buying up butter, cheese, and all the necessaries of life they can lay hold of in order to prevent them from coming to market (which has happened to my knowledge), he would find that this is something more real and substantial than the crime of witchcraft. The country suffers most grievously by it.\"</p><p>*Crimes relating to price manipulation and hoarding under English Common Law</p><p><i>Lord Kenyon, Lord Chief Justice of England, in the court case of The King v. Waddington, 1800</i></p><p><b>Source 2</b></p><p>\"The market settles, and alone can settle, that price. Market is the meeting and conference of the consumer and producer, when they mutually discover each others' wants. Nobody, I believe, has observed with any reflection what market is, without being astonished at the truth, the correctness, the civility, the general equity with which the balance of wants is settled. They who wish the destruction of that balance, and would, by arbitrary regulations, decree, that insufficient production should not be compensated by increased price, directly lay their axe to the root of production itself.\"</p><p><i>Edward Law, attorney, in the court case of The King v. Waddington, 1800</i></p>",
+    "stem": "A historian could best use Lord Kenyon's attitude toward witchcraft in Source 1 as evidence of which of the following?",
+    "options": [
+      "The embrace of folk beliefs by elites",
+      "The spread of Enlightenment thought",
+      "The increasing involvement of women in commercial activities",
+      "The ongoing social and religious tensions in England as a result of the Reformation"
+    ]
+  },
+  {
+    "id": 42,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 41 - 43 refer to the passages below.</b></p><p><b>Source 1</b></p><p>\"It is said that people have no more reason to fear forestalling, engrossing, and regrating* than they have to fear witchcraft. It is easy for a man to write a treatise in his closet; but if he would go to the distance of 200 miles from London and observe people at every avenue of a country town buying up butter, cheese, and all the necessaries of life they can lay hold of in order to prevent them from coming to market (which has happened to my knowledge), he would find that this is something more real and substantial than the crime of witchcraft. The country suffers most grievously by it.\"</p><p>*Crimes relating to price manipulation and hoarding under English Common Law</p><p><i>Lord Kenyon, Lord Chief Justice of England, in the court case of The King v. Waddington, 1800</i></p><p><b>Source 2</b></p><p>\"The market settles, and alone can settle, that price. Market is the meeting and conference of the consumer and producer, when they mutually discover each others' wants. Nobody, I believe, has observed with any reflection what market is, without being astonished at the truth, the correctness, the civility, the general equity with which the balance of wants is settled. They who wish the destruction of that balance, and would, by arbitrary regulations, decree, that insufficient production should not be compensated by increased price, directly lay their axe to the root of production itself.\"</p><p><i>Edward Law, attorney, in the court case of The King v. Waddington, 1800</i></p>",
+    "stem": "The ideas expressed in the passages above formed part of a debate about the merits of which of the following?",
+    "options": [
+      "Mercantilism",
+      "Socialism",
+      "Laissez-faire liberalism",
+      "Absolutism"
+    ]
+  },
+  {
+    "id": 43,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><p><b>Questions 41 - 43 refer to the passages below.</b></p><p><b>Source 1</b></p><p>\"It is said that people have no more reason to fear forestalling, engrossing, and regrating* than they have to fear witchcraft. It is easy for a man to write a treatise in his closet; but if he would go to the distance of 200 miles from London and observe people at every avenue of a country town buying up butter, cheese, and all the necessaries of life they can lay hold of in order to prevent them from coming to market (which has happened to my knowledge), he would find that this is something more real and substantial than the crime of witchcraft. The country suffers most grievously by it.\"</p><p>*Crimes relating to price manipulation and hoarding under English Common Law</p><p><i>Lord Kenyon, Lord Chief Justice of England, in the court case of The King v. Waddington, 1800</i></p><p><b>Source 2</b></p><p>\"The market settles, and alone can settle, that price. Market is the meeting and conference of the consumer and producer, when they mutually discover each others' wants. Nobody, I believe, has observed with any reflection what market is, without being astonished at the truth, the correctness, the civility, the general equity with which the balance of wants is settled. They who wish the destruction of that balance, and would, by arbitrary regulations, decree, that insufficient production should not be compensated by increased price, directly lay their axe to the root of production itself.\"</p><p><i>Edward Law, attorney, in the court case of The King v. Waddington, 1800</i></p>",
+    "stem": "During the late nineteenth century governments in western Europe most directly responded to the issue addressed in the passages in which of the following ways?",
+    "options": [
+      "Abolishing traditional restrictions on labor",
+      "Attempting to manage business cycles through taxation and regulation",
+      "Nationalizing agricultural land and heavy industry",
+      "Expanding colonies in Africa"
+    ]
+  },
+  {
+    "id": 44,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 44 - 46 refer to the following maps.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/nycj/672X798/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following was the most significant factor that contributed to the changes to Ottoman territory shown on the maps?",
+    "options": [
+      "Western European efforts to halt the spread of Islam in Europe",
+      "The spread of nationalism in the Balkans",
+      "The economic and social disruptions caused by the industrialization of the Ottoman Empire",
+      "The defeat of Napoleon by a coalition of conservative monarchies"
+    ]
+  },
+  {
+    "id": 45,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 44 - 46 refer to the following maps.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/nycj/672X798/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The changes shown on the maps contributed most directly to",
+    "options": [
+      "the destabilization of the European balance of power",
+      "the dissolution of Austria-Hungary",
+      "the modernization of the Russian Empire",
+      "the greater integration of Eastern Europe into the global trade system"
+    ]
+  },
+  {
+    "id": 46,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 44 - 46 refer to the following maps.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/nycj/672X798/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "In the period 1815-1914, which of the following regions of Europe experienced political developments that most strongly contrasted with those shown on the maps?",
+    "options": [
+      "Spain",
+      "The British Isles",
+      "France",
+      "The Italian Peninsula"
+    ]
+  },
+  {
+    "id": 47,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 47 - 49 refer to the passage below.</b></p><p>\"Experience has no value for the arrogant man; faith is nothing to him. He substitutes for faith a pretended individual conviction, and he dispenses with all inquiry and study. For inquiry and study appear too trivial to a mind that believes itself strong enough to embrace at one glance all questions and all facts. Laws have no value for him, because he has not made them. Besides, he thinks it would be beneath a man like him to recognize the rules established by earlier generations that he considers rude and ignorant. Instead, he believes that power resides in himself alone.\"</p><p><i>Klemens von Metternich, letter to Tsar Alexander I, 1820</i></p>",
+    "stem": "Which of the following is Metternich most strongly critiquing in his letter to the tsar?",
+    "options": [
+      "Utilitarianism",
+      "Utopian socialism",
+      "Mercantilism",
+      "Skepticism"
+    ]
+  },
+  {
+    "id": 48,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 47 - 49 refer to the passage below.</b></p><p>\"Experience has no value for the arrogant man; faith is nothing to him. He substitutes for faith a pretended individual conviction, and he dispenses with all inquiry and study. For inquiry and study appear too trivial to a mind that believes itself strong enough to embrace at one glance all questions and all facts. Laws have no value for him, because he has not made them. Besides, he thinks it would be beneath a man like him to recognize the rules established by earlier generations that he considers rude and ignorant. Instead, he believes that power resides in himself alone.\"</p><p><i>Klemens von Metternich, letter to Tsar Alexander I, 1820</i></p>",
+    "stem": "Based on the letter and its context, Metternich most clearly supported which of the following principles?",
+    "options": [
+      "The maintenance of traditional social structures and values",
+      "The right to national self-determination",
+      "The application of scientific laws to society",
+      "The redistribution of resources and wealth"
+    ]
+  },
+  {
+    "id": 49,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 47 - 49 refer to the passage below.</b></p><p>\"Experience has no value for the arrogant man; faith is nothing to him. He substitutes for faith a pretended individual conviction, and he dispenses with all inquiry and study. For inquiry and study appear too trivial to a mind that believes itself strong enough to embrace at one glance all questions and all facts. Laws have no value for him, because he has not made them. Besides, he thinks it would be beneath a man like him to recognize the rules established by earlier generations that he considers rude and ignorant. Instead, he believes that power resides in himself alone.\"</p><p><i>Klemens von Metternich, letter to Tsar Alexander I, 1820</i></p>",
+    "stem": "Metternich likely expressed these sentiments in a letter to the tsar because of",
+    "options": [
+      "Russia's close cooperation with Austria against the Ottoman Empire",
+      "Russia's strong support for the Concert of Europe after the Congress of Vienna",
+      "Russia's support for Slavic independence movements in the Balkans",
+      "Russia's expansionist aims in Central and East Asia"
+    ]
+  },
+  {
+    "id": 50,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 50 - 52 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/zwjn/1068X738/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The image most clearly represents which of the following trends of the interwar period?",
+    "options": [
+      "Growing communist sympathy in western Europe",
+      "Increased United States influence on European affairs",
+      "Growing discontent with colonial European rule",
+      "Increased nationalism reinforced through militarism"
+    ]
+  },
+  {
+    "id": 51,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 50 - 52 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/zwjn/1068X738/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The ideology represented in the image had which of the following effects on neighboring Spain?",
+    "options": [
+      "Spanish industrialization lagged behind that of the rest of western Europe.",
+      "Spain lost its remaining colonies in the Americas.",
+      "Germany and Italy intervened in the Spanish Civil War.",
+      "Spain joined the NATO alliance after the Second World War."
+    ]
+  },
+  {
+    "id": 52,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 50 - 52 refer to the image below.</b></p><br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/zwjn/1068X738/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The organization in the image is best understood as a continuation of which of the following?",
+    "options": [
+      "The emergence of second-wave feminism",
+      "The political and military mobilization of women during the First World War",
+      "The success of the women's suffrage movement",
+      "The growth of new concepts of marriage and motherhood"
+    ]
+  },
+  {
+    "id": 53,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 53 - 55 refer to the passage below.</b></p><p>\"Unfortunately, Americans focus more on Soviet military hardware than on [Soviets'] limited political prestige. That is responsible for your overestimation of Soviet power, as if power in history is the same as force of arms! What myopia and short-sightedness. There is more power in rock music, videos, blue jeans, fast food, news networks and TV satellites than in the entire Red Army.\"</p><p><i>Régis Debray, leftist French philosopher, 1986</i></p>",
+    "stem": "Which of the following events of the 1980s or 1990s best supported Debray's assessment of the relative importance of cultural capital versus military power?",
+    "options": [
+      "Soviet leader Mikhail Gorbachev's policy of glasnost",
+      "The Soviet defeat in Afghanistan",
+      "The Communist crackdown on the Polish Solidarity labor movement",
+      "The outbreak of ethnic violence in Yugoslavia"
+    ]
+  },
+  {
+    "id": 54,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 53 - 55 refer to the passage below.</b></p><p>\"Unfortunately, Americans focus more on Soviet military hardware than on [Soviets'] limited political prestige. That is responsible for your overestimation of Soviet power, as if power in history is the same as force of arms! What myopia and short-sightedness. There is more power in rock music, videos, blue jeans, fast food, news networks and TV satellites than in the entire Red Army.\"</p><p><i>Régis Debray, leftist French philosopher, 1986</i></p>",
+    "stem": "The cultural trends referenced by Debray were mostly a result of which of the following?",
+    "options": [
+      "The breakdown of economic and cultural barriers as a result of the formation of the European Economic Community",
+      "The increasing influence of American popular culture in Europe after the Second World War",
+      "The growing influence of French existentialist and postmodernist philosophers on Western European culture",
+      "The propaganda spread by the Soviet bloc to undermine European democracies"
+    ]
+  },
+  {
+    "id": 55,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<p><b>Questions 53 - 55 refer to the passage below.</b></p><p>\"Unfortunately, Americans focus more on Soviet military hardware than on [Soviets'] limited political prestige. That is responsible for your overestimation of Soviet power, as if power in history is the same as force of arms! What myopia and short-sightedness. There is more power in rock music, videos, blue jeans, fast food, news networks and TV satellites than in the entire Red Army.\"</p><p><i>Régis Debray, leftist French philosopher, 1986</i></p>",
+    "stem": "All of the following statements about Debray are factually accurate. Which one would be most useful in evaluating his perspective in the passage?",
+    "options": [
+      "He participated in a guerrilla movement alongside Che Guevara, the Marxist revolutionary, in Bolivia during the 1960s.",
+      "He founded an academic discipline dedicated to the scientific study of the spread of ideas through mass media.",
+      "He became more politically moderate and concerned with religious affairs later in life.",
+      "He supported the 2003 law prohibiting the wearing of Muslim head scarves in French schools."
+    ]
+  }
+]
+            },
+            // --- SECTION I, PART B (SAQ) ---
+            {
+                name: "Section I, Part B",
+                type: "SAQ",
+                time: 40 * 60, // 40 minutes
+                questions: [
+    {
+        "id": "1",
+        "type": "SAQ",
+        "isMarkedForReview": false,
+        "userResponse": "",
+        "notes": [],
+        "highlights": {
+            "left": null,
+            "right": null
+        },
+        "leftContent": "<br><br><br><br><p><strong>Directions:</strong> Answer Question 1 <strong><u>and</u></strong> Question 2. Answer <strong><u>either</u></strong> Question 3 <strong><u>or</u></strong> Question 4.</p><p>“ [When] the middle class, instead of struggling for change, struggles to preserve the status quo... a new species of dictator emerges—the ‘crisis man’ whose primary economic function is not the freeing of business enterprise from the restraints of aristocracy, as in the past, but the suppression of the revolutionary power of labor in a period of crisis. Thereafter, the crisis-man, whose prototype is Napoleon I, looms up whenever the established order... is seriously threatened from the left.... At a time of crisis the capitalistic business man accepts the dictatorship of the Napoleon to preserve his capital and title to property, even at the partial sacrifice of his freedom.”</p><p style=\"text-align:right;\"><i>Albert Carr, Juggernaut: The Path of Dictatorship, 1939</i></p>",
+        "stem": "Using the passage above, answer (a), (b), and (c).",
+        "subPrompts": [
+            "a) Describe how one specific piece of evidence supports Carr’s interpretation of the nature of Napoleon’s rule.",
+            "b) Describe how one specific piece of evidence undermines Carr’s interpretation of the nature of Napoleon’s rule.",
+            "c) Explain how one feature of the political context of the interwar period in which Carr was writing influenced his interpretation of Napoleon’s rule."
+        ]
+    },
+    {
+        "id": "2",
+        "type": "SAQ",
+        "isMarkedForReview": false,
+        "userResponse": "",
+        "notes": [],
+        "highlights": {
+            "left": null,
+            "right": null
+        },
+        "leftContent": "<h4>Question 2 refers to the image below.</h4><img src=\"https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260207/iuv5/622X512/image.png/webp\" style=\"width:100%; height:auto;\" alt=\"Sugar Bowl, Great Britain, 1820s\"><p><strong>Sugar Bowl, Great Britain, 1820s</strong></p><p>The inscription reads as follows: “East India Sugar not made by slaves. By Six Families using East India [Indian Ocean], instead of West India [Caribbean] Sugar, one slave less is required.”</p><p style=\"text-align:right;\"><i>Museum of London, UK / Bridgeman Images</i></p>",
+        "stem": "Using the image above, answer (a), (b), and (c).",
+        "subPrompts": [
+            "a) Describe ONE effect of the idea expressed in the inscription on the sugar bowl.",
+            "b) Explain ONE way in which the inscription reflects changes in European overseas empires and trade in the nineteenth century.",
+            "c) Explain ONE way in which the sugar bowl reflects continuities in European consumer habits during the eighteenth and nineteenth centuries."
+        ]
+    },
+    {
+        "id": "3",
+        "type": "SAQ-Double",
+        "isMarkedForReview": false,
+        "userResponseQ3": "",
+        "userResponseQ4": "",
+        "notes": [],
+        "highlights": {
+            "left": null,
+            "right": null
+        },
+        "leftContent": "",
+        "questionsData": [
+            {
+                "id": "3",
+                "stem": "<p><strong>Directions:</strong> Answer <strong><u>either</u></strong> Question 3 <strong><u>or</u></strong> Question 4.</p><br><br>Answer (a), (b), and (c).",
+                "subPrompts": [
+                    "a) Describe one reason for the growth of a commercial economy in Europe during the period 1450–1600.",
+                    "b) Explain one effect of the growth of a commercial economy on politics in Europe during the period 1450–1600.",
+                    "c) Explain one effect of the growth of a commercial economy on social structures in Europe during the period 1450–1600."
+                ]
+            },
+            {
+                "id": "4",
+                "stem": "Answer (a), (b), and (c).",
+                "subPrompts": [
+                    "a) Describe one reason for the expansion of women’s rights in twentieth-century Europe.",
+                    "b) Explain one effect of the expansion of women’s rights on politics in twentieth-century Europe.",
+                    "c) Explain one effect of the expansion of women’s rights on social structures in twentieth-century Europe."
+                ]
+            }
+        ]
+    }
+]
+            }
+        ];
+    }
+
+    // --- UI ELEMENT SELECTORS ---
+    const startScreen = document.getElementById('start-screen');
+    const transitionScreen = document.getElementById('section-transition-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const mainAppContainer = document.querySelector('.body-new-sat');
+    const leftPanel = document.getElementById('left-panel');
+    const rightPanel = document.getElementById('right-panel');
+    const questionProgressBtn = document.getElementById('question-progress-btn');
+    const timerDisplay = document.getElementById('timer-display');
+    const calculatorBtn = document.getElementById('calculator-btn');
+
+    // --- TIMER ---
+    function startTimer(duration) {
+        let timer = duration;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(function () {
+            let minutes = parseInt(timer / 60, 10);
+            let seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                if (currentView === 'review' || currentView === 'question') {
+                     handleTimeUp();
+                }
+            }
+        }, 1000);
+    }
+
+    function handleTimeUp() {
+        alert("Time's up for this section!");
+        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+        if (isLastSection) {
+            switchView('results');
+        } else {
+            currentSectionIndex++;
+            switchView('transition');
+        }
+    }
+    
+    // --- UI RENDERING & VIEW MANAGEMENT ---
+    function switchView(viewName) {
+        currentView = viewName;
+        startScreen.classList.add('hidden');
+        transitionScreen.classList.add('hidden');
+        resultsScreen.classList.add('hidden');
+        mainAppContainer.classList.remove('active', 'review-mode-active');
+        
+        if (['start', 'transition', 'results'].includes(viewName)) {
+            mainAppContainer.style.display = 'none';
+        } else {
+            mainAppContainer.style.display = 'flex';
+        }
+
+        switch(viewName) {
+            case 'start':
+                startScreen.classList.remove('hidden');
+                break;
+            case 'transition':
+                clearInterval(timerInterval);
+                // No dynamic text setting for transition, using static HTML as requested
+                transitionScreen.classList.remove('hidden');
+                break;
+            case 'results':
+                clearInterval(timerInterval);
+                calculateAndShowResults();
+                resultsScreen.classList.remove('hidden');
+                break;
+            case 'question':
+            case 'analysis':
+                mainAppContainer.classList.add('active');
+                break;
+            case 'review':
+                mainAppContainer.classList.add('active', 'review-mode-active');
+                renderReviewScreen();
+                break;
+        }
+    }
+
+    function saveCurrentQuestionState() {
+        if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        
+        // Save Highlights
+        if (question) {
+            question.highlights.left = leftPanel.innerHTML;
+            // Only save right panel HTML for MCQ, for SAQ we save input values separately
+            if (question.type !== 'SAQ' && question.type !== 'SAQ-Double') {
+                question.highlights.right = rightPanel.innerHTML;
+            }
+        }
+
+        // Save SAQ Answers
+        if (question.type === 'SAQ') {
+            const editor = document.getElementById(`editor-${question.id}`);
+            if (editor) question.userResponse = editor.innerHTML;
+        } else if (question.type === 'SAQ-Double') {
+            const editorQ3 = document.getElementById(`editor-3`);
+            const editorQ4 = document.getElementById(`editor-4`);
+            if (editorQ3) question.userResponseQ3 = editorQ3.innerHTML;
+            if (editorQ4) question.userResponseQ4 = editorQ4.innerHTML;
+        }
+    }
+
+    function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+        currentView = isAnalysisMode ? 'analysis' : 'question';
+        switchView(currentView);
+
+        currentSectionIndex = secIndex;
+        currentQuestionIndex = qIndex;
+        
+        const section = sectionsData[secIndex];
+        const question = section.questions[qIndex];
+        if (!question) return;
+
+        // Calculator visibility (Hide for history unless specifically needed, usually not)
+        calculatorBtn.style.display = 'none';
+
+        document.getElementById('main-module-title').textContent = section.name;
+        const questionScreen = document.getElementById('question-screen');
+
+        // Render Left Panel
+        const leftContentToRender = question.highlights.left || question.leftContent;
+        if (leftContentToRender && leftContentToRender.trim() !== '') {
+            leftPanel.innerHTML = leftContentToRender;
+            questionScreen.classList.remove('single-column');
+        } else {
+            leftPanel.innerHTML = '';
+            questionScreen.classList.add('single-column');
+        }
+
+        // Render Right Panel based on Type
+        if (question.type === 'SAQ') {
+            rightPanel.innerHTML = generateSAQHTML(question, isAnalysisMode);
+            initEditors([question.id], isAnalysisMode);
+        } else if (question.type === 'SAQ-Double') {
+            rightPanel.innerHTML = generateDoubleSAQHTML(question, isAnalysisMode);
+            initEditors(['3', '4'], isAnalysisMode);
+        } else {
+            // MCQ
+            rightPanel.innerHTML = isAnalysisMode ? generateAnalysisHTML(question) : generateMCQHTML(question);
+            addMCQEventListeners(isAnalysisMode);
+        }
+        
+        // Attach common listeners (e.g. Mark for Review header)
+        addCommonEventListeners(isAnalysisMode);
+
+        if(window.MathJax) {
+            window.MathJax.typesetPromise([rightPanel, leftPanel]).catch(err => console.error("MathJax typesetting error:", err));
+        }
+
+        updateMarkForReviewButton();
+        updateFooter(isAnalysisMode);
+        if(!isAnalysisMode) renderNotes();
+
+        leftPanel.removeEventListener('click', handleZoomClick);
+        leftPanel.addEventListener('click', handleZoomClick);
+    }
+
+    // --- HTML GENERATORS ---
+
+    function generateMCQHTML(question) {
+        const optionsHTML = question.options.map((opt, i) => {
+            const letter = String.fromCharCode(65 + i);
+            const isSelected = question.selectedAnswer === i ? 'selected' : '';
+            return `<div class="question-option ${isSelected}" data-option-index="${i}">
+                        <span class="sat-radio-num">${letter}</span>
+                        <div class="option-text">${opt}</div>
+                        <div class="strikethrough-line" data-struck="false"></div>
+                        <div class="annotation-control-wrapper"><div class="strikethrough-toggle-btn" data-letter="${letter}">${letter}</div></div>
+                        <div class="undo-controls"><span class="undo-text">Undo</span></div>
+                    </div>`;
+        }).join('');
+        return generateHeader(question) + 
+            `<div class="sat-stem">${question.stem}</div>
+             <div class="options-list">${optionsHTML}</div>`;
+    }
+
+    function generateAnalysisHTML(question) {
+        if (question.type === 'SAQ' || question.type === 'SAQ-Double') return generateSAQHTML(question, true);
+
+        const optionsHTML = question.options.map((opt, i) => {
+            const letter = String.fromCharCode(65 + i);
+            let optionClasses = "question-option";
+            if(i === question.correctAnswer) optionClasses += ' correct-answer';
+            if(i === question.selectedAnswer && i !== question.correctAnswer) optionClasses += ' wrong-answer';
+            return `<div class="${optionClasses}" data-option-index="${i}">
+                        <span class="sat-radio-num">${letter}</span>
+                        <div class="option-text">${opt}</div>
+                    </div>`;
+        }).join('');
+
+        return generateHeader(question) + 
+            `<div class="sat-stem">${question.stem}</div>
+             <div class="options-list analysis-mode">${optionsHTML}</div>`;
+    }
+
+    function generateHeader(question) {
+        return `<div class="question-header">
+                    <div class="question-number">${question.id}</div>
+                    <div class="mark-review">
+                        <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Mark for Review</span>
+                    </div>
+                    <div class="annotation-tool">
+                        <svg width="36" height="36" viewBox="0 0 100 100">
+                            <rect x="5" y="5" width="90" height="90" rx="10" ry="10" fill="none" stroke="#555" stroke-width="4"/>
+                            <text x="50" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#2d2d2d">ABC</text>
+                            <line x1="15" y1="80" x2="85" y2="20" stroke="#2d2d2d" stroke-width="6" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    </div>
+                <div class="separator-container" id="question-header-separator"></div>`;
+    }
+
+    function generateToolbar(id) {
+        return `
+        <div class="editor-toolbar" id="toolbar-${id}">
+            <button class="tbtn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="tbtn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="tbtn" data-cmd="underline" title="Underline"><u>U</u></button>
+            <button class="tbtn" data-cmd="insertUnorderedList" title="Bulleted List">•</button>
+            <button class="tbtn" data-cmd="insertOrderedList" title="Numbered List">1.</button>
+            <button class="tbtn" data-cmd="cut" title="Cut">✂</button>
+            <button class="tbtn" data-cmd="copy" title="Copy">📋</button>
+            <button class="tbtn" data-cmd="paste" title="Paste">📝</button>
+            <button class="tbtn" data-cmd="undo" title="Undo">↶</button>
+            <button class="tbtn" data-cmd="redo" title="Redo">↷</button>
+            <button class="tbtn" data-cmd="superscript" title="Superscript">x²</button>
+            <button class="tbtn" data-cmd="subscript" title="Subscript">x₂</button>
+        </div>`;
+    }
+
+    function generateSAQHTML(question, isAnalysis) {
+        const subPrompts = question.subPrompts ? `<ul class="saq-sub-prompts">${question.subPrompts.map(p => `<li>${p}</li>`).join('')}</ul>` : '';
+        const content = isAnalysis ? (question.userResponse || "No response.") : question.userResponse;
+        
+        return generateHeader(question) + `
+        <div class="saq-container">
+            <div class="saq-prompt-box">
+                <div class="saq-prompt-text">${question.stem}</div>
+                ${subPrompts}
+            </div>
+            <div class="editor-wrapper">
+                ${!isAnalysis ? generateToolbar(question.id) : ''}
+                <div id="editor-${question.id}" class="editor-content" contenteditable="${!isAnalysis}" aria-label="Essay editor">${content}</div>
+            </div>
+        </div>`;
+    }
+
+    function generateDoubleSAQHTML(question, isAnalysis) {
+        const q3 = question.questionsData[0];
+        const q4 = question.questionsData[1];
+        
+        const q3Content = isAnalysis ? (question.userResponseQ3 || "No response.") : question.userResponseQ3;
+        const q4Content = isAnalysis ? (question.userResponseQ4 || "No response.") : question.userResponseQ4;
+
+        return generateHeader(question) + `
+        <div class="saq-choice-wrapper">
+            <div class="saq-block">
+                <span class="saq-label">Question 3</span>
+                <div class="saq-prompt-box">
+                    <div class="saq-prompt-text">${q3.stem}</div>
+                    <ul class="saq-sub-prompts">${q3.subPrompts.map(p => `<li>${p}</li>`).join('')}</ul>
+                </div>
+                <div class="editor-wrapper">
+                    ${!isAnalysis ? generateToolbar('3') : ''}
+                    <div id="editor-3" class="editor-content" contenteditable="${!isAnalysis}">${q3Content}</div>
+                </div>
+            </div>
+
+            <div class="saq-divider"></div>
+
+            <div class="saq-block">
+                <span class="saq-label">Question 4</span>
+                 <div class="saq-prompt-box">
+                    <div class="saq-prompt-text">${q4.stem}</div>
+                    <ul class="saq-sub-prompts">${q4.subPrompts.map(p => `<li>${p}</li>`).join('')}</ul>
+                </div>
+                <div class="editor-wrapper">
+                    ${!isAnalysis ? generateToolbar('4') : ''}
+                    <div id="editor-4" class="editor-content" contenteditable="${!isAnalysis}">${q4Content}</div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+
+    // --- EDITOR LOGIC ---
+    function initEditors(ids, isAnalysis) {
+        if(isAnalysis) return;
+        
+        ids.forEach(id => {
+            const toolbar = document.getElementById(`toolbar-${id}`);
+            if(toolbar) {
+                toolbar.querySelectorAll('.tbtn[data-cmd]').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const cmd = btn.dataset.cmd;
+                        
+                        if (cmd === 'paste') {
+                            try {
+                                const text = await navigator.clipboard.readText();
+                                document.execCommand('insertText', false, text);
+                            } catch (err) {
+                                alert('Browser security blocks direct paste access. Please use Ctrl+V (Windows) or Cmd+V (Mac) to paste.');
+                            }
+                        } else if (cmd === 'copy' || cmd === 'cut') {
+                             document.execCommand(cmd);
+                        } else {
+                            document.execCommand(cmd, false, null);
+                        }
+                        
+                        // Simple active toggle for styling (visual feedback)
+                        if (['bold', 'italic', 'underline'].includes(cmd)) {
+                            btn.classList.toggle('active');
+                        } else {
+                            // Flash effect for actions
+                            btn.classList.add('active');
+                            setTimeout(() => btn.classList.remove('active'), 200);
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function addCommonEventListeners(isAnalysisMode) {
+        const markForReviewBtn = rightPanel.querySelector('.mark-review');
+        if(markForReviewBtn) {
+            markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                q.isMarkedForReview = !q.isMarkedForReview;
+                updateMarkForReviewButton();
+                if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+            };
+        }
+    }
+
+    // --- MCQ LOGIC ---
+    let isAnnotationModeActive = false;
+    function addMCQEventListeners(isAnalysisMode) {
+        const annotationToolBtn = rightPanel.querySelector('.annotation-tool');
+        if (annotationToolBtn) {
+                annotationToolBtn.onclick = isAnalysisMode ? null : () => {
+                isAnnotationModeActive = !isAnnotationModeActive;
+                annotationToolBtn.classList.toggle('active', isAnnotationModeActive);
+                rightPanel.querySelectorAll('.question-option').forEach(option => {
+                    const line = option.querySelector('.strikethrough-line');
+                    const wrapper = option.querySelector('.annotation-control-wrapper');
+                    const undo = option.querySelector('.undo-controls');
+                    if (isAnnotationModeActive) {
+                        if (line.dataset.struck === 'true') { line.style.display = 'block'; undo.style.display = 'flex'; wrapper.style.display = 'none';
+                        } else { line.style.display = 'none'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                    } else { [line, wrapper, undo].forEach(el => el.style.display = 'none'); }
+                });
+            };
+        }
+
+        rightPanel.querySelectorAll('.question-option').forEach(option => {
+            option.onclick = isAnalysisMode ? null : function(e) {
+                    if (isAnnotationModeActive || document.querySelector('#highlight-tool-btn').classList.contains('active')) return;
+                    if (e.target.closest('.annotation-control-wrapper') || e.target.closest('.undo-controls')) return;
+
+                const selectedIndex = parseInt(this.dataset.optionIndex, 10);
+                sectionsData[currentSectionIndex].questions[currentQuestionIndex].selectedAnswer = selectedIndex;
+                rightPanel.querySelectorAll('.question-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                    if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+            };
+        });
+        
+        const optionsList = rightPanel.querySelector('.options-list');
+        if (optionsList) {
+            optionsList.addEventListener('click', function(e) {
+                const option = e.target.closest('.question-option');
+                if (!option || !isAnnotationModeActive) return;
+                const line = option.querySelector('.strikethrough-line'), wrapper = option.querySelector('.annotation-control-wrapper'), undo = option.querySelector('.undo-controls');
+                if (e.target.closest('.strikethrough-toggle-btn')) { line.style.display = 'block'; line.dataset.struck = 'true'; wrapper.style.display = 'none'; undo.style.display = 'flex'; } 
+                else if (e.target.closest('.undo-text')) { line.style.display = 'none'; line.dataset.struck = 'false'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+            });
+        }
+    }
+
+    // --- SHARED UI LOGIC ---
+    function handleZoomClick(e) {
+        const target = e.target;
+        if (target.tagName === 'IMG' || target.closest('.data-table')) {
+            const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+            openZoomModal(contentTarget);
+        }
+    }
+    
+    function updateFooter(isAnalysisMode = false) {
+        // Updated logic: Show Question X of Y for the CURRENT SECTION
+        const currentSection = sectionsData[currentSectionIndex];
+        const totalQuestionsInSection = currentSection.questions.length;
+        const questionNumberInSection = currentQuestionIndex + 1;
+
+        questionProgressBtn.textContent = `Question ${questionNumberInSection} of ${totalQuestionsInSection}`;
+        
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const nextBtnSpan = nextBtn.querySelector('span');
+        const backBtnSpan = backBtn.querySelector('span');
+
+        if (isAnalysisMode) {
+            backBtn.style.display = 'none';
+            nextBtn.classList.add('back-to-results-btn');
+            nextBtnSpan.textContent = 'Back to Results';
+        } else {
+            nextBtn.classList.remove('back-to-results-btn');
+            const isLastQuestionOfSection = currentQuestionIndex === sectionsData[currentSectionIndex].questions.length - 1;
+            const isLastSection = currentSectionIndex === sectionsData.length - 1;
+
+            if (currentView === 'review') {
+                nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                backBtnSpan.textContent = 'Back to Question';
+            } else {
+                nextBtnSpan.textContent = isLastQuestionOfSection ? 'Review' : 'Next';
+                backBtnSpan.textContent = 'Back';
+            }
+            backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+        }
+    }
+    
+    function renderReviewScreen() {
+        const section = sectionsData[currentSectionIndex];
+        document.getElementById('review-module-name').textContent = section.name;
+        document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+        renderGrid('review-grid-main');
+        updateFooter();
+    }
+
+    function renderGrid(containerId) {
+        const gridContainer = document.getElementById(containerId);
+        const section = sectionsData[currentSectionIndex];
+        gridContainer.innerHTML = '';
+        section.questions.forEach((q, index) => {
+            const item = document.createElement('div');
+            item.classList.add('question-grid-item');
+            item.textContent = q.id;
+            item.dataset.questionIndex = index;
+
+            // Determine status
+            let isAnswered = false;
+            if (section.type === 'MCQ') {
+                if (q.selectedAnswer !== null) isAnswered = true;
+            } else if (section.type === 'SAQ') {
+                if (q.userResponse && q.userResponse.trim().length > 0) isAnswered = true;
+            } else if (section.type === 'SAQ-Double') {
+                // Consider answered if either is filled (since it's a choice)
+                if ((q.userResponseQ3 && q.userResponseQ3.length > 0) || (q.userResponseQ4 && q.userResponseQ4.length > 0)) isAnswered = true;
+            }
+
+            if (isAnswered) item.classList.add('completed');
+            else item.classList.add('unanswered');
+            
+            if (q.isMarkedForReview) item.classList.add('for-review');
+            if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+            
+            gridContainer.appendChild(item);
+        });
+    }
+
+    function updateMarkForReviewButton() {
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        const btn = rightPanel.querySelector('.mark-review');
+        if (!btn) return;
+        btn.classList.toggle('marked', question.isMarkedForReview);
+    }
+    
+    function calculateAndShowResults() {
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let totalCount = 0;
+
+        const resultsGrid = document.getElementById('results-review-grid');
+        resultsGrid.innerHTML = '';
+
+        sectionsData.forEach((section, sIndex) => {
+            section.questions.forEach((q, qIndex) => {
+                const item = document.createElement('div');
+                item.classList.add('review-item');
+                item.textContent = q.id;
+                item.dataset.sectionIndex = sIndex;
+                item.dataset.questionIndex = qIndex;
+
+                if (section.type === 'MCQ') {
+                    totalCount++;
+                    const isCorrect = q.selectedAnswer === q.correctAnswer;
+                    if (q.selectedAnswer !== null) {
+                        if (isCorrect) correctCount++;
+                        else incorrectCount++;
+                    } else {
+                        incorrectCount++; 
+                    }
+                    item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    // For SAQ, mark as neutral/info since it's not auto-graded
+                    item.style.backgroundColor = '#6c757d'; 
+                }
+                
+                resultsGrid.appendChild(item);
+            });
+        });
+        
+        // Update stats only for MCQ
+        const scorePercent = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+        document.getElementById('score-text').textContent = `${correctCount} / ${totalCount}`;
+        document.getElementById('score-circle').style.setProperty('--score-percent', `${scorePercent}%`);
+        document.getElementById('correct-count').textContent = correctCount;
+        document.getElementById('incorrect-count').textContent = incorrectCount;
+
+        // Add SAQ Download Button if not exists
+        const btnContainer = document.querySelector('.download-buttons-container');
+        if (!document.getElementById('download-saq-btn')) {
+            const saqBtn = document.createElement('button');
+            saqBtn.id = 'download-saq-btn';
+            saqBtn.className = 'download-button txt';
+            saqBtn.style.marginLeft = '10px';
+            saqBtn.textContent = 'Download SAQ Answers';
+            btnContainer.appendChild(saqBtn);
+            
+            saqBtn.addEventListener('click', downloadSAQAnswers);
+        }
+    }
+
+    function downloadSAQAnswers() {
+        let content = "AP US History - Section I, Part B (Short Answer Questions)\n\n";
+        
+        // Find SAQ Section
+        const saqSection = sectionsData.find(s => s.type === 'SAQ');
+        if (!saqSection) { alert("No SAQ data found."); return; }
+
+        saqSection.questions.forEach(q => {
+            if (q.type === 'SAQ') {
+                content += `=== Question ${q.id} ===\n`;
+                content += stripHtml(q.userResponse || "[No Answer]") + "\n\n";
+            } else if (q.type === 'SAQ-Double') {
+                content += `=== Question 3 ===\n`;
+                content += stripHtml(q.userResponseQ3 || "[No Answer]") + "\n\n";
+                content += `=== Question 4 ===\n`;
+                content += stripHtml(q.userResponseQ4 || "[No Answer]") + "\n\n";
+            }
+        });
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'SAQ_Responses.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function stripHtml(html) {
+       let tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+
+    // --- EVENT LISTENERS ---
+    function attachGlobalListeners() {
+        document.getElementById('start-exam-btn').addEventListener('click', () => {
+            startTimer(sectionsData[0].time);
+            loadQuestion(0, 0);
+        });
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            currentQuestionIndex = 0; 
+            startTimer(sectionsData[currentSectionIndex].time);
+            loadQuestion(currentSectionIndex, 0);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if (currentView === 'analysis') {
+                switchView('results');
+                return;
+            }
+            
+            if (currentView === 'question') {
+                const section = sectionsData[currentSectionIndex];
+                if (currentQuestionIndex < section.questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion(currentSectionIndex, currentQuestionIndex);
+                } else {
+                    switchView('review');
+                }
+                return;
+            }
+
+            if (currentView === 'review') {
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+                return;
+            }
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if(currentView === 'review') { 
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+                return; 
+            }
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+            }
+        });
+            document.getElementById('results-review-grid').addEventListener('click', (e) => {
+            if (e.target.classList.contains('review-item')) {
+                const sIndex = parseInt(e.target.dataset.sectionIndex, 10);
+                const qIndex = parseInt(e.target.dataset.questionIndex, 10);
+                loadQuestion(sIndex, qIndex, true);
+            }
+        });
+    }
+    
+    window.onbeforeunload = function(e) {
+        if (currentView === 'question' || currentView === 'review') {
+            const message = 'You have not finished the exam. Are you sure you want to leave? Your progress will be lost.';
+            e.returnValue = message; 
+            return message;
+        }
+    };
+
+    function handleGridClick(e) {
+        if (e.target.classList.contains('question-grid-item')) {
+            const index = parseInt(e.target.dataset.questionIndex, 10);
+            if (currentView === 'review') {
+                const previewBox = document.getElementById('review-question-preview');
+                const question = sectionsData[currentSectionIndex].questions[index];
+                let content = `<strong>Question ${question.id}:</strong> ${question.stem}`;
+                if(question.subPrompts) {
+                    content += "<ul>" + question.subPrompts.map(p => `<li>${p}</li>`).join('') + "</ul>";
+                }
+                previewBox.innerHTML = content;
+                if (window.MathJax) { 
+                    window.MathJax.typesetPromise([previewBox]).catch(err => console.error("MathJax preview typesetting error:", err));
+                }
+            } else {
+                saveCurrentQuestionState();
+                loadQuestion(currentSectionIndex, index);
+                closeModal(questionListModal);
+            }
+        }
+    }
+    document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+    document.getElementById('review-grid-main').addEventListener('click', (e) => {
+        if (e.target.classList.contains('question-grid-item')) {
+                saveCurrentQuestionState();
+                const index = parseInt(e.target.dataset.questionIndex, 10);
+                loadQuestion(currentSectionIndex, index);
+        }
+    });
+
+    document.getElementById('download-txt-btn').addEventListener('click', function() {
+        let correctCount = 0;
+        let totalCount = 0;
+        let incorrectQuestionNumbers = [];
+
+        sectionsData.forEach(section => {
+            if(section.type !== 'MCQ') return; // Only MCQ for summary stats
+            section.questions.forEach(q => {
+                totalCount++;
+                const isCorrect = q.selectedAnswer === q.correctAnswer;
+                if (isCorrect) {
+                    correctCount++;
+                } else {
+                    incorrectQuestionNumbers.push(q.id);
+                }
+            });
+        });
+        const incorrectCount = totalCount - correctCount;
+
+        let summary = `MCQ Correct/Total: ${correctCount}/${totalCount}\r\n` +
+                        `MCQ Incorrect (incl. unanswered): ${incorrectCount}\r\n` +
+                        `Incorrect Q IDs: ${incorrectQuestionNumbers.join(', ')}`;
+        
+        const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'exam_summary_mcq.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+    
+    // --- MODAL & TOOL LOGIC (PRESERVED) ---
+    const directionsModal = document.getElementById('directions-modal');
+    const questionListModal = document.getElementById('question-list-modal');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomModalContent = document.getElementById('zoom-modal-content');
+    const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+    function openModal(modal) { modal.classList.add('active'); }
+    function closeModal(modal) { modal.classList.remove('active'); }
+
+    function openZoomModal(element) {
+        zoomModalContent.innerHTML = '';
+        const clonedElement = element.cloneNode(true);
+        zoomModalContent.appendChild(clonedElement);
+        openModal(zoomModal);
+    }
+    
+    document.getElementById('directions-btn').addEventListener('click', () => openModal(directionsModal));
+    document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+    directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+    
+    questionProgressBtn.addEventListener('click', (e) => { 
+        e.stopPropagation();
+        document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+        renderGrid('popup-question-grid');
+        questionListModal.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+        const qListContent = questionListModal.querySelector('.question-list-content');
+        if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+            closeModal(questionListModal);
+        }
+    });
+    
+    document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+    
+    zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+    zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+    document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+    document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+    
+    const splitter = document.getElementById('splitter');
+    let isDragging = false;
+    splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const notesPanelEl = document.getElementById('notes-panel');
+        const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+        let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+        const minWidth = 150;
+        const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+        if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+        if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+        leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+    // Calculator Dragging (preserved)
+    const calcContainer = document.getElementById('calculator-container');
+    const calcHeader = calcContainer.querySelector('.draggable-header');
+    let pos1=0,pos2=0,pos3=0,pos4=0;
+    calcHeader.onmousedown = (e) => { e.preventDefault(); pos3=e.clientX; pos4=e.clientY; document.onmouseup=closeDragElement; document.onmousemove=elementDrag; };
+    function elementDrag(e) { e.preventDefault(); pos1=pos3-e.clientX; pos2=pos4-e.clientY; pos3=e.clientX; pos4=e.clientY; calcContainer.style.top=(calcContainer.offsetTop-pos2)+"px"; calcContainer.style.left=(calcContainer.offsetLeft-pos1)+"px"; }
+    function closeDragElement() { document.onmouseup=null; document.onmousemove=null; }
+    calculatorBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        const isVisible = calcContainer.style.display === 'block';
+        calcContainer.style.display = isVisible ? 'none' : 'block';
+        btn.classList.toggle('active', !isVisible);
+    });
+    calcContainer.querySelector('.close-btn').addEventListener('click', () => { calcContainer.style.display = 'none'; document.getElementById('calculator-btn').classList.remove('active'); });
+
+    // Menu & Line Reader (preserved)
+    const moreBtn = document.getElementById('more-btn');
+    const moreDropdown = document.getElementById('more-dropdown');
+    const lineReaderOverlay = document.getElementById('line-reader-overlay');
+    moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+    document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+    function toggleLineReader() {
+        const isVisible = lineReaderOverlay.style.display === 'block';
+        lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+        document.removeEventListener('mousemove', moveLineReader);
+        if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+    }
+    function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+    document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+    document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+    // Highlight & Notes (preserved logic)
+    const highlightBtn = document.getElementById('highlight-tool-btn');
+    const highlightToolbar = document.getElementById('highlight-toolbar');
+    const notesPanelEl = document.getElementById('notes-panel');
+    const notesContent = document.getElementById('notes-content');
+    const noteInputModal = document.getElementById('note-input-modal');
+    let currentNoteRange = null;
+
+    highlightBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        btn.classList.toggle('active');
+        notesPanelEl.classList.toggle('visible');
+        if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+    });
+    
+    document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+        if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+        setTimeout(() => {
+            const selection = window.getSelection();
+            if (selection && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                highlightToolbar.style.display = 'flex';
+            } else {
+                highlightToolbar.style.display = 'none';
+            }
+        }, 10);
+    });
+    document.addEventListener('mousedown', (e) => {
+        if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+           highlightToolbar.style.display = 'none';
+        }
+    });
+
+    highlightToolbar.addEventListener('click', (e) => {
+        const target = e.target.closest('button');
+        if (!target) return;
+        const { color, action } = target.dataset;
+        if (color) wrapSelection('highlighted highlight-' + color);
+        else if (action === 'note') addNoteFromSelection();
+        else if (action === 'remove') removeHighlightAtSelection();
+        highlightToolbar.style.display = 'none';
+    });
+    
+    function wrapSelection(className) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const wrapper = document.createElement('span');
+        wrapper.className = className;
+        wrapper.appendChild(range.extractContents());
+        range.insertNode(wrapper);
+        selection.removeAllRanges();
+    }
+    
+    function addNoteFromSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        currentNoteRange = selection.getRangeAt(0).cloneRange();
+        document.getElementById('note-modal-text').textContent = selection.toString().trim();
+        document.getElementById('note-textarea').value = '';
+        openModal(noteInputModal);
+    }
+
+    function removeHighlightAtSelection() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+            if (range.intersectsNode(span)) {
+                const parent = span.parentNode;
+                while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                parent.removeChild(span);
+                parent.normalize();
+            }
+        });
+        selection.removeAllRanges();
+    }
+
+    document.getElementById('save-note-btn').addEventListener('click', () => {
+        const noteText = document.getElementById('note-textarea').value.trim();
+        if (noteText && currentNoteRange) {
+            const highlightedText = document.getElementById('note-modal-text').textContent;
+            const noteId = 'note_' + Date.now();
+            const span = document.createElement('span');
+            span.className = 'highlighted highlight-yellow';
+            span.dataset.noteId = noteId;
+            span.appendChild(currentNoteRange.extractContents());
+            currentNoteRange.insertNode(span);
+            
+            const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+            currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+            renderNotes();
+        }
+        closeModal(noteInputModal);
+    });
+    document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+    
+    function renderNotes() {
+        notesContent.innerHTML = '';
+        if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+        currentNotes.forEach(note => {
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            noteDiv.dataset.noteId = note.id;
+            noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+            notesContent.appendChild(noteDiv);
+        });
+        notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+           btn.addEventListener('click', (e) => {
+                const noteElement = e.target.closest('.note');
+                const noteId = noteElement.dataset.noteId;
+                const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                if (spanToRemove) {
+                    const parent = spanToRemove.parentNode;
+                    while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                    parent.removeChild(spanToRemove);
+                    parent.normalize();
+                }
+                const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                renderNotes();
+           });
+        });
+    }
+
+    // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>

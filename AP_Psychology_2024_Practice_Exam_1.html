@@ -1,0 +1,2989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Psychology - 2024 Practice Exam 1</title>
+    <script>
+        // MathJax Configuration
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400&family=Roboto:wght@400;500;700&display=swap');
+
+        /* Base Styles */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* Improve MathJax formula size */
+        mjx-container {
+            font-size: 1.1em !important;
+            margin: 5px 0;
+        }
+
+        /* Read-only & Zoom styles */
+        .pane-content-left img,
+        .pane-content-left .data-table {
+            cursor: zoom-in;
+        }
+        .pane-content-left img,
+        .pane-content-left .data-table,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }
+        
+        /* --- FULL PAGE SCREENS --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            z-index: 2000;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .full-page-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info-card {
+            background-color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border-top: 5px solid var(--primary-blue);
+        }
+        .info-card h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .info-card h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .info-card p, .info-card li {
+            font-family: 'Noto Serif', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-light);
+            text-align: left;
+        }
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .info-card ul li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #e0e0e0;
+        }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block;
+            background-color: #324DC7;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover {
+            background-color: #283e9f;
+        }
+
+        /* --- RESULTS PAGE STYLES --- */
+        #results-screen {
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            text-align: center;
+        }
+        .results-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 20px auto;
+            width: 100%;
+        }
+        #results-screen h1 {
+            font-family: 'Noto Serif', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .score-summary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(var(--correct-green) 0% var(--score-percent, 0%), #e9ecef var(--score-percent, 0%) 100%);
+            position: relative;
+        }
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+        }
+        .score-text { z-index: 1; font-size: 32px; font-weight: bold; color: var(--text-dark); }
+        .score-label { z-index: 1; font-size: 14px; color: var(--text-light); margin-top: 5px; }
+        
+        .stats-boxes {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-box.correct { background-color: rgba(40, 167, 69, 0.1); }
+        .stat-box.incorrect { background-color: rgba(220, 53, 69, 0.1); }
+        .stat-box .count { font-size: 28px; font-weight: bold; }
+        .stat-box.correct .count { color: var(--correct-green); }
+        .stat-box.incorrect .count { color: var(--incorrect-red); }
+        .stat-box .label { font-size: 14px; color: var(--text-light); }
+
+        .review-questions-list {
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        .review-questions-list h2 {
+            font-family: 'Noto Serif', serif;
+            font-size: 24px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 15px;
+        }
+        .review-item {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            border: 1px solid transparent;
+        }
+        .review-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .review-item.correct { background-color: var(--correct-green); }
+        .review-item.incorrect { background-color: rgba(220, 53, 69, 0.85); }
+        
+        .download-buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .download-button {
+            background-color: var(--bb-dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .download-button:hover {
+            background-color: #001a33;
+        }
+        .download-button.txt {
+             background-color: #6c757d;
+        }
+        .download-button.txt:hover {
+            background-color: #5a6268;
+        }
+
+        .back-to-results-btn {
+            background-color: var(--primary-blue) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        /* --- Main Application --- */
+        .body-new-sat {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+        }
+        .body-new-sat.active {
+            display: flex;
+        }
+        
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#calculator-btn.active span, .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        /* --- Dashed Separator (CSS Method) --- */
+        .separator-container {
+            height: 2px;
+            width: 100%;
+            background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px);
+            background-size: 40px 2px;
+            background-repeat: repeat-x;
+        }
+        #header-dashes, #footer-dashes {
+            position: absolute;
+            left: 30px;
+            width: calc(100% - 60px);
+            bottom: 0;
+        }
+        #footer-dashes {
+             top: 0;
+             bottom: auto;
+        }
+        #question-header-separator {
+             margin-bottom: 25px;
+             width: 100%;
+             left: 0;
+        }
+
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        .pane-content-left { 
+            flex: 0 1 45%; 
+            padding: 30px 25px; 
+            box-sizing: border-box; 
+            font-family: 'Noto Serif', serif; 
+            font-size: 16px; 
+            line-height: 1.7; 
+            overflow-y: auto; 
+            min-width: 200px; 
+            background-color: #ffffff; 
+            color: #000000; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+        }
+        .pane-content-left > * {
+            margin-bottom: 20px;
+        }
+        .pane-content-left h4 { font-family: 'Roboto', sans-serif; text-align: center; font-weight: 500; font-size: 16px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 10px 15px; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: 500; background-color: #f9f9f9; text-align: center; }
+        .data-table td { text-align: center; }
+        .data-table td:first-child { text-align: left; }
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 55%; padding: 25px 80px 25px 25px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #eeeeee; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        .annotation-tool { margin-left: auto; cursor: pointer; }
+        .annotation-tool svg { width: 36px; height: 36px; }
+        .annotation-tool.active svg rect { fill: var(--primary-blue); }
+        .annotation-tool.active svg text, .annotation-tool.active svg line { stroke: white; fill: white; }
+        .sat-stem { font-family: 'Noto Serif', serif; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        .options-list { display: flex; flex-direction: column; gap: 15px; }
+        .question-option { display: flex; align-items: center; padding: 16px; border: 1.5px solid var(--border-color); border-radius: 10px; background-color: #ffffff; cursor: pointer; position: relative; }
+        .options-list.analysis-mode .question-option { cursor: default; }
+        .question-option.selected { border: 2px solid #324DC7; box-shadow: none; }
+        .sat-radio-num { width: 28px; height: 28px; border: 2px solid var(--text-light); border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; margin-right: 15px; flex-shrink: 0; }
+        .question-option.selected .sat-radio-num { border-color: #324DC7; background-color: #324DC7; color: white; }
+        .option-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.5; flex-grow: 1; }
+        .option-text img { max-width: 100%; display: block; margin: 10px auto; }
+        
+        /* --- ANALYSIS VIEW STYLES (NO CHECKMARK) --- */
+        .question-option.correct-answer { border: 2px solid var(--correct-green); background-color: rgba(40, 167, 69, 0.05); }
+        .question-option.wrong-answer { border: 2px solid var(--incorrect-red); background-color: rgba(220, 53, 69, 0.05); }
+        .question-option.correct-answer .sat-radio-num { border-color: var(--correct-green); background-color: var(--correct-green); color: white; }
+        
+        .annotation-control-wrapper { position: absolute; right: -40px; top: 50%; transform: translateY(-50%); display: none; align-items: center; }
+        .strikethrough-toggle-btn { width: 22px; height: 22px; border: 1px solid #000000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; cursor: pointer; background-color: white; color: #000000; transition: all 0.1s ease-in-out; position: relative; }
+        .strikethrough-toggle-btn::after { content: ''; position: absolute; width: 140%; height: 2px; background-color: #000000; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        .strikethrough-line { position: absolute; left: -15px; right: -15px; top: 50%; height: 2px; background-color: #000; transform: translateY(-50%); z-index: 2; display: none; pointer-events: none; }
+        .undo-controls { display: flex; align-items: center; position: absolute; right: -60px; top: 50%; transform: translateY(-50%); display: none; }
+        .undo-text { font-size: 14px; font-weight: bold; text-decoration: underline; color: #555; cursor: pointer; margin-left: -10px; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- REVIEW SCREEN --- */
+        #review-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1; 
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active .sat-header,
+        .body-new-sat.review-mode-active #question-screen {
+            display: none;
+        }
+        .body-new-sat.review-mode-active .footer-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .body-new-sat.review-mode-active #review-screen {
+            display: flex;
+            padding-bottom: 80px; /* space for footer */
+        }
+        .body-new-sat.review-mode-active {
+            height: 100vh;
+        }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        #note-input-modal { justify-content: center; align-items: center; }
+        .note-modal-content { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 400px; max-width: 90%; display: flex; flex-direction: column; }
+        .note-modal-content h4 { margin-top: 0; margin-bottom: 15px; font-family: 'Roboto', sans-serif; font-size: 18px; color: var(--bb-dark-blue); }
+        .note-modal-selection { margin-bottom: 15px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .note-modal-selection blockquote { margin: 5px 0 0 0; padding-left: 10px; border-left: 3px solid var(--border-color); font-style: italic; max-height: 60px; overflow-y: auto; }
+        #note-textarea { width: 100%; height: 100px; border: 1px solid var(--border-color); border-radius: 4px; padding: 10px; font-family: 'Roboto', sans-serif; font-size: 14px; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .note-modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        .note-modal-footer button { border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        #save-note-btn { background-color: var(--primary-blue); color: white; }
+        #cancel-note-btn { background-color: #f0f0f0; color: var(--text-dark); }
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: var(--bb-highlight-yellow); }
+        .highlight-toolbar button.color-btn.pink { background-color: var(--bb-highlight-pink); }
+        .highlight-toolbar button.color-btn.blue { background-color: var(--bb-highlight-blue); }
+        .highlight-toolbar button.color-btn.green { background-color: var(--bb-highlight-green); }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        span.highlighted { border-radius: 2px; padding: 0 1px; }
+        span.highlight-yellow { background-color: var(--bb-highlight-yellow); }
+        span.highlight-pink { background-color: var(--bb-highlight-pink); }
+        span.highlight-blue { background-color: var(--bb-highlight-blue); }
+        span.highlight-green { background-color: var(--bb-highlight-green); }
+        span.underline-dashed { border-bottom: 2px dashed var(--text-dark); }
+        span.underline-wavy { text-decoration: underline wavy var(--text-dark); }
+        .notes-panel { width: 0px; flex-shrink: 0; background-color: #f8f9fa; border-left: 1px solid var(--bb-medium-gray); padding: 0; overflow-y: auto; transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease; opacity: 0; }
+        .notes-panel.visible { width: 300px; opacity: 1; padding: 20px; }
+        .notes-panel h3 { margin-top:0; margin-bottom: 15px; color: var(--bb-dark-blue); }
+        .note { margin-bottom: 15px; padding: 10px; border-radius: 4px; background-color: #fff; border: 1px solid #e0e0e0; position: relative; }
+        .note-highlight { font-style: italic; color: var(--text-light); border-left: 3px solid var(--primary-blue); padding-left: 10px; margin-bottom: 5px; word-break: break-word; font-size: 14px; }
+        .note-text { font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+        .delete-note-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; border: none; background: transparent; color: #dc3545; font-size: 1.2rem; font-weight: bold; padding: 0 5px; opacity: 0.5; transition: opacity 0.2s; }
+        .note:hover .delete-note-btn { opacity: 1; }
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); resize: both; overflow: hidden; min-width: 350px; min-height: 200px; }
+        .draggable-header { padding: 10px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .draggable-header .title { font-weight: bold; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .draggable-content { padding: 0; width: 100%; height: calc(100% - 40px); overflow: auto; }
+        #calculator-container .draggable-content { display: flex; flex-direction: column; }
+        .calc-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+        .calc-tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .calc-tab.active { border-bottom-color: var(--primary-blue); font-weight: bold; }
+        .calc-body { flex-grow: 1; }
+        .calc-pane { display: none; width: 100%; height: 100%; }
+        .calc-pane.active { display: block; }
+        .calc-pane iframe { width: 100%; height: 100%; border: none; }
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* Zoom Modal Styles */
+        #zoom-modal {
+            justify-content: center;
+            align-items: center;
+            z-index: 2100; /* Higher than other elements */
+        }
+        .zoom-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2101;
+            line-height: 1;
+        }
+        #zoom-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #zoom-modal-content img, #zoom-modal-content table {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* --- WATERMARK STYLE --- */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Makes the watermark click-through */
+            z-index: 99999; /* Ensures it's on top of other content */
+            background-repeat: repeat;
+            background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo=");
+        }
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+
+        <div class="watermark"></div>
+    
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+            <h1>AP Psychology</h1>
+            <h2>2024 Practice Exam 1</h2>
+            <hr>
+<h3>Section I: Multiple Choice</h3>
+<ul>
+    <li>Apply psychological perspectives, theories, concepts, and research findings.</li>
+    <li>Evaluate qualitative and quantitative research methods and study designs.</li>
+    <li>Evaluate representations of psychological concepts depicted in quantitative research (tables, graphs, charts, and diagrams) and described in qualitative research.</li>
+</ul>
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1 id="transition-title">Section I, Part B</h1>
+            <h2 id="transition-subtitle">Calculator Required</h2>
+            <p id="transition-body">You have completed Part A. You may now proceed to Part B. A graphing calculator is required for some questions in this section. <br><br><b>You will not be able to return to Part A.</b></p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Results</h1>
+            <div class="score-summary">
+                <div class="score-circle" id="score-circle">
+                    <span class="score-text" id="score-text">0/45</span>
+                    <span class="score-label">Total Score</span>
+                </div>
+                <div class="stats-boxes">
+                    <div class="stat-box correct">
+                        <div class="count" id="correct-count">0</div>
+                        <div class="label">Correct</div>
+                    </div>
+                    <div class="stat-box incorrect">
+                        <div class="count" id="incorrect-count">0</div>
+                        <div class="label">Incorrect</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-questions-list">
+                <h2>Review Questions</h2>
+                <div class="review-grid" id="results-review-grid">
+                    </div>
+            </div>
+            <div class="download-buttons-container">
+                <button class="download-button txt" id="download-txt-btn">Download Summary (TXT)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section I, Part A</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">90:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight & Notes Icon">
+                    <span>Highlight & Notes</span>
+                </div>
+                <div class="tool-button" id="calculator-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxMSAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICAgICAgZmlsbC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgY2xpcC1ydWxlPSJldmVub2RkIg0KICAgICAgICAgICAgZD0iTTAgMTMuMzg1aDEwLjk1MlYuNUgwdjEyLjg4NXptLjk2Ny0uOTY2aDkuMDJWMS40NjdILjk2NnYxMC45NTJ6Ig0KICAgICAgICAgICAgZmlsbD0iIzFFMUUxRSINCiAgICAvPg0KICAgIDxwYXRoDQogICAgICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBjbGlwLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgICAgICBkPSJNMS45MzIgNS40OTdoNy4wODd2LTIuOUgxLjkzMnYyLjl6bS45NjctLjk2Mmg1LjE1NHYtLjk2N0gyLjg5OXYuOTY3ek0xLjkzMiA3LjQzMWgxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgNy40MzFINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDYuNDE0SDcuNDFWNy40M2gxLjYxVjYuNDE0ek0xLjkzMiA5LjM1N2gxLjYxdi0uOTY2aC0xLjYxdi45NjZ6TTQuNjcgOS4zNTdINi4yOHYtLjk2Nkg0LjY3di45NjZ6TTkuMDIyIDguMzlINy40MXYuOTY3aDEuNjF2LS45NjZ6TTEuOTM0IDExLjI5M2gxLjYxdi0uOTY3aC0xLjYxdi45Njd6TTQuNjcgMTEuMjkzSDYuMjh2LS45NjdINC42N3YuOTY3ek03LjQwOCAxMS4yOTNoMS42MXYtLjk2N2gtMS42MXYuOTY3eiINCiAgICAgICAgICAgIGZpbGw9IiMxRTFFMUUiDQogICAgLz4NCjwvc3ZnPg0K" alt="Calculator Icon">
+                    <span>Calculator</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d">
+                        <circle cx="12" cy="5" r="2"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <circle cx="12" cy="19" r="2"></circle>
+                    </svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+            <div class="separator-container" id="header-dashes"></div>
+        </header>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+            <div id="notes-panel" class="notes-panel">
+                <h3>My Notes</h3>
+                <div id="notes-content"></div>
+            </div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section I, Part A</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1 of 75</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+<p>The directions that follow are what you will see on exam day. This untimed preview is intended to represent the different question types and functionality you will encounter on exam day and has fewer multiple-choice questions than the exam.</p>
+
+<p style="text-align: center;">Psychology</p>
+
+<p>Section I has 75 multiple-choice questions and lasts 1 hour and 30 minutes.</p>
+
+<p>Each of the questions or incomplete statements is followed by 4 suggested answers or completions. Select the one that is best in each case.</p>
+<p>You can go back and forth between questions in this section until time expires. The clock will turn red when 5 minutes remain—the <strong>proctor will not give you any time updates or warnings</strong>.</p>            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section I, Part A</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    <div id="calculator-container" class="draggable" style="display: none; top: 100px; left: 100px; width: 400px; height: 600px;">
+        <div class="draggable-header"><span class="title">Calculator</span><button class="close-btn">&times;</button></div>
+        <div class="draggable-content">
+            <div class="calc-tabs"><div class="calc-tab active" data-tab="graphing">Graphing Calculator</div></div>
+            <div class="calc-body"><div id="graphing-pane" class="calc-pane active"><iframe src="https://www.desmos.com/calculator" allow="fullscreen"></iframe></div></div>
+        </div>
+    </div>
+    <div id="note-input-modal" class="modal-overlay">
+        <div class="note-modal-content">
+            <h4>Add a Note</h4>
+            <div class="note-modal-selection"><strong>For text:</strong><blockquote id="note-modal-text"></blockquote></div>
+            <textarea id="note-textarea" placeholder="Type your note here..."></textarea>
+            <div class="note-modal-footer"><button id="cancel-note-btn">Cancel</button><button id="save-note-btn">Save Note</button></div>
+        </div>
+    </div>
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="note" title="Add Note">&#128221;</button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit Line Reader</button>
+    </div>
+    <div id="zoom-modal" class="modal-overlay">
+        <span class="zoom-modal-close">&times;</span>
+        <div id="zoom-modal-content"></div>
+    </div>
+
+    <script id="main-app-script">
+        // --- Self-contained script for the entire application ---
+        (function() {
+            // --- STATE MANAGEMENT ---
+            let sectionsData = [];
+            let currentSectionIndex = 0;
+            let currentQuestionIndex = 0;
+            let currentView = 'start'; // start, question, review, transition, results, analysis
+            let timerInterval;
+
+            function initializeExam() {
+                sectionsData = [
+                    {
+                        name: "Section I, Part A",
+                        time: 90 * 60, // 90 minutes
+                        questions: [
+  {
+    "id": 1,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Josie was given a password by her teacher. To remember the password, she repeated it in her mind multiple times until she typed it into her login screen a few moments later. Which of the following concepts was at work?",
+    "options": [
+      "Divergent thinking",
+      "Iconic memory",
+      "Phonological loop",
+      "Visuospatial sketchpad"
+    ]
+  },
+  {
+    "id": 2,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A study was conducted with fifty-five preteens (ages 9-12) who were not getting the recommended amount of sleep for their age. All preteens agreed to participate in the study. The participants were told they did not have to complete the study and could leave the study at any time.<br><br>During the study, participants were randomly placed into either a group that gradually moved bedtimes earlier by five minutes each night or a control group that slept on their normal sleep cycle. The study’s purpose was disclosed to participants once the study was over.<br><br>Which of the following ethical considerations was most problematic for this study?",
+    "options": [
+      "Participants were not debriefed.",
+      "The risk to participants was too high.",
+      "The participants did not have the right to withdraw.",
+      "Informed consent was not given for the preteens to participate in the study."
+    ]
+  },
+  {
+    "id": 3,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following scenarios best describes the monocular depth cue of relative size?",
+    "options": [
+      "Abel judges the distance of an object based on the difference between the images processed by the retina in each eye.",
+      "Yvonne judges the distance of an object based on how large the image is on the retina.",
+      "Kenzi judges the distance of an object based on whether it is partially blocked by another object.",
+      "Selah judges the distance of an object based on its location in the visual field compared with other objects in the scene."
+    ]
+  },
+  {
+    "id": 4,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Sanjay conducted a study to determine whether eating breakfast affects academic performance. At the beginning of the week, he gathered survey data from students in his third-grade class about whether they ate breakfast. The next day, Dr. Sanjay showed the students ten new vocabulary words. Three days later, he administered a test to the students to measure their word recall. After analyzing the data, he claimed that eating breakfast improves the ability to recall new words.<br><br>Which of the following statements best explains why this is a false claim?",
+    "options": [
+      "Dr. Sanjay did not obtain informed consent from the parents or guardians of the students.",
+      "Dr. Sanjay needed to confirm that the students told the truth about what they ate.",
+      "Dr. Sanjay cannot make cause-and-effect claims from correlational data.",
+      "Dr. Sanjay needed to wait more than three days to measure word recall."
+    ]
+  },
+  {
+    "id": 5,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following is an example of habituation for a dog?",
+    "options": [
+      "The dog only responded after his owner repeatedly called his name.",
+      "Although the dog responded the first time his owner called his name, the dog stopped responding when his owner called his name multiple times.",
+      "After his owner first gave him food, the dog continued to beg for food at the table.",
+      "The dog stopped begging for food at the table after his owner did not respond with food multiple times."
+    ]
+  },
+  {
+    "id": 6,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Nelson believes that the symptoms of Nellie’s schizophrenia stem from childhood trauma. However, Dr. Khan believes that excess dopamine is causing many of Nellie’s symptoms. Which of the following psychological perspectives is each doctor using to explain Nellie’s symptoms?",
+    "options": [
+      "Dr. Nelson is using a psychodynamic perspective, while Dr. Khan is using a biological perspective.",
+      "Dr. Nelson is using a cognitive perspective, while Dr. Khan is using an evolutionary perspective.",
+      "Dr. Nelson is using a behavioral perspective, while Dr. Khan is using a sociocultural perspective.",
+      "Dr. Nelson is using a humanistic perspective, while Dr. Khan is using a psychodynamic perspective."
+    ]
+  },
+  {
+    "id": 7,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Participants in a study are randomly shown one of two advertisements for a new dessert brand. In each advertisement, the participants are told about how delicious, satisfying, and healthy the dessert is. In one advertisement, this information is presented by a doctor wearing a lab coat. In the other advertisement, the information is presented by a popular movie actor.<br><br>Which of the following research questions is this study most likely trying to answer?",
+    "options": [
+      "What type of audience is most receptive to an advertisement?",
+      "How does psychological state affect physical health?",
+      "How does the source of information affect how persuasive the information is?",
+      "How does personality affect decision-making?"
+    ]
+  },
+  {
+    "id": 8,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Tim decided he needed to lose some weight. He started dieting, but he was experiencing uncomfortable feelings of hunger when he fasted for several hours. He then began eating several small meals over the course of a day and stopped experiencing feelings of hunger.<br><br>Which of the following concepts best explains why Tim was not able to maintain fasting as a part of his diet strategy?",
+    "options": [
+      "Yerkes-Dedson Law",
+      "Homeostasis",
+      "Reaction formation",
+      "Instincts"
+    ]
+  },
+  {
+    "id": 9,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Ms. Fox conducted a study to see if there was a relationship between the Big Five trait of conscientiousness and final grades in her class. She randomly sampled data from seven students, whose conscientiousness scores and final grades are indicated in the table.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/MBQO/688X416/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following research methods is Ms. Fox using in her study?",
+    "options": [
+      "A correlational study",
+      "An experiment",
+      "A naturalistic observation",
+      "A case study"
+    ]
+  },
+  {
+    "id": 10,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Ms. Fox conducted a study to see if there was a relationship between the Big Five trait of conscientiousness and final grades in her class. She randomly sampled data from seven students, whose conscientiousness scores and final grades are indicated in the table.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/MBQO/688X416/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following graphs best depicts the results of Ms. Fox’s study?",
+    "options": [
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/PEt2/542X304/image.png/webp' style='width:100%; max-width:600px;' />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/DYgl/548X316/image.png/webp' style='width:100%; max-width:600px;' />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/tM4N/542X308/image.png/webp' style='width:100%; max-width:600px;' />",
+      "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/jUI3/538X320/image.png/webp' style='width:100%; max-width:600px;' />"
+    ]
+  },
+  {
+    "id": 11,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Ms. Fox conducted a study to see if there was a relationship between the Big Five trait of conscientiousness and final grades in her class. She randomly sampled data from seven students, whose conscientiousness scores and final grades are indicated in the table.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/MBQO/688X416/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following statements by one of Ms. Fox’s students best demonstrates a high level of conscientiousness?",
+    "options": [
+      "I am typically nervous in situations where I am meeting new people.",
+      "I am always happy to work with a diverse group of people.",
+      "I enjoy eating new foods or going to places I have never been before.",
+      "I like to keep my study notes organized."
+    ]
+  },
+  {
+    "id": 12,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following statements best explains a common criticism of the Diagnostic and Statistical Manual of Mental Disorders (DSM)?",
+    "options": [
+      "The DSM recommends pharmaceutical treatments for psychological disorders that may not be appropriate for all people.",
+      "The DSM organizes symptoms of different disorders so they can be diagnosed effectively.",
+      "The DSM features only the cognitive perspective and ignores other important psychological viewpoints.",
+      "The DSM uses labels that can create lasting stigma for the person diagnosed."
+    ]
+  },
+  {
+    "id": 13,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Patel conducts a survey of his local community and finds that people who regularly attend a religious service are happier than those who do not. Dr. Patel concludes that attending religious services regularly causes happiness. Which of the following factors makes his conclusion faulty?",
+    "options": [
+      "Dr. Patel did not debrief his survey participants after the study was completed.",
+      "Dr. Patel used a case study method instead of an experiment to investigate the relationship.",
+      "Dr. Patel assumed a causal relationship using data from a nonexperimental method.",
+      "Dr. Patel did not use naturalistic observation to verify the survey results."
+    ]
+  },
+  {
+    "id": 14,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A researcher conducted a study to investigate whether women in the first trimester of pregnancy score higher on levels of disgust than women who are in a later stage of pregnancy. The researcher believes that being more selective about food choices helps pregnant women avoid diseases that could harm their fetuses.<br><br>A researcher from which of the following psychological perspectives would most likely be interested in examining this relationship?",
+    "options": [
+      "Psychodynamic",
+      "Cognitive",
+      "Evolutionary",
+      "Sociocultural"
+    ]
+  },
+  {
+    "id": 15,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/zNIf/644X818/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following is a primary function of the nervous system depicted in the figure?",
+    "options": [
+      "Breaking down food to process into energy",
+      "Sending and receiving sensory and motor signals",
+      "Receiving chemical signals from the outside world",
+      "Secreting hormones that regulate body temperature"
+    ]
+  },
+  {
+    "id": 16,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/OcG2/586X330/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Professor Jain conducted a study investigating the impact of sleep deprivation on reaction time. After giving consent, 12 adult participants who typically slept 8 hours per night were randomly assigned to one of two groups. One group maintained their typical amount of sleep of 8 hours. The other group reduced their typical amount of sleep to 4 hours.<br><br>After waking from sleep, participants were given a reaction time test. The average reaction time, in seconds, for each participant is displayed in the table.<br><br>What is the mean reaction time for the group that slept 8 hours?",
+    "options": [
+      "3 seconds",
+      "4 seconds",
+      "5 seconds",
+      "6 seconds"
+    ]
+  },
+  {
+    "id": 17,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Alice saved money from her job to attend a sports camp that she was really excited to attend. At the camp, she endured challenging morning runs and grueling physical activity that she disliked. She thought that the food was terrible and that her bed was uncomfortable. After she returned home, she was asked if she enjoyed the camp. She replied, “It was the best experience of my life.”<br><br>Which of the following concepts best explains Alice’s final attitude about the camp?",
+    "options": [
+      "Principles of operant conditioning",
+      "Principles of classical conditioning",
+      "Reciprocal determinism",
+      "Cognitive dissonance"
+    ]
+  },
+  {
+    "id": 18,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Asano is the expert for English literature on his school’s trivia team. He knows the authors and main characters of many famous novels. Which of the following describes Asano’s knowledge of these types of facts?",
+    "options": [
+      "Implicit memory",
+      "Semantic memory",
+      "Prospective memory",
+      "Sensory memory"
+    ]
+  },
+  {
+    "id": 19,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following statements best describes the differences between internal locus of control and external locus of control for health and well-being?",
+    "options": [
+      "Individuals with an internal locus of control tend to be less depressed than individuals who have an external locus of control.",
+      "Individuals with an external locus of control thrive when they work independently compared to individuals who have an internal locus of control.",
+      "Individuals with an internal locus of control live longer than those with an external locus of control.",
+      "Individuals with an internal locus of control are more likely than individuals who have an external locus of control to experience learned helplessness."
+    ]
+  },
+  {
+    "id": 20,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Keith conducted a study to investigate whether caffeine improves focus and attention. He selected a random sample of students from his college class and then randomly assigned each of them to drink a cup of coffee or a cup of water before class. At the end of class, he administered a test on their knowledge of class material presented that day.<br><br>Which of the following is the operational definition of the dependent variable?",
+    "options": [
+      "A cup of coffee",
+      "A cup of water",
+      "Test scores on the class material",
+      "Focus and attention"
+    ]
+  },
+  {
+    "id": 21,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following elements of Dr. Keith’s research would most strengthen Dr. Keith’s ability to infer a causal relationship between caffeine intake and improved focus and attention?",
+    "options": [
+      "Dr. Keith selects a random sample of students in the class.",
+      "Dr. Keith gains approval from an Institutional Review Board.",
+      "Dr. Keith keeps conditions the same between the two groups except for the independent variable.",
+      "Dr. Keith debriefs the students at the end of the study."
+    ]
+  },
+  {
+    "id": 22,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Keith found that students who drink coffee demonstrate less focus and attention, as evidenced by lower test scores, and then claimed that he expected that result all along. Based on this description, which of the following is Dr. Keith displaying?",
+    "options": [
+      "Availability heuristic",
+      "Hindsight bias",
+      "Actor/observer bias",
+      "Fundamental attribution error"
+    ]
+  },
+  {
+    "id": 23,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Maksym’s parents set moderate expectations about discipline, exhibit high levels of warmth, and have open lines of communication. Which of the following best describes the parenting style of Maksym’s parents?",
+    "options": [
+      "Authoritarian",
+      "Permissive",
+      "Authoritative",
+      "Scaffolding"
+    ]
+  },
+  {
+    "id": 24,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following statements is most representative of the principles of the Law of Effect?",
+    "options": [
+      "A person is able to notice a change in a stimulus if it is a large enough proportion of change from the original stimulus.",
+      "A person is more likely to engage in a behavior if they feel personal satisfaction from doing it rather than receiving external rewards for doing it.",
+      "A person is more likely to engage in a behavior more frequently when the behavior is followed by a positive result.",
+      "Identical twins raised in separate households are more similar in IQ and personality than fraternal twins raised in the same household."
+    ]
+  },
+  {
+    "id": 25,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Stonington argues that children’s cognitive abilities develop in clear, distinct stages that are universal. Which of the following views is most consistent with Dr. Stonington’s beliefs?",
+    "options": [
+      "The continuous view of development",
+      "The discontinuous view of development",
+      "The epigenetics view of development",
+      "The nurture view of development"
+    ]
+  },
+  {
+    "id": 26,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Mr. Harding teaches two classes. His early afternoon class consists of mostly boys, while his late afternoon class consists of mostly girls. He believes that girls tend to be calmer than boys, so he expects that his late afternoon class will be easier than his early afternoon class.<br><br>Mr. Harding’s belief is an example of which of the following?",
+    "options": [
+      "Cognitive dissonance",
+      "A stereotype",
+      "In-group bias",
+      "Reciprocal determinism"
+    ]
+  },
+  {
+    "id": 27,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "According to the psychodynamic perspective, which of the following processes best explains why people use defense mechanisms?",
+    "options": [
+      "To protect the ego",
+      "To self-actualize",
+      "To overcome latent learning",
+      "To delay moratorium"
+    ]
+  },
+  {
+    "id": 28,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Reginald is conducting a case study on a group of self-identified extroverts. Reginald is a trait theorist who believes that people act the same regardless of the situation. He lists all the situations in which the group is more talkative and outgoing. However, he ignores the instances in which the group acts more reserved or interacts with only a few people.<br><br>Which of the following may Reginald be experiencing?",
+    "options": [
+      "Hindsight bias",
+      "Self-serving bias",
+      "Spotlight effect",
+      "Confirmation bias"
+    ]
+  },
+  {
+    "id": 29,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Markum is taking a class on positive psychology. His instructor encourages class members to recognize, reflect on, and appreciate the moments in their lives when they have had positive feelings or have been influenced in ways that had positive outcomes.<br><br>Which of the following terms best corresponds to what Markum’s instructor is trying to help them feel?",
+    "options": [
+      "Self-efficacy",
+      "Locus of control",
+      "Gratitude",
+      "Eustress"
+    ]
+  },
+  {
+    "id": 30,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Meerdink wants to know if creativity varies throughout the day. In a morning class, she asks her college students to list as many uses as possible for a stick. On the same day 12 hours later, she asks students in an evening class to list as many uses as possible for a stick.<br><br>Which of the following factors is the dependent variable?",
+    "options": [
+      "Morning",
+      "Evening",
+      "Creativity",
+      "College students"
+    ]
+  },
+  {
+    "id": 31,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Psychologists have found that the rates of depression in the countries of the world vary greatly. Which of the following statements best explains the difficulty in determining how common a disorder may be globally?",
+    "options": [
+      "Because other countries never allow studies conducted on people, this type of research is difficult to conduct.",
+      "Because human genetics vary widely it is difficult to accurately measure how common a disorder may be in a specific culture.",
+      "Because psychologists from different cultures are competitive, they often do not share research results, which makes it difficult to measure diagnostic differences across cultures.",
+      "Because cultures deviate widely in their social norms, making consistent and reliable diagnoses across cultures is difficult."
+    ]
+  },
+  {
+    "id": 32,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Darrin is watching a horror movie. When the evil main character makes a surprise appearance, Darrin jumps out of his seat, his heart rate accelerates, and he screams.<br><br>Which of the following pathways most directly contributes to his ability to calm down after this startle response?",
+    "options": [
+      "The reflex arc",
+      "The somatic nervous system",
+      "The sympathetic nervous system",
+      "The parasympathetic nervous system"
+    ]
+  },
+  {
+    "id": 33,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Sleep researchers conducted a study to determine if wearing a continuous positive airway pressure (CPAP) machine helps individuals who are experiencing symptoms of sleep apnea to increase their levels of REM sleep compared to those not using a CPAP device.<br><br>Twenty participants with sleep apnea who did not previously wear a CPAP device were randomly placed into one of two groups. Group 1 slept without wearing a CPAP device, and researchers measured the percentage of total sleep time each participant spent in REM.<br><br>Participants in Group 2 were given a CPAP device to wear while sleeping and researchers measured the percentage of total sleep time each participant spent in REM. The results are given in the graph.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/YT0P/770X448/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "What is the independent variable in this study?",
+    "options": [
+      "The use or nonuse of the CPAP device by participants",
+      "The percentage of total sleep time that participants spent in REM sleep",
+      "The severity of sleep apnea symptoms for each participant",
+      "The number of participants in each group"
+    ]
+  },
+  {
+    "id": 34,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Sleep researchers conducted a study to determine if wearing a continuous positive airway pressure (CPAP) machine helps individuals who are experiencing symptoms of sleep apnea to increase their levels of REM sleep compared to those not using a CPAP device.<br><br>Twenty participants with sleep apnea who did not previously wear a CPAP device were randomly placed into one of two groups. Group 1 slept without wearing a CPAP device, and researchers measured the percentage of total sleep time each participant spent in REM.<br><br>Participants in Group 2 were given a CPAP device to wear while sleeping and researchers measured the percentage of total sleep time each participant spent in REM. The results are given in the graph.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/YT0P/770X448/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Why is it necessary in this study to have at least one experimental condition and one control condition?",
+    "options": [
+      "Without the experimental condition, there would not be enough participants in the study.",
+      "It is necessary to determine if the placebo effect played a role in the outcome of the study.",
+      "The control condition provides a comparison to the experimental condition.",
+      "The inclusion of an experimental condition eliminates the possibility of confounding variables."
+    ]
+  },
+  {
+    "id": 35,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Sleep researchers conducted a study to determine if wearing a continuous positive airway pressure (CPAP) machine helps individuals who are experiencing symptoms of sleep apnea to increase their levels of REM sleep compared to those not using a CPAP device.<br><br>Twenty participants with sleep apnea who did not previously wear a CPAP device were randomly placed into one of two groups. Group 1 slept without wearing a CPAP device, and researchers measured the percentage of total sleep time each participant spent in REM.<br><br>Participants in Group 2 were given a CPAP device to wear while sleeping and researchers measured the percentage of total sleep time each participant spent in REM. The results are given in the graph.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/YT0P/770X448/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following psychological perspectives would best support a researcher’s belief that the dreams that occur in REM sleep are a result of random neural firing in the brain stem?",
+    "options": [
+      "Cognitive",
+      "Sociocultural",
+      "Psychodynamic",
+      "Biological"
+    ]
+  },
+  {
+    "id": 36,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following disorders is classified as an anxiety disorder?",
+    "options": [
+      "Dissociative identity disorder",
+      "ADHD",
+      "Bipolar disorder",
+      "Panic disorder"
+    ]
+  },
+  {
+    "id": 37,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Johanna, a high school senior, starts experiencing disruptions in her movement when she cannot contract certain muscles. Which of the following neurotransmitters is most likely involved in this disruption of the muscle contraction?",
+    "options": [
+      "Acetylcholine",
+      "GABA",
+      "Serotonin",
+      "Endorphins"
+    ]
+  },
+  {
+    "id": 38,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Robyn finds a computer repair service online. She silently repeats the phone number in her mind until she locates her phone to call the repair service. Which memory system is most useful for Robyn in this scenario?",
+    "options": [
+      "Superior autobiographical memory",
+      "Working memory",
+      "Sensory memory",
+      "Long-term memory"
+    ]
+  },
+  {
+    "id": 39,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "At lunch with his colleagues, Carlo is discussing the stories told by the participants in his research on the effectiveness of cognitive behavioral therapy for participants diagnosed with a phobic disorder. Which of the following ethical principles is Carlo most likely violating?",
+    "options": [
+      "Confidentiality",
+      "Approval by an Institutional Review Board",
+      "Protection from harm",
+      "Debriefing"
+    ]
+  },
+  {
+    "id": 40,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Sarah is the mother of an eight-month-old boy named Connor. Connor has been struggling to sit up on his own without assistance. While visiting a friend, Sarah noticed that her friend’s five-month-old daughter was sitting up with ease.<br><br>Which of the following explanations would a developmental psychologist generally offer to Sarah?",
+    "options": [
+      "Positive punishment can encourage Connor to sit up.",
+      "Although sitting upright with no assistance is a major milestone, many babies will develop within a range of ages.",
+      "It is likely that Connor has a genetic disorder that needs to be treated immediately.",
+      "Connor needs physical therapy to help him coordinate his muscle movements better."
+    ]
+  },
+  {
+    "id": 41,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following examples best illustrates latent learning?",
+    "options": [
+      "Every time a rat presses a lever it receives food, which increases its lever-pressing behavior.",
+      "After imitating how his father shaves for many years, Simon can hold the razor correctly.",
+      "A rat allowed to wander a maze for a few days can run it more quickly after a reward is later introduced.",
+      "Every time Raysa ties her shoes correctly, her mother gives her a sticker, so Raysa improves at tying her shoes."
+    ]
+  },
+  {
+    "id": 42,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "When teaching an introductory Spanish class, Jermaine first introduces students to individual words and then helps students string the words together into sentences. This is an example of which of the following?",
+    "options": [
+      "Attachment",
+      "Theory of mind",
+      "Conservation",
+      "Scaffolding"
+    ]
+  },
+  {
+    "id": 43,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Lisa admires a musician that she has not met but believes is physically attractive. Because of the musician’s appearance, Lisa assumes they must also be intelligent and kind. Which of the following concepts best explains Lisa’s perception?",
+    "options": [
+      "The halo effect",
+      "Social comparison",
+      "Overconfidence",
+      "Self-serving bias"
+    ]
+  },
+  {
+    "id": 44,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Cruickshank conducted a study to examine whether cerebral cortex activity in the brain would be higher during memory retrieval for a test or during the initial learning process. She conducted brain scans on 10 volunteers while they were learning a new set of vocabulary words and while they were given a test on the same vocabulary words.<br><br>In which lobes of the brain should Dr. Cruickshank expect to see activity when subjects process the sounds of the vocabulary words?",
+    "options": [
+      "Occipital lobes",
+      "Temporal lobes",
+      "Parietal lobes",
+      "Frontal lobes"
+    ]
+  },
+  {
+    "id": 45,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "A study was conducted with first- year students in a high- stress honors program at a university. At the beginning of the semester, two hundred students in the program were selected at random and asked to complete two surveys.<br><br>The first survey measured their stress levels related to school, and the second was a health questionnaire measuring recent illnesses. Participants again completed both surveys during exam week at the end of the semester.<br><br>The results of the study showed that as school- related stress levels increased, the number of illnesses also increased. The researchers concluded that school stress causes students to experience more illness.<br>",
+    "stem": "Which of the following research methods was used in the university study?",
+    "options": [
+      "An experiment",
+      "A case study",
+      "A correlational study",
+      "A naturalistic observation"
+    ]
+  },
+  {
+    "id": 46,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "A study was conducted with first- year students in a high- stress honors program at a university. At the beginning of the semester, two hundred students in the program were selected at random and asked to complete two surveys.<br><br>The first survey measured their stress levels related to school, and the second was a health questionnaire measuring recent illnesses. Participants again completed both surveys during exam week at the end of the semester.<br><br>The results of the study showed that as school- related stress levels increased, the number of illnesses also increased. The researchers concluded that school stress causes students to experience more illness.<br>",
+    "stem": "Which of the following best explains why the research method in the scenario was chosen?",
+    "options": [
+      "Studies involving students can interfere with academic performance and should only be done at specific universities.",
+      "It is unethical to intentionally cause stress to people that might result in illness, and thus surveys and questionnaires are more ethical.",
+      "Asking health questions on a survey would invade people’s privacy to the point where it is unethical.",
+      "The researchers must not interact with participants so they do not influence their behaviors."
+    ]
+  },
+  {
+    "id": 47,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "A study was conducted with first- year students in a high- stress honors program at a university. At the beginning of the semester, two hundred students in the program were selected at random and asked to complete two surveys.<br><br>The first survey measured their stress levels related to school, and the second was a health questionnaire measuring recent illnesses. Participants again completed both surveys during exam week at the end of the semester.<br><br>The results of the study showed that as school- related stress levels increased, the number of illnesses also increased. The researchers concluded that school stress causes students to experience more illness.<br>",
+    "stem": "If the researchers graphed the results of the stress survey, which of the following statements would be the best prediction about the distribution of scores?",
+    "options": [
+      "The distribution of scores would likely appear as a normal distribution.",
+      "The distribution of scores would likely be skewed toward high stress.",
+      "The distribution of scores would be skewed toward low levels of stress.",
+      "The distribution of scores would be negative."
+    ]
+  },
+  {
+    "id": 48,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Rickman is a mental health professional who believes that the diathesis-stress model best explains how psychological disorders develop. Which of the following statements best describes Dr. Rickman’s beliefs about the causes of psychological disorders?",
+    "options": [
+      "Dr. Rickman assumes that psychological disorders derive primarily from genetic factors.",
+      "Dr. Rickman emphasizes the importance of cultural practices as the dominant cause of psychological disorders.",
+      "Dr. Rickman believes that disorders develop from genetic vulnerability aggravated by adverse life experiences.",
+      "Dr. Rickman would argue that the environment is the only important contributor to psychological disorders."
+    ]
+  },
+  {
+    "id": 49,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "An online advertisement uses data and logical arguments to convince consumers to try a new skincare product. Which of the following methods best represents this persuasive approach?",
+    "options": [
+      "The door-in-the-face technique",
+      "The foot-in-the-door technique",
+      "The central route to persuasion",
+      "The peripheral route to persuasion"
+    ]
+  },
+  {
+    "id": 50,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Betty was just diagnosed with multiple sclerosis. Which of the following effects is she most likely to experience?",
+    "options": [
+      "The neurons in her body will not be able to reach threshold, leading to fatigue.",
+      "Depolarization in her neurons will not occur, causing sensory impairment.",
+      "Neurotransmitters will remain in the synapse for an extended period, causing memory loss.",
+      "Neural messages will travel slowly down the axon, leading to motor impairment."
+    ]
+  },
+  {
+    "id": 51,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/94Ap/1190X876/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "A researcher gave a group of college students a driving test and then collected data about their household income. Using the information in the graph, which of the following statements is most accurate?",
+    "options": [
+      "Having a higher driving test score causes students to have a higher family income.",
+      "There is a positive correlation between family income and driving test scores.",
+      "Having a higher family income causes students to have higher driving test scores.",
+      "There is a negative correlation between family income and driving test scores."
+    ]
+  },
+  {
+    "id": 52,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following examples best illustrates Piaget’s concept of conservation?",
+    "options": [
+      "Seven-year-old William understands that when water is poured from a short, wide glass into a taller, thinner glass, the amount of water is the same.",
+      "Six-month-old Aubrey cries when her toy is covered by a blanket.",
+      "Three-year-old Wen says “No” when asked if her sister has a sister.",
+      "Seven-year-old Patrice sorts trading cards into groups by the type of superhero power the character possesses."
+    ]
+  },
+  {
+    "id": 53,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Emily was scratched several times by the family’s cat when visiting her friend’s house. She reflexively pulled back in pain and surprise when it happened. Now, when she visits that house, she backs away at the sight of the cat, even if it is in another room far from her.<br><br>In this scenario, Emily’s behavior when she was first scratched is best labeled as which of the following?",
+    "options": [
+      "Unconditioned stimulus (UCS)",
+      "Conditioned stimulus (CS)",
+      "Unconditioned response (UCR)",
+      "Conditioned response (CR)"
+    ]
+  },
+  {
+    "id": 54,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Annette begins staring at the red, white, and blue colors of the flag hanging at the front of her classroom. When she shifts her gaze to the white wall, she perceives a green, black, and yellow afterimage of this flag. Which of the following theories best explains Annette’s experience?",
+    "options": [
+      "Opponent-process",
+      "Frequency",
+      "Trichromatic",
+      "Place"
+    ]
+  },
+  {
+    "id": 55,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "After years of watching their mother drive a car, Rowan knows how to start the car when sitting in the driver’s seat for the first time. Which of the following types of learning best explains how Rowan acquired this new behavior?",
+    "options": [
+      "Operant conditioning",
+      "Observational learning",
+      "Classical conditioning",
+      "Insight learning"
+    ]
+  },
+  {
+    "id": 56,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Researchers tested infants whose first language was either English or Hindi. The researchers assessed the ability of these infants to distinguish between the /ta/ versus /Ta/ sounds in Hindi at various ages. The difference in these sounds is indistinguishable to adults who speak English only. The results of this study suggest that the ability to distinguish sounds in a language other than a person’s first language decreases with age.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/Cvqj/794X552/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following concepts best describes the formal language acquisition stage of the six- to eight-month-old infants in the study?",
+    "options": [
+      "Bubbling",
+      "Telegraphic speech",
+      "Formal operational",
+      "Overgeneralization"
+    ]
+  },
+  {
+    "id": 57,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Researchers tested infants whose first language was either English or Hindi. The researchers assessed the ability of these infants to distinguish between the /ta/ versus /Ta/ sounds in Hindi at various ages. The difference in these sounds is indistinguishable to adults who speak English only. The results of this study suggest that the ability to distinguish sounds in a language other than a person’s first language decreases with age.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/Cvqj/794X552/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following outcomes is possible because researchers utilized the random selection process?",
+    "options": [
+      "Confounding of variables",
+      "Replication",
+      "Causal conclusions",
+      "Generalization"
+    ]
+  },
+  {
+    "id": 58,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "Researchers tested infants whose first language was either English or Hindi. The researchers assessed the ability of these infants to distinguish between the /ta/ versus /Ta/ sounds in Hindi at various ages. The difference in these sounds is indistinguishable to adults who speak English only. The results of this study suggest that the ability to distinguish sounds in a language other than a person’s first language decreases with age.<br><img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/Cvqj/794X552/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Which of the following factors best represents an operational definition of the dependent variable?",
+    "options": [
+      "The age in months of the infants being tested",
+      "The infants whose first language is English",
+      "The /ta/ versus /Ta/ sounds presented to the infants",
+      "The percentage of infants capable of distinguishing between the /ta/ and /Ta/ sounds"
+    ]
+  },
+  {
+    "id": 59,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A devoted young father reads a news report that claims many people believe men are not as intelligent in how to properly care for their children. The young father has plans to care for his child that day.<br><br>Which of the following can be predicted about his performance as a caretaker based on the concept of stereotype threat?",
+    "options": [
+      "The father will ignore the news reports because they do not apply to him.",
+      "The father will experience increased resentment toward childcare.",
+      "The father will experience increased anxiety and make mistakes as a caretaker.",
+      "The father will develop an insecure attachment with his child."
+    ]
+  },
+  {
+    "id": 60,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Two weeks ago, Jaymes was full of energy, talking quickly, and staying up all night creating art. Now, Jaymes has no appetite, feels sad, and has difficulty concentrating. Which of the following psychological disorders would Jaymes most likely be diagnosed with?",
+    "options": [
+      "Dissociative identity disorder",
+      "Schizophrenia",
+      "Post-traumatic stress disorder",
+      "Bipolar disorder"
+    ]
+  },
+  {
+    "id": 61,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/iOVg/578X542/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Researchers investigating well-being conducted a study that compared participants’ overall health with their self-reported levels of happiness. Medical doctors measured each participant’s vital signs and gave them a score from 1 to 50, with 1 indicating extremely poor health and 50 indicating near-perfect health. Participants then took a survey that assessed their overall happiness on a scale of 1 to 10, with 10 being the highest level of happiness. The results are shown in the table.<br><br>Which of the following statements most accurately describes these data?",
+    "options": [
+      "There is a strong positive correlation between health scores and overall happiness ratings.",
+      "Health scores have no relationship to overall happiness ratings.",
+      "Having better health causes people to experience more happiness.",
+      "There is a negative correlation between one’s health score and overall happiness rating."
+    ]
+  },
+  {
+    "id": 62,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Carolyn is favored to win a long-distance foot race in the state finals. Shortly before reaching the finish line of the race, the competitor in front of Carolyn trips on accident, causing Carolyn to fall and no longer be in contention to win the race. Carolyn is convinced the competitor who caused her fall is untrustworthy and will do anything to win.<br><br>Carolyn’s explanation for her competitor’s behavior is most consistent with which of the following concepts?",
+    "options": [
+      "Opponent-process theory",
+      "Fundamental attribution error",
+      "Just-world phenomenon",
+      "Mere-exposure effect"
+    ]
+  },
+  {
+    "id": 63,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/f5fw/878X666/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Cognitive psychologist Dr. Leary designed a study to investigate perception. They asked the participants in Group 1 to read a story about a rabbit and a turtle. Participants in Group 2 did not read the story.<br><br>Next, participants looked at a series of ambiguous drawings and identified what they saw. Their observations were recorded and categorized. The results are depicted in the graph.<br><br>Which of the following concepts best applies to the results of Group 1?",
+    "options": [
+      "Self-fulfilling prophecy",
+      "Belief perseverance",
+      "Priming",
+      "Inattentional blindness"
+    ]
+  },
+  {
+    "id": 64,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Throughout January and the beginning of February, the first two months of a calendar year, Allison writes the previous year as the date on all her assignments instead of the current year. Allison’s tendency to write the wrong year on her assignments is most likely due to which of the following?",
+    "options": [
+      "Retroactive interference",
+      "Anterograde amnesia",
+      "Proactive interference",
+      "Retrograde amnesia"
+    ]
+  },
+  {
+    "id": 65,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Which of the following examples best illustrates the role of the medulla in regulating behavior?",
+    "options": [
+      "As Shericka starts to run, her heart and breathing rates increase.",
+      "Ludwig hears his favorite instrument as the musicians begin to play.",
+      "After touching the hot stove, Julia reflexively pulls her hand away.",
+      "When playing chess, Judit reaches out to move one of her pieces on the game board."
+    ]
+  },
+  {
+    "id": 66,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "At six months of age, Byrne underwent the surgical removal of the entire left hemisphere of her brain. Which of the following concepts explains the recovery of her primary functions following such surgery?",
+    "options": [
+      "Brain plasticity",
+      "Contralateral function",
+      "Motor neurons",
+      "Activation-synthesis"
+    ]
+  },
+  {
+    "id": 67,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 3,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "A therapist who uses applied behavioral analysis would be most focused on which of the following?",
+    "options": [
+      "How a person’s repressed memories affect their current experiences",
+      "How affirming a person’s perspectives promotes that person’s wellness and well-being",
+      "How a person’s relationships with the people closest to them impact their mental health and well-being",
+      "How conditioning influences current mental processes and actions"
+    ]
+  },
+  {
+    "id": 68,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Since 1938, researchers have examined the lives of 268 male college graduates to learn more about the secret of living a good life. Every two years participants complete questionnaires concerning many aspects of their lives, including their current physical and mental health.<br><br>Which of the following methods is being used by these researchers?",
+    "options": [
+      "Experiment",
+      "Naturalistic observation",
+      "Longitudinal study",
+      "Case study"
+    ]
+  },
+  {
+    "id": 69,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Breonna and Peyton have been dating for six months. Breonna invited Peyton to attend her family’s annual picnic. Throughout the day, Breonna’s many family members were talking loudly, laughing, and teasing each other. At the end of the day, Peyton asked Breonna why many of the family members seemed angry at each other. Breonna was surprised by Peyton’s question and thought everyone enjoyed the day.<br><br>Which of the following concepts best explains why Peyton and Breonna had very different observations at the picnic?",
+    "options": [
+      "Perceptual set",
+      "Kinesthesis",
+      "Monochromatism",
+      "Difference threshold"
+    ]
+  },
+  {
+    "id": 70,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/DwSn/1150X646/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "Researchers conducted a study comparing intelligence levels of people across their life spans, as shown in the graph. Which of the following conclusions can be drawn from the data comparing fluid intelligence and crystallized intelligence over the life span of a person?",
+    "options": [
+      "Fluid intelligence tends to be stable over the life span.",
+      "Crystallized intelligence is at its highest level in early childhood.",
+      "Crystallized intelligence and fluid intelligence begin to diverge around 30 years of age.",
+      "Fluid intelligence is more developed than crystallized intelligence until puberty."
+    ]
+  },
+  {
+    "id": 71,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Cesar is participating in a memory competition. He must memorize a long, novel string of numbers in 60 seconds, then try to recall them immediately without missing or misplacing any numbers. Which strategy should Cesar use?",
+    "options": [
+      "Fixed mindset",
+      "Chunking",
+      "Spacing",
+      "Tip-of-the-tongue phenomenon"
+    ]
+  },
+  {
+    "id": 72,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Nayanika is 50 years old and finds her career meaningful and impactful. She enjoys mentoring new employees, which gives her a sense of purpose. Which of the following best represents Nayanika’s current stage of psychosocial development?",
+    "options": [
+      "Generativity",
+      "Industry",
+      "Identity",
+      "Initiative"
+    ]
+  },
+  {
+    "id": 73,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 0,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Yang is conducting a study in which the researcher instructs participants to act cruelly or dishonestly toward another study participant. She hopes that the study will help her to understand better how different factors affect whether people obey a person who has authority.<br><br>To meet ethical guidelines, what must Dr. Yang include in this study?",
+    "options": [
+      "A debriefing session to explain the study purpose to the participants",
+      "A thorough breakdown of the study costs",
+      "A meta-analysis of all relevant literature on the topic",
+      "A higher level of participant compensation"
+    ]
+  },
+  {
+    "id": 74,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 1,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "",
+    "stem": "Dr. Britt is interested in pain perception while participants are practicing meditation. She asked participants to report their pain on a scale from 1 to 10, where a higher number indicates more pain. The scores for Dr. Britt’s study were 1, 10, 4, 3, 3, 4, 6, 7, 3, and 9.<br><br>Which of the following is the median for these reported study scores?",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "9"
+    ]
+  },
+  {
+    "id": 75,
+    "isMarkedForReview": false,
+    "selectedAnswer": null,
+    "correctAnswer": 2,
+    "notes": [],
+    "highlights": {
+      "left": null,
+      "right": null
+    },
+    "leftContent": "<img src='https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260206/jPB8/726X514/image.png/webp' style='width:100%; max-width:600px;' />",
+    "stem": "The graph shows a comparison of the percent of members of the lowest and highest income groups in the United States who are diagnosed with schizophrenia. Psychologists from which of the following psychological perspectives would be most interested in this potential link to developing schizophrenia?",
+    "options": [
+      "Psychodynamic",
+      "Humanistic",
+      "Sociocultural",
+      "Behavioral"
+    ]
+  }
+]
+                    }
+                ];
+            }
+            
+            // --- UI ELEMENT SELECTORS ---
+            const startScreen = document.getElementById('start-screen');
+            const transitionScreen = document.getElementById('section-transition-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const mainAppContainer = document.querySelector('.body-new-sat');
+            const leftPanel = document.getElementById('left-panel');
+            const rightPanel = document.getElementById('right-panel');
+            const questionProgressBtn = document.getElementById('question-progress-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            const calculatorBtn = document.getElementById('calculator-btn');
+
+            // --- TIMER ---
+            function startTimer(duration) {
+                let timer = duration;
+                clearInterval(timerInterval);
+                timerInterval = setInterval(function () {
+                    let minutes = parseInt(timer / 60, 10);
+                    let seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    timerDisplay.textContent = minutes + ":" + seconds;
+
+                    if (--timer < 0) {
+                        clearInterval(timerInterval);
+                        if (currentView === 'review' || currentView === 'question') {
+                             handleTimeUp();
+                        }
+                    }
+                }, 1000);
+            }
+
+            function handleTimeUp() {
+                alert("Time's up for this section!");
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+            }
+            
+            // --- UI RENDERING & VIEW MANAGEMENT ---
+            function switchView(viewName) {
+                currentView = viewName;
+                startScreen.classList.add('hidden');
+                transitionScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                mainAppContainer.classList.remove('active', 'review-mode-active');
+                
+                if (['start', 'transition', 'results'].includes(viewName)) {
+                    mainAppContainer.style.display = 'none';
+                } else {
+                    mainAppContainer.style.display = 'flex';
+                }
+
+                switch(viewName) {
+                    case 'start':
+                        startScreen.classList.remove('hidden');
+                        break;
+                    case 'transition':
+                        clearInterval(timerInterval);
+                        document.getElementById('transition-title').textContent = sectionsData[currentSectionIndex].name;
+                        transitionScreen.classList.remove('hidden');
+                        break;
+                    case 'results':
+                        clearInterval(timerInterval);
+                        calculateAndShowResults();
+                        resultsScreen.classList.remove('hidden');
+                        break;
+                    case 'question':
+                    case 'analysis':
+                        mainAppContainer.classList.add('active');
+                        break;
+                    case 'review':
+                        mainAppContainer.classList.add('active', 'review-mode-active');
+                        renderReviewScreen();
+                        break;
+                }
+            }
+
+            function saveCurrentQuestionState() {
+                if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                if (question) {
+                    question.highlights.left = leftPanel.innerHTML;
+                    question.highlights.right = rightPanel.innerHTML;
+                }
+            }
+
+            function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+                currentView = isAnalysisMode ? 'analysis' : 'question';
+                switchView(currentView);
+                
+                currentSectionIndex = secIndex;
+                currentQuestionIndex = qIndex;
+
+                if (!isAnalysisMode && qIndex === 0) {
+                    startTimer(sectionsData[currentSectionIndex].time);
+                }
+                
+                // Calculator visibility logic
+                if (currentSectionIndex === 0) { // Part A
+                    calculatorBtn.style.display = 'none';
+                } else { // Part B
+                    calculatorBtn.style.display = 'flex';
+                }
+
+                const section = sectionsData[secIndex];
+                const question = section.questions[qIndex];
+                if (!question) return;
+
+                document.getElementById('main-module-title').textContent = section.name;
+
+                const questionScreen = document.getElementById('question-screen');
+
+                if (question.leftContent && question.leftContent.trim() !== '') {
+                    leftPanel.innerHTML = question.leftContent;
+                    questionScreen.classList.remove('single-column');
+                } else {
+                    leftPanel.innerHTML = '';
+                    questionScreen.classList.add('single-column');
+                }
+
+                rightPanel.innerHTML = isAnalysisMode ? generateAnalysisHTML() : generateQuestionHTML();
+
+                function generateQuestionHTML() {
+                     const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        const isSelected = question.selectedAnswer === i ? 'selected' : '';
+                        return `<div class="question-option ${isSelected}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                    <div class="strikethrough-line" data-struck="false"></div>
+                                    <div class="annotation-control-wrapper"><div class="strikethrough-toggle-btn" data-letter="${letter}">${letter}</div></div>
+                                    <div class="undo-controls"><span class="undo-text">Undo</span></div>
+                                </div>`;
+                    }).join('');
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                            <div class="mark-review">
+                                <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                                <span>Mark for Review</span>
+                            </div>
+                            <div class="annotation-tool">
+                                <svg width="36" height="36" viewBox="0 0 100 100">
+                                    <rect x="5" y="5" width="90" height="90" rx="10" ry="10" fill="none" stroke="#555" stroke-width="4"/>
+                                    <text x="50" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#2d2d2d">ABC</text>
+                                    <line x1="15" y1="80" x2="85" y2="20" stroke="#2d2d2d" stroke-width="6" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list">${optionsHTML}</div>
+                    `;
+                }
+
+                 function generateAnalysisHTML() {
+                    const optionsHTML = question.options.map((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        let optionClasses = "question-option";
+                        if(i === question.correctAnswer) optionClasses += ' correct-answer';
+                        if(i === question.selectedAnswer && i !== question.correctAnswer) optionClasses += ' wrong-answer';
+                        return `<div class="${optionClasses}" data-option-index="${i}">
+                                    <span class="sat-radio-num">${letter}</span>
+                                    <div class="option-text">${opt}</div>
+                                </div>`;
+                    }).join('');
+
+                     return `
+                        <div class="question-header">
+                            <div class="question-number">${question.id}</div>
+                        </div>
+                        <div class="separator-container" id="question-header-separator"></div>
+                        <div class="sat-stem">${question.stem}</div>
+                        <div class="options-list analysis-mode">${optionsHTML}</div>
+                    `;
+                }
+
+
+                if(window.MathJax) {
+                    window.MathJax.typesetPromise([rightPanel, leftPanel]).catch(err => console.error("MathJax typesetting error:", err));
+                }
+
+                updateMarkForReviewButton();
+                addQuestionEventListeners(isAnalysisMode);
+                updateFooter(isAnalysisMode);
+                if(!isAnalysisMode) renderNotes();
+
+                leftPanel.removeEventListener('click', handleZoomClick);
+                leftPanel.addEventListener('click', handleZoomClick);
+            }
+
+            function handleZoomClick(e) {
+                 const target = e.target;
+                if (target.tagName === 'IMG' || target.closest('.data-table')) {
+                    const contentTarget = target.tagName === 'IMG' ? target : target.closest('.data-table');
+                    openZoomModal(contentTarget);
+                }
+            }
+            
+            function updateFooter(isAnalysisMode = false) {
+                const totalQuestions = sectionsData.flatMap(s => s.questions).length;
+                const currentQuestion = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                
+                const questionNumberInExam = sectionsData.slice(0, currentSectionIndex).reduce((acc, section) => acc + section.questions.length, 0) + currentQuestionIndex + 1;
+                questionProgressBtn.textContent = `Question ${questionNumberInExam} of ${totalQuestions}`;
+                
+                const backBtn = document.getElementById('back-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const nextBtnSpan = nextBtn.querySelector('span');
+                const backBtnSpan = backBtn.querySelector('span');
+
+                if (isAnalysisMode) {
+                    backBtn.style.display = 'none';
+                    nextBtn.classList.add('back-to-results-btn');
+                    nextBtnSpan.textContent = 'Back to Results';
+                } else {
+                    nextBtn.classList.remove('back-to-results-btn');
+                    const isLastQuestionOfSection = currentQuestionIndex === sectionsData[currentSectionIndex].questions.length - 1;
+                    const isLastSection = currentSectionIndex === sectionsData.length - 1;
+
+                    if (currentView === 'review') {
+                        nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                        backBtnSpan.textContent = 'Back to Question';
+                    } else {
+                        nextBtnSpan.textContent = isLastQuestionOfSection ? 'Review' : 'Next';
+                        backBtnSpan.textContent = 'Back';
+                    }
+                    backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+                }
+            }
+            
+            function renderReviewScreen() {
+                const section = sectionsData[currentSectionIndex];
+                document.getElementById('review-module-name').textContent = section.name;
+                document.getElementById('review-question-preview').innerHTML = "Click a question number below to see the question text here.";
+                renderGrid('review-grid-main');
+                updateFooter();
+            }
+
+            function renderGrid(containerId) {
+                const gridContainer = document.getElementById(containerId);
+                const section = sectionsData[currentSectionIndex];
+                gridContainer.innerHTML = '';
+                section.questions.forEach((q, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('question-grid-item');
+                    item.textContent = q.id;
+                    item.dataset.questionIndex = index;
+
+                    if (q.selectedAnswer !== null) item.classList.add('completed');
+                    else item.classList.add('unanswered');
+                    if (q.isMarkedForReview) item.classList.add('for-review');
+                    if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+                    
+                    gridContainer.appendChild(item);
+                });
+            }
+
+            function updateMarkForReviewButton() {
+                const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                const btn = rightPanel.querySelector('.mark-review');
+                if (!btn) return;
+                btn.classList.toggle('marked', question.isMarkedForReview);
+            }
+            
+            function calculateAndShowResults() {
+                let correctCount = 0;
+                let incorrectCount = 0;
+                let totalCount = 0;
+
+                const resultsGrid = document.getElementById('results-review-grid');
+                resultsGrid.innerHTML = '';
+
+                sectionsData.forEach((section, sIndex) => {
+                    section.questions.forEach((q, qIndex) => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (q.selectedAnswer !== null) {
+                            if (isCorrect) correctCount++;
+                            else incorrectCount++;
+                        } else {
+                            incorrectCount++; // Unanswered are incorrect
+                        }
+                        
+                        const item = document.createElement('div');
+                        item.classList.add('review-item');
+                        item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        item.textContent = q.id;
+                        item.dataset.sectionIndex = sIndex;
+                        item.dataset.questionIndex = qIndex;
+                        resultsGrid.appendChild(item);
+                    });
+                });
+                
+                const scorePercent = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+                document.getElementById('score-text').textContent = `${correctCount} / ${totalCount}`;
+                document.getElementById('score-circle').style.setProperty('--score-percent', `${scorePercent}%`);
+                document.getElementById('correct-count').textContent = correctCount;
+                document.getElementById('incorrect-count').textContent = incorrectCount;
+            }
+
+            // --- EVENT LISTENERS ---
+            function attachGlobalListeners() {
+                document.getElementById('start-exam-btn').addEventListener('click', () => {
+                    loadQuestion(0, 0);
+                });
+                document.getElementById('continue-btn').addEventListener('click', () => {
+                    currentQuestionIndex = 0; 
+                    loadQuestion(currentSectionIndex, 0);
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if (currentView === 'analysis') {
+                        switchView('results');
+                        return;
+                    }
+                    
+                    if (currentView === 'question') {
+                        const section = sectionsData[currentSectionIndex];
+                        if (currentQuestionIndex < section.questions.length - 1) {
+                            currentQuestionIndex++;
+                            loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        } else {
+                            switchView('review');
+                        }
+                        return;
+                    }
+
+                    if (currentView === 'review') {
+                        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                        if (isLastSection) {
+                            switchView('results');
+                        } else {
+                            currentSectionIndex++;
+                            switchView('transition');
+                        }
+                        return;
+                    }
+                });
+
+                document.getElementById('back-btn').addEventListener('click', () => {
+                    saveCurrentQuestionState();
+                    if(currentView === 'review') { 
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                        return; 
+                    }
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        loadQuestion(currentSectionIndex, currentQuestionIndex);
+                    }
+                });
+                 document.getElementById('results-review-grid').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('review-item')) {
+                        const sIndex = parseInt(e.target.dataset.sectionIndex, 10);
+                        const qIndex = parseInt(e.target.dataset.questionIndex, 10);
+                        loadQuestion(sIndex, qIndex, true);
+                    }
+                });
+            }
+            
+            window.onbeforeunload = function(e) {
+                if (currentView === 'question' || currentView === 'review') {
+                    const message = 'You have not finished the exam. Are you sure you want to leave? Your progress will be lost.';
+                    e.returnValue = message; 
+                    return message;
+                }
+            };
+
+            let isAnnotationModeActive = false;
+            function addQuestionEventListeners(isAnalysisMode) {
+                const annotationToolBtn = rightPanel.querySelector('.annotation-tool');
+                if (annotationToolBtn) {
+                     annotationToolBtn.onclick = isAnalysisMode ? null : () => {
+                        isAnnotationModeActive = !isAnnotationModeActive;
+                        annotationToolBtn.classList.toggle('active', isAnnotationModeActive);
+                        rightPanel.querySelectorAll('.question-option').forEach(option => {
+                            const line = option.querySelector('.strikethrough-line');
+                            const wrapper = option.querySelector('.annotation-control-wrapper');
+                            const undo = option.querySelector('.undo-controls');
+                            if (isAnnotationModeActive) {
+                                if (line.dataset.struck === 'true') { line.style.display = 'block'; undo.style.display = 'flex'; wrapper.style.display = 'none';
+                                } else { line.style.display = 'none'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                            } else { [line, wrapper, undo].forEach(el => el.style.display = 'none'); }
+                        });
+                    };
+                }
+
+                const markForReviewBtn = rightPanel.querySelector('.mark-review');
+                if(markForReviewBtn) {
+                    markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                        const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                        q.isMarkedForReview = !q.isMarkedForReview;
+                        updateMarkForReviewButton();
+                        if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                }
+
+                rightPanel.querySelectorAll('.question-option').forEach(option => {
+                    option.onclick = isAnalysisMode ? null : function(e) {
+                         if (isAnnotationModeActive || document.querySelector('#highlight-tool-btn').classList.contains('active')) return;
+                         if (e.target.closest('.annotation-control-wrapper') || e.target.closest('.undo-controls')) return;
+
+                        const selectedIndex = parseInt(this.dataset.optionIndex, 10);
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].selectedAnswer = selectedIndex;
+                        rightPanel.querySelectorAll('.question-option').forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                         if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+                    };
+                });
+                
+                const optionsList = rightPanel.querySelector('.options-list');
+                if (optionsList) {
+                    optionsList.addEventListener('click', function(e) {
+                        const option = e.target.closest('.question-option');
+                        if (!option || !isAnnotationModeActive) return;
+                        const line = option.querySelector('.strikethrough-line'), wrapper = option.querySelector('.annotation-control-wrapper'), undo = option.querySelector('.undo-controls');
+                        if (e.target.closest('.strikethrough-toggle-btn')) { line.style.display = 'block'; line.dataset.struck = 'true'; wrapper.style.display = 'none'; undo.style.display = 'flex'; } 
+                        else if (e.target.closest('.undo-text')) { line.style.display = 'none'; line.dataset.struck = 'false'; wrapper.style.display = 'flex'; undo.style.display = 'none'; }
+                    });
+                }
+            }
+            
+            function handleGridClick(e) {
+                if (e.target.classList.contains('question-grid-item')) {
+                    const index = parseInt(e.target.dataset.questionIndex, 10);
+                    if (currentView === 'review') {
+                        const previewBox = document.getElementById('review-question-preview');
+                        const question = sectionsData[currentSectionIndex].questions[index];
+                        previewBox.innerHTML = `<strong>Question ${question.id}:</strong> ${question.stem}`;
+                        if (window.MathJax) { 
+                            window.MathJax.typesetPromise([previewBox]).catch(err => console.error("MathJax preview typesetting error:", err));
+                        }
+                    } else {
+                        saveCurrentQuestionState();
+                        loadQuestion(currentSectionIndex, index);
+                        closeModal(questionListModal);
+                    }
+                }
+            }
+            document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+            document.getElementById('review-grid-main').addEventListener('click', (e) => {
+                if (e.target.classList.contains('question-grid-item')) {
+                      saveCurrentQuestionState();
+                      const index = parseInt(e.target.dataset.questionIndex, 10);
+                      loadQuestion(currentSectionIndex, index);
+                }
+            });
+
+            document.getElementById('download-txt-btn').addEventListener('click', function() {
+                let correctCount = 0;
+                let totalCount = 0;
+                let incorrectQuestionNumbers = [];
+
+                sectionsData.forEach(section => {
+                    section.questions.forEach(q => {
+                        totalCount++;
+                        const isCorrect = q.selectedAnswer === q.correctAnswer;
+                        if (isCorrect) {
+                            correctCount++;
+                        } else {
+                            incorrectQuestionNumbers.push(q.id);
+                        }
+                    });
+                });
+                const incorrectCount = totalCount - correctCount;
+
+                let summary = `对的个数/总题目数：${correctCount}/${totalCount}\\r\\n` +
+                              `错误个数（包括unanswered）：${incorrectCount}\\r\\n` +
+                              `错误题目题号列举：${incorrectQuestionNumbers.join(', ')}`;
+                
+                const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'exam_summary.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            const directionsModal = document.getElementById('directions-modal');
+            const questionListModal = document.getElementById('question-list-modal');
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomModalContent = document.getElementById('zoom-modal-content');
+            const zoomModalClose = document.querySelector('.zoom-modal-close');
+
+            function openModal(modal) { modal.classList.add('active'); }
+            function closeModal(modal) { modal.classList.remove('active'); }
+
+            function openZoomModal(element) {
+                zoomModalContent.innerHTML = '';
+                const clonedElement = element.cloneNode(true);
+                zoomModalContent.appendChild(clonedElement);
+                openModal(zoomModal);
+            }
+            
+            document.getElementById('directions-btn').addEventListener('click', () => openModal(directionsModal));
+            document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+            directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+            
+            questionProgressBtn.addEventListener('click', (e) => { 
+                e.stopPropagation();
+                document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+                renderGrid('popup-question-grid');
+                questionListModal.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                const qListContent = questionListModal.querySelector('.question-list-content');
+                if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+                    closeModal(questionListModal);
+                }
+            });
+            
+            document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+            
+            zoomModalClose.addEventListener('click', () => closeModal(zoomModal));
+            zoomModal.addEventListener('click', (e) => { if (e.target === zoomModal) closeModal(zoomModal); });
+
+            document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+            document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+            
+            const splitter = document.getElementById('splitter');
+            let isDragging = false;
+            splitter.addEventListener('mousedown', (e) => { isDragging = true; document.body.classList.add('resizing'); e.preventDefault(); });
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const notesPanelEl = document.getElementById('notes-panel');
+                const notesWidth = notesPanelEl.classList.contains('visible') ? notesPanelEl.offsetWidth : 0;
+                let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+                const minWidth = 150;
+                const availableWidth = mainAppContainer.offsetWidth - notesWidth - splitter.offsetWidth;
+                if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+                if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+                leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+            });
+            document.addEventListener('mouseup', () => { isDragging = false; document.body.classList.remove('resizing'); });
+
+            const calcContainer = document.getElementById('calculator-container');
+            const calcHeader = calcContainer.querySelector('.draggable-header');
+            let pos1=0,pos2=0,pos3=0,pos4=0;
+            calcHeader.onmousedown = (e) => { e.preventDefault(); pos3=e.clientX; pos4=e.clientY; document.onmouseup=closeDragElement; document.onmousemove=elementDrag; };
+            function elementDrag(e) { e.preventDefault(); pos1=pos3-e.clientX; pos2=pos4-e.clientY; pos3=e.clientX; pos4=e.clientY; calcContainer.style.top=(calcContainer.offsetTop-pos2)+"px"; calcContainer.style.left=(calcContainer.offsetLeft-pos1)+"px"; }
+            function closeDragElement() { document.onmouseup=null; document.onmousemove=null; }
+            calculatorBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const isVisible = calcContainer.style.display === 'block';
+                calcContainer.style.display = isVisible ? 'none' : 'block';
+                btn.classList.toggle('active', !isVisible);
+            });
+            calcContainer.querySelector('.close-btn').addEventListener('click', () => { calcContainer.style.display = 'none'; document.getElementById('calculator-btn').classList.remove('active'); });
+
+            const moreBtn = document.getElementById('more-btn');
+            const moreDropdown = document.getElementById('more-dropdown');
+            const lineReaderOverlay = document.getElementById('line-reader-overlay');
+            moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+            document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+            function toggleLineReader() {
+                const isVisible = lineReaderOverlay.style.display === 'block';
+                lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+                document.removeEventListener('mousemove', moveLineReader);
+                if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+            }
+            function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+            document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+            document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+            const highlightBtn = document.getElementById('highlight-tool-btn');
+            const highlightToolbar = document.getElementById('highlight-toolbar');
+            const notesPanelEl = document.getElementById('notes-panel');
+            const notesContent = document.getElementById('notes-content');
+            const noteInputModal = document.getElementById('note-input-modal');
+            let currentNoteRange = null;
+
+            highlightBtn.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                btn.classList.toggle('active');
+                notesPanelEl.classList.toggle('visible');
+                if (!btn.classList.contains('active')) highlightToolbar.style.display = 'none';
+            });
+            
+            document.getElementById('question-screen').addEventListener('mouseup', (e) => {
+                if (!highlightBtn.classList.contains('active') || highlightToolbar.contains(e.target)) return;
+                setTimeout(() => {
+                    const selection = window.getSelection();
+                    if (selection && !selection.isCollapsed) {
+                        const range = selection.getRangeAt(0);
+                        const rect = range.getBoundingClientRect();
+                        highlightToolbar.style.top = `${window.scrollY + rect.top - highlightToolbar.offsetHeight - 5}px`;
+                        highlightToolbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - highlightToolbar.offsetWidth / 2}px`;
+                        highlightToolbar.style.display = 'flex';
+                    } else {
+                        highlightToolbar.style.display = 'none';
+                    }
+                }, 10);
+            });
+            document.addEventListener('mousedown', (e) => {
+                if (!highlightToolbar.contains(e.target) && !noteInputModal.contains(e.target)) {
+                   highlightToolbar.style.display = 'none';
+                }
+            });
+
+            highlightToolbar.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+                const { color, action } = target.dataset;
+                if (color) wrapSelection('highlighted highlight-' + color);
+                else if (action === 'note') addNoteFromSelection();
+                else if (action === 'remove') removeHighlightAtSelection();
+                highlightToolbar.style.display = 'none';
+            });
+            
+            function wrapSelection(className) {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const wrapper = document.createElement('span');
+                wrapper.className = className;
+                wrapper.appendChild(range.extractContents());
+                range.insertNode(wrapper);
+                selection.removeAllRanges();
+            }
+            
+            function addNoteFromSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                currentNoteRange = selection.getRangeAt(0).cloneRange();
+                document.getElementById('note-modal-text').textContent = selection.toString().trim();
+                document.getElementById('note-textarea').value = '';
+                openModal(noteInputModal);
+            }
+
+            function removeHighlightAtSelection() {
+                const selection = window.getSelection();
+                if (!selection.rangeCount || selection.isCollapsed) return;
+                const range = selection.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                container.querySelectorAll && container.querySelectorAll('.highlighted').forEach(span => {
+                    if (range.intersectsNode(span)) {
+                        const parent = span.parentNode;
+                        while(span.firstChild) parent.insertBefore(span.firstChild, span);
+                        parent.removeChild(span);
+                        parent.normalize();
+                    }
+                });
+                selection.removeAllRanges();
+            }
+
+            document.getElementById('save-note-btn').addEventListener('click', () => {
+                const noteText = document.getElementById('note-textarea').value.trim();
+                if (noteText && currentNoteRange) {
+                    const highlightedText = document.getElementById('note-modal-text').textContent;
+                    const noteId = 'note_' + Date.now();
+                    const span = document.createElement('span');
+                    span.className = 'highlighted highlight-yellow';
+                    span.dataset.noteId = noteId;
+                    span.appendChild(currentNoteRange.extractContents());
+                    currentNoteRange.insertNode(span);
+                    
+                    const currentQuestionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                    currentQuestionNotes.push({ id: noteId, selection: highlightedText, text: noteText });
+                    renderNotes();
+                }
+                closeModal(noteInputModal);
+            });
+            document.getElementById('cancel-note-btn').addEventListener('click', () => closeModal(noteInputModal));
+            
+            function renderNotes() {
+                notesContent.innerHTML = '';
+                if(!sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+                const currentNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                currentNotes.forEach(note => {
+                    const noteDiv = document.createElement('div');
+                    noteDiv.className = 'note';
+                    noteDiv.dataset.noteId = note.id;
+                    noteDiv.innerHTML = `<div class="note-highlight">"${note.selection}"</div><div class="note-text">${note.text.replace(/\\n/g, '<br>')}</div><button class="delete-note-btn" title="Delete Note">&times;</button>`;
+                    notesContent.appendChild(noteDiv);
+                });
+                notesContent.querySelectorAll('.delete-note-btn').forEach(btn => {
+                   btn.addEventListener('click', (e) => {
+                        const noteElement = e.target.closest('.note');
+                        const noteId = noteElement.dataset.noteId;
+                        const spanToRemove = document.querySelector(`span[data-note-id="${noteId}"]`);
+                        if (spanToRemove) {
+                            const parent = spanToRemove.parentNode;
+                            while(spanToRemove.firstChild) parent.insertBefore(spanToRemove.firstChild, spanToRemove);
+                            parent.removeChild(spanToRemove);
+                            parent.normalize();
+                        }
+                        const questionNotes = sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes;
+                        sectionsData[currentSectionIndex].questions[currentQuestionIndex].notes = questionNotes.filter(n => n.id !== noteId);
+                        renderNotes();
+                   });
+                });
+            }
+
+            // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>
