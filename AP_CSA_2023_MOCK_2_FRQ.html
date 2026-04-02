@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Computer Science A - FRQ Interface</title>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <style>
+        /* Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Roboto:wght@400;500;700&family=Fira+Code:wght@400;500;700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+        @font-face {
+            font-family: 'ProggyClean';
+            src: url('https://cdn.jsdelivr.net/gh/bluescan/proggyfonts/ProggyClean.ttf') format('truetype');
+        }
+
+        /* Base Styles */
+        :root {
+            --primary-blue: #4a69ff;
+            --light-blue-bg: #E6EDF8;
+            --border-color: #a0a0a0;
+            --text-dark: #2d2d2d;
+            --text-light: #555;
+            --bb-dark-blue: #002d5a;
+            --bb-medium-gray: #d9dce1;
+            --bb-highlight-yellow: rgba(255, 243, 143, 0.7);
+            --bb-highlight-pink: rgba(255, 182, 193, 0.7);
+            --bb-highlight-blue: rgba(173, 216, 230, 0.7);
+            --bb-highlight-green: rgba(144, 238, 144, 0.7);
+            --review-red: #d9534f;
+            --correct-green: #28a745;
+            --incorrect-red: #dc3545;
+            --code-bg: #f5f5f5;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+        
+        /* Prevent selection for non-interactive elements */
+        .pane-content-left img,
+        .pane-content-right mjx-container,
+        .sat-stem mjx-container {
+             -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* IDE Code Elements Styling */
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'ProggyClean', 'Fira Code', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            font-variant-ligatures: none;
+        }
+
+        code {
+            font-family: 'ProggyClean', 'Fira Code', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-variant-ligatures: none;
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+        }
+
+        .part-heading {
+            font-family: 'Noto Serif', serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .part-link {
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--primary-blue);
+            transition: color 0.2s ease;
+            margin-left: 5px;
+        }
+
+        .part-link:hover {
+            color: #283e9f;
+        }
+        
+        /* --- FULL PAGE SCREENS --- */
+        .full-page-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-color: #f0f2f5; z-index: 2000;
+            transition: opacity 0.3s ease-in-out; opacity: 1;
+        }
+        .full-page-screen.hidden { opacity: 0; pointer-events: none; }
+        .info-card {
+            background-color: white; padding: 40px 50px; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center;
+            max-width: 800px; width: 90%; border-top: 5px solid var(--primary-blue);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .info-card h1 { font-family: 'Noto Serif', serif; font-size: 32px; color: var(--text-dark); margin-top: 0; margin-bottom: 10px; }
+        .info-card h2 { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 20px; color: var(--primary-blue); margin-top: 0; margin-bottom: 25px; }
+        .info-card p, .info-card li { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.7; color: var(--text-light); text-align: left; margin-bottom: 15px; }
+        .info-card .start-button, .info-card .continue-button {
+            display: inline-block; background-color: #324DC7; color: white; border: none;
+            padding: 15px 40px; border-radius: 30px; font-size: 18px; font-weight: bold;
+            cursor: pointer; transition: background-color 0.2s; margin-top: 20px;
+        }
+        .info-card .start-button:hover, .info-card .continue-button:hover { background-color: #283e9f; }
+
+        /* --- RESULTS SCREEN --- */
+        #results-screen { padding: 30px; box-sizing: border-box; overflow-y: auto; text-align: center; }
+        .results-container {
+            background-color: white; padding: 30px; border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08); max-width: 900px; margin: 20px auto; width: 100%;
+        }
+        #results-screen h1 { font-family: 'Noto Serif', serif; font-size: 36px; margin-bottom: 20px; }
+        .download-buttons-container { margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .download-button {
+            background-color: var(--bb-dark-blue); color: white; border: none;
+            padding: 12px 25px; border-radius: 25px; font-size: 16px; cursor: pointer; transition: background-color 0.2s;
+        }
+        .download-button:hover { background-color: #001a33; }
+        .back-to-results-btn { background-color: var(--primary-blue) !important; color: white !important; border: none !important; }
+
+        /* --- MAIN EXAM UI --- */
+        .body-new-sat { width: 100%; height: 100%; background-color: #ffffff; display: none; flex-direction: column; }
+        .body-new-sat.active { display: flex; }
+        body.resizing { cursor: col-resize; user-select: none; }
+        .sat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .header-left .module-title { font-size: 24px; font-weight: 700; }
+        .header-left .directions { font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #000000; margin-top: 5px; }
+        .header-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
+        .timer-visible-container, .timer-hidden-container { display: flex; flex-direction: column; align-items: center; }
+        .timer-hidden-container .downTime-time-icon { margin-bottom: 6px; }
+        .header-center .timer { font-size: 22px; font-weight: 500; letter-spacing: 1px; }
+        .header-center .hide-button, .header-center .show-button { background-color: #ffffff; border: 1px solid #b0b0b0; border-radius: 12px; padding: 3px 10px; font-size: 12px; font-family: 'Roboto', sans-serif; cursor: pointer; margin-top: 4px; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .tool-button { display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 14px; font-weight: 500; gap: 6px; color: #000000; padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s; position: relative; }
+        .tool-button.active, .tool-button:hover { background-color: #E8F0FE; }
+        .tool-button#highlight-tool-btn.active span { text-decoration: underline; }
+        .tool-button img, .tool-button svg { width: 32px; height: 32px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; min-width: 150px; }
+        .dropdown-menu.visible { display: block; }
+        .dropdown-menu button { display: block; width: 100%; padding: 10px 15px; text-align: left; border: none; background: none; cursor: pointer; font-size: 14px; }
+        .dropdown-menu button:hover { background-color: #f0f0f0; }
+        
+        .separator-container { height: 2px; width: 100%; background-image: repeating-linear-gradient(to right, black 0, black 32px, transparent 32px, transparent 40px); background-size: 40px 2px; background-repeat: repeat-x; flex-shrink: 0; }
+        #footer-dashes { top: 0; bottom: auto; position: absolute; left: 30px; width: calc(100% - 60px); }
+        #question-header-separator { margin-bottom: 25px; width: 100%; left: 0; }
+
+        .main-up-table { display: flex; flex-grow: 1; overflow: hidden; width: 100%; max-width: 1400px; margin: 0 auto; background-color: #ffffff; position: relative; }
+        .pane-content-left, .pane-content-right, .option-text { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        
+        .pane-content-left { flex: 0 1 50%; padding: 15px 20px; box-sizing: border-box; font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.7; overflow-y: auto; min-width: 200px; background-color: #ffffff; color: #000000; display: block; }
+        .pane-content-left > * { margin-bottom: 20px; }
+        .data-table { width: 100%; max-width: 100%; border-collapse: collapse; margin-bottom: 30px; margin-left: auto; margin-right: auto;}
+        .data-table th, .data-table td { border: 1px solid #e0e0e0; padding: 10px 14px; font-size: 14px; text-align: left; vertical-align: top; }
+        .data-table th { font-family: 'Roboto', sans-serif; font-weight: bold; background-color: #f9f9f9; }
+
+        .splitter { flex: 0 0 5px; background: #e0e0e0; cursor: col-resize; }
+        .pane-content-right { flex: 1 1 50%; padding: 15px 30px 15px 20px; box-sizing: border-box; background-color: #ffffff; display: flex; flex-direction: column; overflow-y: auto; min-width: 200px; }
+        .main-up-table.single-column .pane-content-left, .main-up-table.single-column .splitter { display: none; }
+        .main-up-table.single-column .pane-content-right { padding-left: 80px; }
+        .question-header { display: flex; align-items: center; background-color: #EEEEEE; padding: 8px; border-radius: 4px; }
+        .question-number { background-color: #000000; color: #ffffff; font-size: 16px; padding: 8px 12px; border-radius: 4px; margin-right: 15px; font-family: 'Noto Serif', serif; font-weight: bold; }
+        .mark-review { display: flex; align-items: center; font-size: 14px; color: var(--text-dark); cursor: pointer; gap: 8px; font-family: 'Noto Serif', serif; }
+        .mark-review .mark-review-icon { width: 20px; height: 20px; stroke: #555; transition: fill 0.2s, stroke 0.2s; }
+        .mark-review.marked span { color: var(--text-dark); text-decoration: underline; }
+        .mark-review.marked .mark-review-icon { fill: var(--review-red); stroke: var(--text-dark); stroke-width: 1.5; }
+        
+        .footer-area { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: var(--light-blue-bg); flex-shrink: 0; position: relative; }
+        .footer-section { flex: 1; }
+        .footer-center { display: flex; justify-content: center; }
+        .footer-right { display: flex; justify-content: flex-end; }
+        .question-progress { background-color: #000000; color: #ffffff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; cursor: pointer; gap: 8px; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .el-button { border: none; padding: 12px 23px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color: 0.2s; height: 44px; box-sizing: border-box; }
+        .el-button--default { background-color: #ffffff; color: #324DC7; border: 1px solid #324DC7; }
+        .el-button--primary { background-color: #324DC7; color: #ffffff; border: 1px solid #324DC7; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        #directions-modal { justify-content: flex-start; align-items: flex-start; }
+        #directions-modal .modal-content { position: absolute; top: 80px; left: 30px; padding: 0; border: 1px solid #ebeef5; box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); width: 850px; max-width: 850px; background-color: white; border-radius: 4px; }
+        #directions-modal .modal-content::before { content: ""; position: absolute; width: 16px; height: 16px; background-color: #ffffff; border-left: 1px solid #ebeef5; border-top: 1px solid #ebeef5; top: -9px; left: 60px; transform: rotate(45deg); z-index: -1; }
+        #directions-modal .modal-body { padding: 40px; font-family: 'Noto Serif', serif; line-height: 1.8; color: #606266; max-height: 70vh; overflow-y: auto; font-size: 18px; }
+        #directions-modal .modal-body h3 { font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; text-align: left; margin-top: 0; margin-bottom: 25px; color: var(--text-dark); }
+        #directions-modal .modal-body img { max-width: 100%; height: auto; }
+        #directions-modal .modal-footer { padding: 15px 20px; text-align: center; }
+        #directions-modal .close-button { background-color: #FFD18D; border: 1px solid #000; color: #000000; border-radius: 4px; padding: 12px 20px; min-width: 118px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        #question-list-modal { justify-content: center; align-items: flex-end; }
+        .question-list-content { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); width: 800px; max-width: 90%; position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); z-index: 1010; }
+        .question-list-header { font-family: 'Noto Serif', serif; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .question-list-legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 14px; align-items: center; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-item .box { width: 16px; height: 16px; border: 1px solid #ccc; }
+        .legend-item .box.current { border: 2px solid #000; }
+        .legend-item .box.unanswered { border-style: dashed; }
+        .legend-item .box.for-review { background-color: var(--review-red); border-color: var(--review-red); }
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .question-grid-item { border: 1.5px solid #ccc; border-radius: 4px; padding: 10px; text-align: center; cursor: pointer; position: relative; font-weight: 500; transition: background-color: 0.2s; }
+        .question-grid-item:hover { background-color: #f0f2f5; }
+        .question-grid-item.current { border-color: #000; font-weight: bold; border-width: 2px; }
+        .question-grid-item.unanswered { border-style: dashed; color: #555; }
+        .question-grid-item.completed { border-style: solid; border-color: #a0a0a0; }
+        .question-grid-item.for-review::after { content: ''; position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background-image: url('https://peanutmaster.xiaosaas.com/org/sat/icon/flg-a.png'); background-size: contain; background-repeat: no-repeat; }
+        .question-list-footer { text-align: center; }
+        .go-to-review-btn { background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 20px; padding: 10px 25px; cursor: pointer; font-size: 14px; font-weight: 500; }
+        
+        /* --- REVIEW SCREEN --- */
+        #review-screen { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex-grow: 1; padding: 40px; box-sizing: border-box; }
+        .body-new-sat.review-mode-active .sat-header, .body-new-sat.review-mode-active #question-screen { display: none; }
+        .body-new-sat.review-mode-active #no-calc-banner { display: none; }
+        .body-new-sat.review-mode-active .footer-area { position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
+        .body-new-sat.review-mode-active #review-screen { display: flex; padding-bottom: 80px; }
+        .body-new-sat.review-mode-active { height: 100vh; }
+
+        #review-screen h2 { font-family: 'Noto Serif', serif; font-size: 32px; margin-top: 0; margin-bottom: 10px; }
+        #review-screen .review-subtitle { font-size: 16px; color: var(--text-light); max-width: 500px; margin-bottom: 40px; }
+        .review-grid-container { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; width: 100%; max-width: 900px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #review-question-preview { font-family: 'Noto Serif', serif; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; min-height: 50px; text-align: left; color: #333; border: 1px solid #eee; }
+        .review-module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-module-header .module-name { font-family: 'Noto Serif', serif; font-size: 20px; font-weight: bold; }
+        .review-module-header .review-legend { display: flex; gap: 15px; font-size: 14px; align-items: center; }
+        
+        /* HIGHLIGHT STYLES */
+        .highlight-toolbar { position: fixed; background-color: var(--bb-dark-blue); padding: 5px; border-radius: 5px; z-index: 1200; display: none; flex-direction: row; gap: 5px; }
+        .highlight-toolbar button { background-color: white; border: 1px solid var(--bb-medium-gray); border-radius: 3px; padding: 5px; cursor: pointer; min-width: 30px; font-family: sans-serif; font-size: 14px; }
+        .highlight-toolbar button.color-btn.yellow { background-color: #fff38f; }
+        .highlight-toolbar button.color-btn.pink { background-color: #ffb6c1; }
+        .highlight-toolbar button.color-btn.blue { background-color: #add8e6; }
+        .highlight-toolbar button.color-btn.green { background-color: #90ee90; }
+        .highlight-toolbar button:hover { background-color: #f0f0f0; }
+        
+        #line-reader { position: fixed; width: 100%; height: 40px; background-color: rgba(0, 113, 197, 0.2); border-top: 1px solid rgba(0, 113, 197, 0.5); border-bottom: 1px solid rgba(0, 113, 197, 0.5); z-index: 2000; pointer-events: none; top: 50%; left: 0; transform: translateY(-50%); }
+        #line-reader-exit-btn { position: fixed; top: 70px; right: 30px; z-index: 2001; padding: 10px 15px; background-color: var(--bb-dark-blue); color: white; border: none; border-radius: 5px; cursor: pointer; }
+
+        /* --- DRAGGABLE TOOLS --- */
+        .draggable { position: fixed; z-index: 1050; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); overflow: hidden; display: flex; flex-direction: column; }
+        .draggable-header { padding: 10px 15px; cursor: move; z-index: 10; background-color: var(--bb-dark-blue); color: white; display: flex; justify-content: space-between; align-items: center; font-family: 'Roboto', sans-serif; }
+        .draggable-header .title { font-weight: bold; font-size: 15px; }
+        .draggable-header .close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; margin-left: 20px; }
+        .draggable-content { padding: 0; width: 100%; flex-grow: 1; overflow: auto; background-color: #f9f9f9; }
+        
+        #reference-container { width: 600px; height: 500px; resize: both; min-width: 400px; min-height: 300px; }
+        .reference-body { padding: 20px; font-family: 'Noto Serif', serif; font-size: 15px; line-height: 1.6; }
+        .reference-body h3 { font-family: 'Roboto', sans-serif; color: var(--bb-dark-blue); border-bottom: 2px solid var(--bb-medium-gray); padding-bottom: 5px; }
+        .ref-formula-group { margin-bottom: 15px; background: white; padding: 10px; border-radius: 6px; border: 1px solid #e0e0e0; }
+
+        /* --- EDITOR & PROMPT STYLES --- */
+        .saq-container { display: flex; flex-direction: column; gap: 20px; flex-grow: 1; height: 100%; }
+        .saq-prompt-box { padding: 0 0 15px 0; border-bottom: 1px solid #e0e0e0; margin-bottom: 10px; flex-shrink: 0; }
+        .saq-prompt-text { font-family: 'Noto Serif', serif; font-size: 16px; line-height: 1.6; color: #2d2d2d; }
+        
+        /* Modern IDE Code Editor Simulation */
+        .editor-wrapper {
+            position: relative;
+            flex-grow: 1;
+            min-height: 400px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .code-bg-layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            margin: 0; padding: 15px;
+            font-family: 'ProggyClean', 'Fira Code', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre; /* Allows horizontal scrolling */
+            word-wrap: normal;
+            color: transparent; /* Text invisible */
+            pointer-events: none; /* Ignore clicks */
+            z-index: 1;
+            overflow: hidden;
+            font-variant-ligatures: none;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0px;
+        }
+        .code-textarea {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            margin: 0; padding: 15px;
+            font-family: 'ProggyClean', 'Fira Code', 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000;
+            background: transparent;
+            border: none;
+            resize: none;
+            outline: none;
+            z-index: 2;
+            box-sizing: border-box;
+            white-space: pre; /* Allows horizontal scrolling */
+            word-wrap: normal;
+            overflow: auto;
+            font-variant-ligatures: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0px;
+        }
+
+        /* Connect indent guides vertically without disrupting alignment */
+        .indent-guide {
+            position: relative;
+        }
+        .indent-guide::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -0.2em;
+            bottom: -0.2em;
+            border-left: 1px dashed #b0b0b0;
+            pointer-events: none;
+        }
+        .bracket-match {
+            background-color: #d0d0d0;
+            border-radius: 2px;
+        }
+        .bracket-error {
+            border-bottom: 1px solid red;
+        }
+
+        /* --- WATERMARK --- */
+        .watermark { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; background-repeat: repeat; background-image: url("data:image/svg+xml;base64,CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjE1MCI+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZmlsbD0icmdiYSgwLDAsMCwwLjA4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwLCAxMjUsIDc1KSI+CiAgICDotKjog73mlZnogrIKICA8L3RleHQ+Cjwvc3ZnPgo="); }
+    </style>
+</head>
+<body>
+
+<!-- 简易考试授权锁定层 -->
+<div id="auth-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--light-blue-bg, #E6EDF8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family: 'Roboto', sans-serif;">
+    <div style="background:white; padding:40px; border-radius:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+        <h2 style="color:var(--bb-dark-blue, #002d5a); margin-bottom: 10px;">start code</h2>
+        <p style="color:var(--text-light, #555); margin-bottom: 20px;">Once the proctor shares the start code, enter it here to begin testing.</p>
+        <input type="text" id="exam-password" placeholder="Enter code" maxlength="6" style="padding:10px; font-size:18px; width:80%; margin-bottom:15px; border: 1px solid var(--border-color, #ccc); border-radius: 4px; text-align: center; letter-spacing: 4px; font-weight: bold; color: var(--bb-dark-blue);">
+        <br>
+        <button onclick="window.verifyPassword()" style="padding:10px 25px; font-size:16px; background:var(--primary-blue, #4a69ff); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; text-transform: uppercase;">start test</button>
+        <p id="auth-error" style="color:#d93025; display:none; margin-top:15px; font-size:14px;">Invalid start code. Please try again.</p>
+    </div>
+</div>
+
+
+    <div class="watermark"></div>
+
+    <div id="start-screen" class="full-page-screen">
+        <div class="info-card">
+            <h1>AP Computer Science A Exam - FRQ Section</h1>
+            <hr>
+            <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260331/KYB2/1539X1703/515740b9ddb6184a964ef418c1b6ec56.png/webp" style="width: 100%; height: auto; display: block;" alt="Part II Directions">
+            <button class="start-button" id="start-exam-btn">Start Exam</button>
+        </div>
+    </div>
+    
+    <div id="section-transition-screen" class="full-page-screen hidden">
+        <div class="info-card">
+            <h1>Section II Directions</h1>
+            <p><strong>Section II: Free Response</strong></p>
+            <p><strong>Total Time:</strong> 1 hour 30 minutes (90 minutes)</p>
+            <p><strong>Questions:</strong> 4 questions</p>
+            <button class="continue-button" id="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <div id="results-screen" class="full-page-screen hidden">
+        <div class="results-container">
+            <h1>Exam Completed</h1>
+            <p>You have submitted your responses for all sections.</p>
+            <div class="download-buttons-container">
+                <button class="download-button" id="download-frq-btn">Download Responses</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Draggable Reference Sheet -->
+    <div id="reference-container" class="draggable" style="display: none; top: 100px; left: 50px;">
+        <div class="draggable-header">
+            <span class="title">Java Quick Reference</span>
+            <button class="close-btn" id="close-ref-btn">&times;</button>
+        </div>
+        <div class="draggable-content">
+            <div class="reference-body">
+                <div class="ref-formula-group">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/MHTc/1022X1442/image.png/webp" style="width:100%; max-width:600px;" alt="Reference Page 1">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260208/fh7h/1068X1522/image.png/webp" style="width:100%; max-width:600px;" alt="Reference Page 2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body-new-sat">
+        <header class="sat-header">
+            <div class="header-left">
+                <div class="module-title" id="main-module-title">Section II</div>
+                <div class="directions" id="directions-btn">
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="timer-visible-container">
+                    <div class="timer" id="timer-display">90:00</div>
+                    <button class="hide-button">Hide</button>
+                </div>
+                <div class="timer-hidden-container" style="display: none;">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/time.svg" class="downTime-time-icon" alt="Time hidden">
+                    <button class="show-button">Show</button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="tool-button" id="reference-btn">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxOCAxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aA0KICAgICAgICBmaWxsLXJ1bGU9ImV2ZW5vZGQiDQogICAgICAgIGNsaXAtcnVsZT0iZXZlbm9kZCINCiAgICAgICAgZD0iTTE1LjY0NCAzLjcxOGMuMDk5LS4wNzQuMi0uMTQ1LjMwNC0uMjFsLjI5LS4xOGMuMTg1LS4xMTEuMzQ2LS4yMTQuNDg0LS4zMDIuMTM3LS4wOTEuMjY1LS4xODguMzgyLS4yOTEuMTctLjE1NC4zMS0uMzI0LjQyMy0uNTExLjExLS4xODcuMTY1LS40MS4xNjUtLjY2NWEuOTk2Ljk5NiAwIDAgMC0uNDA5LS44NDZBMS4zODEgMS4zODEgMCAwIDAgMTYuODI3LjVhMi4xOTMgMi4xOTMgMCAwIDAtLjU2OC0uMDdjLS4xOCAwLS4zNDcuMDE3LS41MDEuMDVhMy4yNjQgMy4yNjQgMCAwIDAtLjQyLjEyMiAyLjMyIDIuMzIgMCAwIDAtLjMzMy4xNTUgMy41NSAzLjU1IDAgMCAwLS4yNC4xNTJsLS4xODMuOThjLjI1Ny0uMjAyLjUtLjM1NS43MjctLjQ1Ni4yMjgtLjEwMS40NjMtLjE1Mi43MDYtLjE1Mi4xOTggMCAuMzM3LjA0My40MTYuMTI5YS40MjIuNDIyIDAgMCAxIC4xMTguMjk3LjU4Mi41ODIgMCAwIDEtLjE1OC40MDkgMi4zOTggMi4zOTggMCAwIDEtLjQxNi4zNDhjLS4yNDMuMTYyLS40OC4zMTctLjcxLjQ2M2E1LjEzNCA1LjEzNCAwIDAgMC0uNjM1LjQ3NyAzLjA4OCAzLjA4OCAwIDAgMC0uNTYxLjY3Yy0uMTU3LjI1Ni0uMjczLjU4LS4zNDQuOTcyaDMuMzU4bC4yNS0xLjI4NGEuODUuODUgMCAwIDAtLjIyLS4wODEuOTM2LjkzNiAwIDAgMC0uMjItLjAyN2MtLjA2MiAwLS4xMzYuMDA2LS4yMjIuMDJhMS4wMSAxLjAxIDAgMCAwLS4yNS4wNzRsLS4wOTQuNDY2aC0xLjIwNGMuMDY4LS4wOTQuMTQ3LS4xODIuMjM3LS4yNjMuMDktLjA4MS4xODQtLjE2LjI4NC0uMjMzTTEyLjc4My44NDhIOC40ODdhMS4xODYgMS4xODYgMCAwIDAtLjMxLjQ0N2MtLjA3LjE3My0uMTA1LjM0Mi0uMTA1LjUwOCAwIC4wNTYuMDA0LjEyNS4wMTEuMjA4LjAwNy4wODMuMDM4LjIuMDk0LjM1M2gxLjEyTDcuMTE4IDQuMzU2IDUuNTE5Ljg0OEgyLjU3MmMtLjI3Ni4yNjQtLjQxNC42MTYtLjQxNCAxLjA1OSAwIC4wNy4wMDMuMTQyLjAxLjIxOC4wMDguMDc2LjAzMS4yMTguMDczLjQyNWgxLjQzMmwxLjYxOCAzLjU0OS00LjAwNSAzLjgxOUguNDE0Qy4xMzcgMTAuMTggMCAxMC41MzMgMCAxMC45NzZjMCAuMDY5LjAwMy4xNDMuMDEuMjE4LjAwNi4wNzYuMDMxLjIxOC4wNzMuNDI1aDQuNTY1Yy4xMzktLjEyNS4yNDEtLjI3Mi4zMTItLjQ0NWExLjM5IDEuMzkgMCAwIDAgLjEwMy0uNTFjMC0uMDU0LS4wMDQtLjEyNC0uMDA5LS4yMDctLjAwNy0uMDgzLS4wNC0uMi0uMDk0LS4zNTJIMy42NTJsMi40NDktMi4yMjEgMS42ODEgMy43MzVoMi45MjZjLjI5MS0uMjYyLjQzNi0uNjE1LjQzNi0xLjA1OCAwLS4wNy0uMDA0LS4xNDItLjAxLS4yMThhMy4xNTYgMy4xNTYgMCAwIDAtLjA5My0uNDI1SDkuNjNMNy45MjggNi4xNGwzLjc1NS0zLjU5aC43NjljLjI5LS4yNjIuNDM1LS4xNjYuNDM1LTEuMDU3IDAtLjA3MS0uMDAzLS4xNDMtLjAwOS0uMjJhMy4zODMgMy4zODMgMCAwIDAtLjA5NS0uNDI1Ig0KICAgICAgICBmaWxsPSIjMUUxRTFFIg0KICAgICAvPg0KPC9zdmc+DQo=" alt="Reference Icon">
+                    <span>Reference</span>
+                </div>
+                <div class="tool-button" id="highlight-tool-btn">
+                    <img src="https://peanutmaster.xiaosaas.com/org/sat/icon/highlight-icon.svg" class="highlight-icon" alt="Highlight Icon">
+                    <span>Highlight</span>
+                </div>
+                <div class="tool-button" id="more-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2d2d2d"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>
+                    <span>More</span>
+                    <div id="more-dropdown" class="dropdown-menu">
+                        <button id="linereader-tool-btn">Line Reader</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="no-calc-banner">
+            <div class="separator-container"></div>
+            <div style="background-color: #ffcdd2; color: #000; display: flex; justify-content: space-between; align-items: center; padding: 6px 30px; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: bold;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><path d="M8 8h8"></path><path d="M16 14v4"></path><path d="M8 14v4"></path><path d="M12 14v4"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg> 
+                    NO CALCULATOR ALLOWED
+                </div>
+                <div>THIS IS A TEST</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    NO CALCULATOR ALLOWED 
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><path d="M8 8h8"></path><path d="M16 14v4"></path><path d="M8 14v4"></path><path d="M12 14v4"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg> 
+                </div>
+            </div>
+            <div class="separator-container"></div>
+        </div>
+        
+        <div class="main-up-table" id="question-screen">
+            <div class="pane-content-left" id="left-panel"></div>
+            <div class="splitter" id="splitter"></div>
+            <div class="pane-content-right" id="right-panel"></div>
+        </div>
+        
+        <div id="review-screen">
+             <h2>Check Your Work</h2>
+             <p class="review-subtitle">On test day, you won’t be able to move on to the next section until time expires. For this practice, you can click <strong>Continue</strong> when you’re ready to move on.</p>
+             <div class="review-grid-container">
+                <div id="review-question-preview">Click a question number below to see the question text here.</div>
+                <div class="review-module-header">
+                    <div class="module-name" id="review-module-name">Section II</div>
+                    <div class="review-legend">
+                        <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                        <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+                    </div>
+                </div>
+                <div class="question-grid" id="review-grid-main"></div>
+             </div>
+        </div>
+
+        <footer class="footer-area">
+            <div class="separator-container" id="footer-dashes"></div>
+            <div class="footer-section footer-left"></div>
+            <div class="footer-section footer-center">
+                 <div class="question-progress" id="question-progress-btn">Question 1</div>
+            </div>
+            <div class="footer-section footer-right">
+                <div class="nav-buttons">
+                    <button type="button" class="el-button el-button--default" id="back-btn"><span>Back</span></button>
+                    <button type="button" class="el-button el-button--primary" id="next-btn"><span>Next</span></button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="directions-modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>Exam Directions</h3>
+                <div id="directions-content">
+                    <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260331/KYB2/1539X1703/515740b9ddb6184a964ef418c1b6ec56.png/webp" style="width: 100%; height: auto; display: block;" alt="Directions Image">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-button" id="directions-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="question-list-modal" class="modal-overlay">
+        <div class="question-list-content">
+            <div class="question-list-header" id="popup-module-name">Section II</div>
+             <div class="question-list-legend">
+                <div class="legend-item"><div class="box current"></div><span>Current</span></div>
+                <div class="legend-item"><div class="box unanswered"></div><span>Unanswered</span></div>
+                <div class="legend-item"><div class="box for-review"></div><span style="color: var(--review-red)">For Review</span></div>
+            </div>
+            <div class="question-grid" id="popup-question-grid"></div>
+            <div class="question-list-footer">
+                <button class="go-to-review-btn" id="go-to-review-btn">Go to Review Page</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="highlight-toolbar" class="highlight-toolbar">
+        <button class="color-btn yellow" data-color="yellow" title="Yellow Highlight"></button>
+        <button class="color-btn pink" data-color="pink" title="Pink Highlight"></button>
+        <button class="color-btn blue" data-color="blue" title="Blue Highlight"></button>
+        <button class="color-btn green" data-color="green" title="Green Highlight"></button>
+        <button data-action="remove" title="Remove Highlight/Underline">&#10005;</button>
+    </div>
+    
+    <div id="line-reader-overlay" style="display: none;">
+        <div id="line-reader"></div>
+        <button id="line-reader-exit-btn">Exit</button>
+    </div>
+
+    <script id="main-app-script">
+        (function() {
+    // --- STATE MANAGEMENT ---
+    let sectionsData = [];
+    let currentSectionIndex = 0;
+    let currentQuestionIndex = 0;
+    let currentView = 'start'; 
+    let timerInterval;
+
+    function initializeExam() {
+        const q1LeftContext = `
+            <div style="font-family: 'Noto Serif', serif; font-size: 16px;">
+                <p><strong>1.</strong> This question involves simulation of the play and scoring of a single-player video game. In the game, a player attempts to complete three levels. A level in the game is represented by the <code>Level</code> class.</p>
+<pre>public class Level
+{
+    /** Returns true if the player reached the goal on this level and returns false otherwise */
+    public boolean goalReached()
+    { /* implementation not shown */ }
+
+    /** Returns the number of points (a positive integer) recorded for this level */
+    public int getPoints()
+    { /* implementation not shown */ }
+
+    // There may be instance variables, constructors, and methods that are not shown.
+}</pre>
+                <p>Play of the game is represented by the <code>Game</code> class. You will write two methods of the <code>Game</code> class.</p>
+<pre>public class Game
+{
+    private Level levelOne;
+    private Level levelTwo;
+    private Level levelThree;
+
+    /** <strong>Postcondition:</strong> All instance variables have been initialized. */
+    public Game()
+    { /* implementation not shown */ }
+
+    /** Returns true if this game is a bonus game and returns false otherwise */
+    public boolean isBonus()
+    { /* implementation not shown */ }
+
+    /** Simulates the play of this Game (consisting of three levels) and updates all relevant
+     * game data
+     */
+    public void play()
+    { /* implementation not shown */ }
+
+    /** Returns the score earned in the most recently played game, as described in part (a) */
+    public int getScore()
+    { /* to be implemented in part (a) */ }
+
+    /** Simulates the play of num games and returns the highest score earned, as
+     * described in part (b)
+     * <strong>Precondition:</strong> num > 0
+     */
+    public int playManyTimes(int num)
+    { /* to be implemented in part (b) */ }
+
+    // There may be instance variables, constructors, and methods that are not shown.
+}</pre>
+                <br>
+                <div id="part-a"></div>
+                <p style="font-size: 16px;"><strong>(a)</strong> Write the <code>getScore</code> method, which returns the score for the most recently played game. Each game consists of three levels. The score for the game is computed using the following helper methods.</p>
+                <ul>
+                    <li>The <code>isBonus</code> method of the <code>Game</code> class returns true if this is a bonus game and returns false otherwise.</li>
+                    <li>The <code>goalReached</code> method of the <code>Level</code> class returns true if the goal has been reached on a particular level and returns false otherwise.</li>
+                    <li>The <code>getPoints</code> method of the <code>Level</code> class returns the number of points recorded on a particular level. Whether or not recorded points are earned (included in the game score) depends on the rules of the game, which follow.</li>
+                </ul>
+                <p>The score for the game is computed according to the following rules.</p>
+                <ul>
+                    <li>Level one points are earned only if the level one goal is reached. Level two points are earned only if both the level one and level two goals are reached. Level three points are earned only if the goals of all three levels are reached.</li>
+                    <li>The score for the game is the sum of the points earned for levels one, two, and three.</li>
+                    <li>If the game is a bonus game, the score for the game is tripled.</li>
+                </ul>
+                <p>The following table shows some examples of game score calculations.</p>
+                <table class="data-table">
+                    <tr>
+                        <th><strong>Level One Results</strong></th>
+                        <th><strong>Level Two Results</strong></th>
+                        <th><strong>Level Three Results</strong></th>
+                        <th><strong>isBonus Return Value</strong></th>
+                        <th><strong>Score Calculation</strong></th>
+                    </tr>
+                    <tr>
+                        <td><code>goalReached</code> Return Value:<br>true<br><br><code>getPoints</code> Return Value:<br>200</td>
+                        <td>true<br><br><br>100</td>
+                        <td>true<br><br><br>500</td>
+                        <td>true</td>
+                        <td>(200 + 100 + 500) * 3 = 2,400<br>The recorded points for levels one, two, and three are earned because the goals were reached in all three levels. The earned points are multiplied by 3 because <code>isBonus</code> returns true.</td>
+                    </tr>
+                    <tr>
+                        <td><code>goalReached</code> Return Value:<br>true<br><br><code>getPoints</code> Return Value:<br>200</td>
+                        <td>true<br><br><br>100</td>
+                        <td>false<br><br><br>500</td>
+                        <td>false</td>
+                        <td>200 + 100 = 300<br>The recorded points for level one and level two are earned because the goal was reached in levels one and two. The recorded points for level three are not earned because the goal was not reached in level three.</td>
+                    </tr>
+                    <tr>
+                        <td><code>goalReached</code> Return Value:<br>true<br><br><code>getPoints</code> Return Value:<br>200</td>
+                        <td>false<br><br><br>100</td>
+                        <td>true<br><br><br>500</td>
+                        <td>true</td>
+                        <td>200 * 3 = 600<br>The recorded points for only level one are earned because the goal was not reached in level two. The earned points are multiplied by 3 because <code>isBonus</code> returns true.</td>
+                    </tr>
+                    <tr>
+                        <td><code>goalReached</code> Return Value:<br>false<br><br><code>getPoints</code> Return Value:<br>200</td>
+                        <td>true<br><br><br>100</td>
+                        <td>false<br><br><br>500</td>
+                        <td>false</td>
+                        <td>0<br>Because the goal in level one was not reached, no points are earned for any level.</td>
+                    </tr>
+                </table>
+                <br>
+                <div id="part-b"></div>
+                <p style="font-size: 16px;"><strong>(b)</strong> Write the <code>playManyTimes</code> method, which simulates the play of <code>num</code> games and returns the highest game score earned. For example, if the four plays of the game that are simulated as a result of the method call <code>playManyTimes(4)</code> earn scores of 75, 50, 90, and 20, then the method should return 90.</p>
+                <p>Play of the game is simulated by calling the helper method <code>play</code>. Note that if <code>play</code> is called only one time followed by multiple consecutive calls to <code>getScore</code>, each call to <code>getScore</code> will return the score earned in the single simulated play of the game.</p>
+            </div>
+        `;
+
+        const q1aStem = `
+            <div class="part-heading"><strong>Part A</strong><span class="part-link" onclick="document.getElementById('part-a').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete the <code>getScore</code> method.</p>
+<pre>/** Returns the score earned in the most recently played game, as described in part (a) */
+public int getScore()</pre>
+        `;
+
+        const q1bStem = `
+            <div class="part-heading"><strong>Part B</strong><span class="part-link" onclick="document.getElementById('part-b').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete the <code>playManyTimes</code> method. Assume that <code>getScore</code> works as intended, regardless of what you wrote in part (a). You must call <code>play</code> and <code>getScore</code> appropriately in order to receive full credit.</p>
+<pre>/** Simulates the play of num games and returns the highest score earned, as
+ * described in part (b)
+ * <strong>Precondition:</strong> num > 0
+ */
+public int playManyTimes(int num)</pre>
+        `;
+
+        const q2LeftContext = `
+            <div style="font-family: 'Noto Serif', serif; font-size: 16px;">
+                <p><strong>2.</strong> The <code>CupcakeMachine</code> class, which you will write, represents a cupcake vending machine, an automated machine that dispenses cupcakes. <code>CupcakeMachine</code> objects are created by calls to a constructor with two parameters.</p>
+                <ul>
+                    <li>The first parameter is an <code>int</code> that represents the number of cupcakes that the vending machine has been stocked with. Assume that this value will be greater than or equal to 0.</li>
+                    <li>The second parameter is a <code>double</code> that represents the cost, in dollars, per cupcake. Assume that this value will be greater than 0.0.</li>
+                </ul>
+                <p>The <code>CupcakeMachine</code> class contains a <code>takeOrder</code> method, which determines whether a cupcake order can be filled. A cupcake order can be filled if there are at least as many cupcakes in the vending machine as there are in the order.</p>
+                <p>A cupcake order is represented by a single <code>int</code> parameter to the <code>takeOrder</code> method. Assume that all values passed to the <code>takeOrder</code> method are positive.</p>
+                <p>If an order can be filled, the method updates the number of cupcakes remaining in the machine and returns a <code>String</code> containing information about the order. The returned string indicates the order number and the cost of the order, as shown in the following table. Order numbers begin at 1 and increase by 1 for each order filled.</p>
+                <p>If the order cannot be filled because the vending machine does not have enough cupcakes, the <code>takeOrder</code> method should return the message <code>"Order cannot be filled"</code>. In this case, the number of cupcakes available in the machine is unchanged and no order number is given to the order.</p>
+                <p>The following table contains a sample code execution sequence and the corresponding results. The code execution sequence appears in a class other than <code>CupcakeMachine</code>.</p>
+                <table class="data-table">
+                    <tr>
+                        <th><strong>Statement</strong></th>
+                        <th><strong>Return Value<br>(blank if no value)</strong></th>
+                        <th><strong>Explanation</strong></th>
+                    </tr>
+                    <tr>
+                        <td><code>String info;</code></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>CupcakeMachine c1 =<br>  new CupcakeMachine(10, 1.75);</code></td>
+                        <td></td>
+                        <td><code>CupcakeMachine</code> <code>c1</code> is constructed with 10 cupcakes and a cost of $1.75 per cupcake.</td>
+                    </tr>
+                    <tr>
+                        <td><code>info = c1.takeOrder(2);</code></td>
+                        <td><code>"Order number 1, cost $3.5"</code></td>
+                        <td>A customer orders 2 cupcakes for a total cost of 2 * $1.75. There are now 8 cupcakes remaining in the machine.</td>
+                    </tr>
+                    <tr>
+                        <td><code>info = c1.takeOrder(3);</code></td>
+                        <td><code>"Order number 2, cost $5.25"</code></td>
+                        <td>A customer orders 3 cupcakes for a total cost of 3 * $1.75. There are now 5 cupcakes remaining in the machine.</td>
+                    </tr>
+                    <tr>
+                        <td><code>info = c1.takeOrder(10);</code></td>
+                        <td><code>"Order cannot be filled"</code></td>
+                        <td>A customer attempts to order 10 cupcakes. The machine only has 5 cupcakes available, so no order is made.</td>
+                    </tr>
+                    <tr>
+                        <td><code>info = c1.takeOrder(1);</code></td>
+                        <td><code>"Order number 3, cost $1.75"</code></td>
+                        <td>A customer orders 1 cupcake for a total cost of $1.75. There are now 4 cupcakes remaining in the machine.</td>
+                    </tr>
+                    <tr>
+                        <td><code>CupcakeMachine c2 =<br>  new CupcakeMachine(10, 1.5);</code></td>
+                        <td></td>
+                        <td><code>CupcakeMachine</code> <code>c2</code> is constructed with 10 cupcakes and a cost of $1.50 per cupcake.</td>
+                    </tr>
+                    <tr>
+                        <td><code>info = c2.takeOrder(10);</code></td>
+                        <td><code>"Order number 1, cost $15.0"</code></td>
+                        <td>A customer orders 10 cupcakes for a total cost of 10 * $1.50. There are now 0 cupcakes remaining in the machine.</td>
+                    </tr>
+                </table>
+            </div>
+        `;
+
+        const q2Stem = `
+            <p>Write the complete <code>CupcakeMachine</code> class. Your implementation must meet all specifications and conform to the examples shown in the table.</p>
+        `;
+
+        const q3LeftContext = `
+            <div style="font-family: 'Noto Serif', serif; font-size: 16px;">
+                <p><strong>3.</strong> Users of a website are asked to provide a review of the website at the end of each visit. Each review, represented by an object of the <code>Review</code> class, consists of an integer indicating the user's rating of the website and an optional <code>String</code> comment field. The comment field in a <code>Review</code> object ends with a period ("."), exclamation point ("!"), or letter, or is a String of length 0 if the user did not enter a comment.</p>
+<pre>public class Review
+{
+    private int rating;
+    private String comment;
+
+    /** <strong>Precondition:</strong> r >= 0
+     * c is not null.
+     */
+    public Review(int r, String c)
+    {
+        rating = r;
+        comment = c;
+    }
+
+    public int getRating()
+    {
+        return rating;
+    }
+
+    public String getComment()
+    {
+        return comment;
+    }
+
+    // There may be instance variables, constructors, and methods that are not shown.
+}</pre>
+                <p>The <code>ReviewAnalysis</code> class contains methods used to analyze the reviews provided by users. You will write two methods of the <code>ReviewAnalysis</code> class.</p>
+<pre>public class ReviewAnalysis
+{
+    /** All user reviews to be included in this analysis */
+    private Review[] allReviews;
+
+    /** Initializes allReviews to contain all the Review objects to be analyzed */
+    public ReviewAnalysis()
+    { /* implementation not shown */ }
+
+    /** Returns a double representing the average rating of all the Review objects to be
+     * analyzed, as described in part (a)
+     * <strong>Precondition:</strong> allReviews contains at least one Review.
+     * No element of allReviews is null.
+     */
+    public double getAverageRating()
+    { /* to be implemented in part (a) */ }
+
+    /** Returns an ArrayList of String objects containing formatted versions of
+     * selected user comments, as described in part (b)
+     * <strong>Precondition:</strong> allReviews contains at least one Review.
+     * No element of allReviews is null.
+     * <strong>Postcondition:</strong> allReviews is unchanged.
+     */
+    public ArrayList&lt;String&gt; collectComments()
+    { /* to be implemented in part (b) */ }
+}</pre>
+                <br>
+                <div id="part-a"></div>
+                <p style="font-size: 16px;"><strong>(a)</strong> Write the <code>ReviewAnalysis</code> method <code>getAverageRating</code>, which returns the average rating (arithmetic mean) of all elements of <code>allReviews</code>. For example, <code>getAverageRating</code> would return 3.4 if <code>allReviews</code> contained the following <code>Review</code> objects.</p>
+                <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260331/IHUq/1280X214/image.png/webp" style="width:100%; max-width:600px; display:block; margin: 10px 0;">
+
+                <br>
+                <div id="part-b"></div>
+                <p style="font-size: 16px;"><strong>(b)</strong> Write the <code>ReviewAnalysis</code> method <code>collectComments</code>, which collects and formats only comments that contain an exclamation point. The method returns an <code>ArrayList</code> of <code>String</code> objects containing copies of user comments from <code>allReviews</code> that contain an exclamation point, formatted as follows. An empty <code>ArrayList</code> is returned if no comment in <code>allReviews</code> contains an exclamation point.</p>
+                <ul>
+                    <li>The <code>String</code> inserted into the <code>ArrayList</code> to be returned begins with the index of the <code>Review</code> in <code>allReviews</code>.</li>
+                    <li>The index is immediately followed by a hyphen (<code>"-"</code>)</li>
+                    <li>The hyphen is followed by a copy of the original comment.</li>
+                    <li>The <code>String</code> must end with either a period or an exclamation point. If the original comment from <code>allReviews</code> does not end in either a period or an exclamation point, a period is added.</li>
+                </ul>
+                <p>The following example of <code>allReviews</code> is repeated from part (a).</p>
+                <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260331/8Wlx/1240X198/image.png/webp" style="width:100%; max-width:600px; display:block; margin: 10px 0;">
+                <p>The following <code>ArrayList</code> would be returned by a call to <code>collectComments</code> with the given contents of <code>allReviews</code>. The reviews at index 1 and index 4 in <code>allReviews</code> are not included in the <code>ArrayList</code> to return since neither review contains an exclamation point.</p>
+                <img src="https://pic9.fukit.cn/autoupload/QJ7p-s1WNkxecofvMmbqoifNcKcqEnRmcljopnyJoMs/20260331/lL5q/842X118/image.png/webp" style="width:100%; max-width:500px; display:block; margin: 10px 0;">
+            </div>
+        `;
+
+        const q3aStem = `
+            <div class="part-heading"><strong>Part A</strong><span class="part-link" onclick="document.getElementById('part-a').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete method <code>getAverageRating</code>.</p>
+<pre>/** Returns a double representing the average rating of all the Review objects to be
+ * analyzed, as described in part (a)
+ * <strong>Precondition:</strong> allReviews contains at least one Review.
+ * No element of allReviews is null.
+ */
+public double getAverageRating()</pre>
+        `;
+
+        const q3bStem = `
+            <div class="part-heading"><strong>Part B</strong><span class="part-link" onclick="document.getElementById('part-b').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete method <code>collectComments</code>.</p>
+<pre>/** Returns an ArrayList of String objects containing formatted versions of
+ * selected user comments, as described in part (b)
+ * <strong>Precondition:</strong> allReviews contains at least one Review.
+ * No element of allReviews is null.
+ * <strong>Postcondition:</strong> allReviews is unchanged.
+ */
+public ArrayList&lt;String&gt; collectComments()</pre>
+        `;
+
+        const q4LeftContext = `
+            <div style="font-family: 'Noto Serif', serif; font-size: 16px;">
+                <p><strong>4.</strong> This question involves a two-dimensional array of integers that represents a collection of randomly generated data. A partial declaration of the <code>Data</code> class is shown. You will write two methods of the <code>Data</code> class.</p>
+<pre>public class Data
+{
+    public static final int MAX = /* value not shown */;
+    private int[][] grid;
+
+    /** Fills all elements of grid with randomly generated values, as described in part (a)
+     * <strong>Precondition:</strong> grid is not null.
+     * grid has at least one element.
+     */
+    public void repopulate()
+    { /* to be implemented in part (a) */ }
+
+    /** Returns the number of columns in grid that are in increasing order, as described
+     * in part (b)
+     * <strong>Precondition:</strong> grid is not null.
+     * grid has at least one element.
+     */
+    public int countIncreasingCols()
+    { /* to be implemented in part (b) */ }
+
+    // There may be instance variables, constructors, and methods that are not shown.
+}</pre>
+                <br>
+                <div id="part-a"></div>
+                <p style="font-size: 16px;"><strong>(a)</strong> Write the <code>repopulate</code> method, which assigns a newly generated random value to each element of <code>grid</code>. Each value is computed to meet all of the following criteria, and all valid values must have an equal chance of being generated.</p>
+                <ul>
+                    <li>The value is between 1 and <code>MAX</code>, inclusive.</li>
+                    <li>The value is divisible by 10.</li>
+                    <li>The value is not divisible by 100.</li>
+                </ul>
+
+                <br>
+                <div id="part-b"></div>
+                <p style="font-size: 16px;"><strong>(b)</strong> Write the <code>countIncreasingCols</code> method, which returns the number of columns in <code>grid</code> that are in increasing order. A column is considered to be in increasing order if the element in each row after the first row is greater than or equal to the element in the previous row. A column with only one row is considered to be in increasing order.</p>
+                <p>The following examples show the <code>countIncreasingCols</code> return values for possible contents of <code>grid</code>.</p>
+                <p>The return value for the following contents of <code>grid</code> is 1, since the first column is in increasing order but the second and third columns are not.</p>
+                <table class="data-table" style="width: auto;">
+                    <tr><td>10</td><td>50</td><td>40</td></tr>
+                    <tr><td>20</td><td>40</td><td>20</td></tr>
+                    <tr><td>30</td><td>50</td><td>30</td></tr>
+                </table>
+                <p>The return value for the following contents of <code>grid</code> is 2, since the first and third columns are in increasing order but the second and fourth columns are not.</p>
+                <table class="data-table" style="width: auto;">
+                    <tr><td>10</td><td>540</td><td>440</td><td>440</td></tr>
+                    <tr><td>220</td><td>450</td><td>440</td><td>190</td></tr>
+                </table>
+            </div>
+        `;
+
+        const q4aStem = `
+            <div class="part-heading"><strong>Part A</strong><span class="part-link" onclick="document.getElementById('part-a').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete the <code>repopulate</code> method.</p>
+<pre>/** Fills all elements of grid with randomly generated values, as described in part (a)
+ * <strong>Precondition:</strong> grid is not null.
+ * grid has at least one element.
+ */
+public void repopulate()</pre>
+        `;
+
+        const q4bStem = `
+            <div class="part-heading"><strong>Part B</strong><span class="part-link" onclick="document.getElementById('part-b').scrollIntoView({behavior: 'smooth', block: 'start'})">&gt;&gt;</span></div>
+            <p>Complete the <code>countIncreasingCols</code> method.</p>
+<pre>/** Returns the number of columns in grid that are in increasing order, as described
+ * in part (b)
+ * <strong>Precondition:</strong> grid is not null.
+ * grid has at least one element.
+ */
+public int countIncreasingCols()</pre>
+        `;
+
+        sectionsData = [
+            {
+                name: "Section II",
+                type: "FRQ",
+                time: 90 * 60, // 90 minutes
+                questions: [
+                    { id: "1a", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "1b", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "2", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "3a", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "3b", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "4a", type: "FRQ", isMarkedForReview: false, userResponse: "" },
+                    { id: "4b", type: "FRQ", isMarkedForReview: false, userResponse: "" }
+                ]
+            }
+        ];
+        
+        // Link content back
+        const mapping = [
+            { id: "1a", leftContent: q1LeftContext, stem: q1aStem },
+            { id: "1b", leftContent: q1LeftContext, stem: q1bStem },
+            { id: "2", leftContent: q2LeftContext, stem: q2Stem },
+            { id: "3a", leftContent: q3LeftContext, stem: q3aStem },
+            { id: "3b", leftContent: q3LeftContext, stem: q3bStem },
+            { id: "4a", leftContent: q4LeftContext, stem: q4aStem },
+            { id: "4b", leftContent: q4LeftContext, stem: q4bStem }
+        ];
+
+        sectionsData[0].questions.forEach((q, i) => {
+            q.leftContent = mapping[i].leftContent;
+            q.stem = mapping[i].stem;
+        });
+    }
+
+    // --- UI SELECTORS ---
+    const startScreen = document.getElementById('start-screen');
+    const transitionScreen = document.getElementById('section-transition-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const mainAppContainer = document.querySelector('.body-new-sat');
+    const leftPanel = document.getElementById('left-panel');
+    const rightPanel = document.getElementById('right-panel');
+    const questionProgressBtn = document.getElementById('question-progress-btn');
+    const timerDisplay = document.getElementById('timer-display');
+    const refBtn = document.getElementById('reference-btn');
+    const refContainer = document.getElementById('reference-container');
+
+    // --- DRAGGABLE WINDOWS ---
+    function makeDraggable(element) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        const header = element.querySelector('.draggable-header');
+        if (header) {
+            header.onmousedown = dragMouseDown;
+        } else {
+            element.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    makeDraggable(refContainer);
+
+    refBtn.addEventListener('click', () => {
+        refBtn.classList.toggle('active');
+        refContainer.style.display = refContainer.style.display === 'none' ? 'flex' : 'none';
+        refContainer.style.zIndex = 1051;
+        if(window.MathJax && refContainer.style.display === 'flex') {
+            MathJax.typesetPromise([refContainer]).catch(err => console.log(err));
+        }
+    });
+
+    document.getElementById('close-ref-btn').addEventListener('click', () => {
+        refContainer.style.display = 'none';
+        refBtn.classList.remove('active');
+    });
+
+    refContainer.addEventListener('mousedown', () => { refContainer.style.zIndex = 1051; });
+
+    // --- TIMER ---
+    function startTimer(duration) {
+        let timer = duration;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(function () {
+            let minutes = parseInt(timer / 60, 10);
+            let seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                if (currentView === 'review' || currentView === 'question') {
+                     handleTimeUp();
+                }
+            }
+        }, 1000);
+    }
+
+    function handleTimeUp() {
+        alert("Time's up for this section!");
+        const isLastSection = currentSectionIndex === sectionsData.length - 1;
+        if (isLastSection) {
+            switchView('results');
+        } else {
+            currentSectionIndex++;
+            switchView('transition');
+        }
+    }
+    
+    // --- RENDERING & VIEW MANAGEMENT ---
+    function switchView(viewName) {
+        currentView = viewName;
+        startScreen.classList.add('hidden');
+        transitionScreen.classList.add('hidden');
+        resultsScreen.classList.add('hidden');
+        mainAppContainer.classList.remove('active', 'review-mode-active');
+        
+        if (['start', 'transition', 'results'].includes(viewName)) {
+            mainAppContainer.style.display = 'none';
+        } else {
+            mainAppContainer.style.display = 'flex';
+        }
+
+        switch(viewName) {
+            case 'start':
+                startScreen.classList.remove('hidden');
+                break;
+            case 'transition':
+                clearInterval(timerInterval);
+                const nextSection = sectionsData[currentSectionIndex];
+                document.querySelector('#section-transition-screen h1').textContent = "Section Completed";
+                document.querySelector('#section-transition-screen p').innerHTML = `You are about to begin <strong>${nextSection.name}</strong>.<br>Click Continue to proceed.`;
+                transitionScreen.classList.remove('hidden');
+                break;
+            case 'results':
+                clearInterval(timerInterval);
+                resultsScreen.classList.remove('hidden');
+                break;
+            case 'question':
+            case 'analysis':
+                mainAppContainer.classList.add('active');
+                break;
+            case 'review':
+                mainAppContainer.classList.add('active', 'review-mode-active');
+                renderReviewScreen();
+                break;
+        }
+    }
+
+    function saveCurrentQuestionState() {
+        if (!sectionsData || sectionsData.length === 0 || !sectionsData[currentSectionIndex] || !sectionsData[currentSectionIndex].questions[currentQuestionIndex]) return;
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        const editor = document.getElementById(`editor-${question.id}`);
+        if (editor) question.userResponse = editor.value;
+    }
+
+    function loadQuestion(secIndex, qIndex, isAnalysisMode = false) {
+        currentView = isAnalysisMode ? 'analysis' : 'question';
+        switchView(currentView);
+
+        currentSectionIndex = secIndex;
+        currentQuestionIndex = qIndex;
+        
+        const section = sectionsData[secIndex];
+        const question = section.questions[qIndex];
+        if (!question) return;
+
+        document.getElementById('main-module-title').textContent = section.name;
+        const questionScreen = document.getElementById('question-screen');
+
+        if (question.leftContent && question.leftContent.trim() !== '') {
+            leftPanel.innerHTML = question.leftContent;
+            questionScreen.classList.remove('single-column');
+        } else {
+            leftPanel.innerHTML = '';
+            questionScreen.classList.add('single-column');
+        }
+
+        rightPanel.innerHTML = generateEditorHTML(question, isAnalysisMode);
+        initEditor(question.id, isAnalysisMode);
+        
+        addCommonEventListeners(isAnalysisMode);
+        updateMarkForReviewButton();
+        updateFooter(isAnalysisMode);
+
+        if(window.MathJax) {
+            MathJax.typesetPromise([leftPanel, rightPanel]).catch(err => console.log(err));
+        }
+    }
+
+    // --- HTML GENERATORS ---
+    function generateHeader(question) {
+        return `<div class="question-header">
+                    <div class="question-number">${question.id}</div>
+                    <div class="mark-review">
+                        <svg class="mark-review-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Mark for Review</span>
+                    </div>
+                </div>
+                <div class="separator-container" id="question-header-separator"></div>`;
+    }
+
+    function escapeHtml(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
+    function generateEditorHTML(question, isAnalysis) {
+        const content = question.userResponse || "";
+        const readonlyAttr = isAnalysis ? "readonly" : "";
+        
+        return generateHeader(question) + `
+        <div class="saq-container">
+            <div class="saq-prompt-box">
+                <div class="saq-prompt-text">${question.stem}</div>
+            </div>
+            <div class="editor-wrapper">
+                <pre id="bg-pre-${question.id}" class="code-bg-layer"></pre>
+                <textarea id="editor-${question.id}" class="code-textarea" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" ${readonlyAttr}>${escapeHtml(content)}</textarea>
+            </div>
+        </div>`;
+    }
+
+    // --- IDE EDITOR LOGIC ---
+    function findMatchingBracket(text, pos, dir) {
+        const pairs = { '{': '}', '}': '{', '(': ')', ')': '(', '[': ']', ']': '[' };
+        let char = text[pos];
+        let match = pairs[char];
+        if (!match) return -1;
+
+        let stack = 0;
+        for (let i = pos; i >= 0 && i < text.length; i += dir) {
+            if (text[i] === char) stack++;
+            if (text[i] === match) stack--;
+            if (stack === 0) return i;
+        }
+        return -1;
+    }
+
+    function updateEditorDisplay(id) {
+        const textarea = document.getElementById(`editor-${id}`);
+        const pre = document.getElementById(`bg-pre-${id}`);
+        if(!textarea || !pre) return;
+
+        let text = textarea.value;
+        const cursor = textarea.selectionStart;
+
+        const openBrackets = ['{', '(', '['];
+        const closeBrackets = ['}', ')', ']'];
+
+        let charBefore = cursor > 0 ? text[cursor - 1] : '';
+        let charAfter = cursor < text.length ? text[cursor] : '';
+
+        let activeIndex = -1;
+        let matchIndex = -1;
+        let isError = false;
+
+        if (openBrackets.includes(charBefore)) {
+            activeIndex = cursor - 1; matchIndex = findMatchingBracket(text, activeIndex, 1);
+        } else if (closeBrackets.includes(charBefore)) {
+            activeIndex = cursor - 1; matchIndex = findMatchingBracket(text, activeIndex, -1);
+        } else if (openBrackets.includes(charAfter)) {
+            activeIndex = cursor; matchIndex = findMatchingBracket(text, activeIndex, 1);
+        } else if (closeBrackets.includes(charAfter)) {
+            activeIndex = cursor; matchIndex = findMatchingBracket(text, activeIndex, -1);
+        }
+
+        if (activeIndex !== -1 && matchIndex === -1) {
+            isError = true;
+        }
+
+        let html = '';
+        let lines = text.split('\n');
+        let globalIndex = 0;
+
+        for (let l = 0; l < lines.length; l++) {
+            let line = lines[l];
+            let i = 0;
+
+            let leadingSpacesCount = (line.match(/^ +/) || [''])[0].length;
+            let indentLimit = leadingSpacesCount - (leadingSpacesCount % 3);
+
+            while (i < indentLimit) {
+                let chunkHtml = '';
+                for(let j=0; j<3; j++) {
+                    let isErr = (globalIndex === activeIndex) && isError;
+                    let isHighlight = (globalIndex === activeIndex || globalIndex === matchIndex) && !isError;
+                    if(isErr) chunkHtml += `<span class="bracket-error"> </span>`;
+                    else if(isHighlight) chunkHtml += `<span class="bracket-match"> </span>`;
+                    else chunkHtml += ' ';
+                    globalIndex++;
+                }
+                html += '<span class="indent-guide">' + chunkHtml + '</span>';
+                i += 3;
+            }
+
+            for (; i < line.length; i++) {
+                let char = line[i];
+                let isErr = (globalIndex === activeIndex) && isError;
+                let isHighlight = (globalIndex === activeIndex || globalIndex === matchIndex) && !isError;
+
+                if (isErr) {
+                    html += `<span class="bracket-error">${escapeHtml(char)}</span>`;
+                } else if (isHighlight) {
+                    html += `<span class="bracket-match">${escapeHtml(char)}</span>`;
+                } else {
+                    html += escapeHtml(char);
+                }
+                globalIndex++;
+            }
+            
+            if (l < lines.length - 1) {
+                html += '\n';
+                globalIndex++;
+            }
+        }
+
+        if(text.endsWith('\n')) html += ' ';
+        pre.innerHTML = html;
+        pre.scrollTop = textarea.scrollTop;
+        pre.scrollLeft = textarea.scrollLeft;
+    }
+
+    function initEditor(id, isAnalysis) {
+        const textarea = document.getElementById(`editor-${id}`);
+        const wrapper = textarea.closest('.editor-wrapper');
+        if(!textarea || isAnalysis) return;
+
+        textarea.addEventListener('focus', () => { wrapper.classList.add('is-focused'); updateEditorDisplay(id); });
+        textarea.addEventListener('blur', () => { wrapper.classList.remove('is-focused'); updateEditorDisplay(id); });
+
+        textarea.addEventListener('input', () => updateEditorDisplay(id));
+        textarea.addEventListener('scroll', function() {
+            const pre = document.getElementById(`bg-pre-${id}`);
+            if(pre) {
+                pre.scrollTop = this.scrollTop;
+                pre.scrollLeft = this.scrollLeft;
+            }
+        });
+
+        textarea.addEventListener('keydown', function(e) {
+            let start = this.selectionStart;
+            let end = this.selectionEnd;
+            let text = this.value;
+
+            // setTimeout ensures updateEditorDisplay sees the new cursor position for arrow keys, etc.
+            setTimeout(() => updateEditorDisplay(id), 0);
+
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                this.value = text.substring(0, start) + "   " + text.substring(end);
+                this.selectionStart = this.selectionEnd = start + 3;
+                updateEditorDisplay(id);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                let lastNewline = text.lastIndexOf('\n', start - 1);
+                let currentLine = text.substring(lastNewline + 1, start);
+                let leadingSpacesMatch = currentLine.match(/^ */);
+                let leadingSpaces = leadingSpacesMatch ? leadingSpacesMatch[0] : "";
+                
+                let insertText = '\n' + leadingSpaces;
+
+                this.value = text.substring(0, start) + insertText + text.substring(end);
+                this.selectionStart = this.selectionEnd = start + insertText.length;
+                updateEditorDisplay(id);
+            }
+        });
+
+        document.addEventListener('selectionchange', () => {
+            if (document.activeElement === textarea) {
+                updateEditorDisplay(id);
+            }
+        });
+        
+        // Initial render for bg
+        updateEditorDisplay(id);
+    }
+
+    function addCommonEventListeners(isAnalysisMode) {
+        const markForReviewBtn = rightPanel.querySelector('.mark-review');
+        if(markForReviewBtn) {
+            markForReviewBtn.onclick = isAnalysisMode ? null : () => { 
+                const q = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+                q.isMarkedForReview = !q.isMarkedForReview;
+                updateMarkForReviewButton();
+                if(questionListModal.classList.contains('active')) renderGrid('popup-question-grid');
+            };
+        }
+    }
+
+    // --- UI HELPERS ---
+    function updateFooter(isAnalysisMode = false) {
+        const currentSection = sectionsData[currentSectionIndex];
+        const totalQuestionsInSection = currentSection.questions.length;
+        const currentQId = currentSection.questions[currentQuestionIndex].id;
+
+        questionProgressBtn.innerHTML = `Question ${currentQId} <span style="margin-left: 5px; font-weight: normal; font-size: 12px; color: #ccc;">(${currentQuestionIndex + 1}/${totalQuestionsInSection})</span>`;
+        
+        const backBtn = document.getElementById('back-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const nextBtnSpan = nextBtn.querySelector('span');
+
+        if (isAnalysisMode) {
+            backBtn.style.display = 'none';
+            nextBtn.classList.add('back-to-results-btn');
+            nextBtnSpan.textContent = 'Back to Results';
+        } else {
+            nextBtn.classList.remove('back-to-results-btn');
+            const isLastSection = currentSectionIndex === sectionsData.length - 1;
+            const isLastQuestion = currentQuestionIndex === currentSection.questions.length - 1;
+
+            if (currentView === 'review') {
+                nextBtnSpan.textContent = isLastSection ? 'Submit' : 'Continue';
+                backBtn.style.display = 'inline-block';
+            } else {
+                nextBtnSpan.textContent = isLastQuestion ? 'Review' : 'Next';
+                backBtn.style.display = (currentSectionIndex === 0 && currentQuestionIndex === 0 && currentView !== 'review') ? 'none' : 'inline-block';
+            }
+        }
+    }
+    
+    function renderReviewScreen() {
+        const section = sectionsData[currentSectionIndex];
+        document.getElementById('review-module-name').textContent = section.name;
+        document.getElementById('review-question-preview').innerHTML = "Click a question letter below to see the question text here.";
+        renderGrid('review-grid-main');
+        updateFooter();
+    }
+
+    function renderGrid(containerId) {
+        const gridContainer = document.getElementById(containerId);
+        const section = sectionsData[currentSectionIndex];
+        gridContainer.innerHTML = '';
+        section.questions.forEach((q, index) => {
+            const item = document.createElement('div');
+            item.classList.add('question-grid-item');
+            item.textContent = q.id;
+            item.dataset.questionIndex = index;
+
+            let isAnswered = false;
+            if (q.userResponse && q.userResponse.trim().length > 0) isAnswered = true;
+
+            if (isAnswered) item.classList.add('completed');
+            else item.classList.add('unanswered');
+            
+            if (q.isMarkedForReview) item.classList.add('for-review');
+            if (index === currentQuestionIndex && currentView === 'question') item.classList.add('current');
+            
+            gridContainer.appendChild(item);
+        });
+    }
+
+    function updateMarkForReviewButton() {
+        const question = sectionsData[currentSectionIndex].questions[currentQuestionIndex];
+        const btn = rightPanel.querySelector('.mark-review');
+        if (!btn) return;
+        btn.classList.toggle('marked', question.isMarkedForReview);
+    }
+    
+    document.getElementById('download-frq-btn').addEventListener('click', function() {
+        let content = "AP Computer Science A - Exam Responses\n\n";
+        
+        sectionsData.forEach(section => {
+            content += `=== ${section.name} ===\n\n`;
+            section.questions.forEach(q => {
+                content += `--- Question ${q.id} ---\n`;
+                content += (q.userResponse || "[No Answer]") + "\n\n";
+            });
+        });
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Exam_Responses.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+
+    // --- GLOBAL LISTENERS ---
+    function attachGlobalListeners() {
+        document.getElementById('start-exam-btn').addEventListener('click', () => {
+            startTimer(sectionsData[0].time);
+            loadQuestion(0, 0);
+        });
+        
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            currentQuestionIndex = 0; 
+            startTimer(sectionsData[currentSectionIndex].time);
+            loadQuestion(currentSectionIndex, 0);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if (currentView === 'analysis') {
+                switchView('results');
+                return;
+            }
+            
+            if (currentView === 'question') {
+                const section = sectionsData[currentSectionIndex];
+                if (currentQuestionIndex < section.questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion(currentSectionIndex, currentQuestionIndex);
+                } else {
+                    switchView('review');
+                }
+                return;
+            }
+
+            if (currentView === 'review') {
+                const isLastSection = currentSectionIndex === sectionsData.length - 1;
+                if (isLastSection) {
+                    switchView('results');
+                } else {
+                    currentSectionIndex++;
+                    switchView('transition');
+                }
+                return;
+            }
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            saveCurrentQuestionState();
+            if(currentView === 'review') { 
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+                return; 
+            }
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentSectionIndex, currentQuestionIndex);
+            }
+        });
+    }
+    
+    window.onbeforeunload = function(e) {
+        if (currentView === 'question' || currentView === 'review') {
+            const message = 'Leave site? Changes you made may not be saved.';
+            e.returnValue = message; 
+            return message;
+        }
+    };
+
+    function handleGridClick(e) {
+        if (e.target.classList.contains('question-grid-item')) {
+            const index = parseInt(e.target.dataset.questionIndex, 10);
+            if (currentView === 'review') {
+                const previewBox = document.getElementById('review-question-preview');
+                const question = sectionsData[currentSectionIndex].questions[index];
+                let content = `<strong>Question ${question.id}:</strong> ${question.stem.substring(0, 200)}...`;
+                previewBox.innerHTML = content;
+                if(window.MathJax) {
+                    MathJax.typesetPromise([previewBox]).catch(err => console.log(err));
+                }
+            } else {
+                saveCurrentQuestionState();
+                loadQuestion(currentSectionIndex, index);
+                closeModal(questionListModal);
+            }
+        }
+    }
+    document.getElementById('popup-question-grid').addEventListener('click', handleGridClick);
+    document.getElementById('review-grid-main').addEventListener('click', (e) => {
+        if (e.target.classList.contains('question-grid-item')) {
+                saveCurrentQuestionState();
+                const index = parseInt(e.target.dataset.questionIndex, 10);
+                loadQuestion(currentSectionIndex, index);
+        }
+    });
+
+    // --- MODALS & TOOLS ---
+    const directionsModal = document.getElementById('directions-modal');
+    const questionListModal = document.getElementById('question-list-modal');
+
+    function openModal(modal) { modal.classList.add('active'); }
+    function closeModal(modal) { modal.classList.remove('active'); }
+    
+    document.getElementById('directions-btn').addEventListener('click', () => {
+        openModal(directionsModal);
+    });
+    document.getElementById('directions-close-btn').addEventListener('click', () => closeModal(directionsModal));
+    directionsModal.addEventListener('click', (e) => { if (e.target === directionsModal) closeModal(directionsModal); });
+    
+    questionProgressBtn.addEventListener('click', (e) => { 
+        e.stopPropagation();
+        document.getElementById('popup-module-name').textContent = sectionsData[currentSectionIndex].name;
+        renderGrid('popup-question-grid');
+        questionListModal.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+        const qListContent = questionListModal.querySelector('.question-list-content');
+        if (questionListModal.classList.contains('active') && qListContent && !qListContent.contains(e.target) && !questionProgressBtn.contains(e.target)) {
+            closeModal(questionListModal);
+        }
+    });
+    
+    document.getElementById('go-to-review-btn').addEventListener('click', () => { switchView('review'); closeModal(questionListModal); });
+    
+    document.querySelector('.hide-button').addEventListener('click', () => { document.querySelector('.timer-visible-container').style.display = 'none'; document.querySelector('.timer-hidden-container').style.display = 'flex'; });
+    document.querySelector('.show-button').addEventListener('click', () => { document.querySelector('.timer-hidden-container').style.display = 'none'; document.querySelector('.timer-visible-container').style.display = 'flex'; });
+    
+    const splitter = document.getElementById('splitter');
+    let isDraggingSplitter = false;
+    splitter.addEventListener('mousedown', (e) => { isDraggingSplitter = true; document.body.classList.add('resizing'); e.preventDefault(); });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDraggingSplitter) return;
+        let newLeftWidth = e.clientX - mainAppContainer.getBoundingClientRect().left;
+        const minWidth = 150;
+        const availableWidth = mainAppContainer.offsetWidth - splitter.offsetWidth;
+        if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+        if (availableWidth - newLeftWidth < minWidth) newLeftWidth = availableWidth - minWidth;
+        leftPanel.style.flex = `0 0 ${newLeftWidth}px`;
+    });
+    document.addEventListener('mouseup', () => { isDraggingSplitter = false; document.body.classList.remove('resizing'); });
+
+    // More dropdown & Line Reader
+    const moreBtn = document.getElementById('more-btn');
+    const moreDropdown = document.getElementById('more-dropdown');
+    const lineReaderOverlay = document.getElementById('line-reader-overlay');
+    moreBtn.addEventListener('click', (e) => { e.stopPropagation(); moreDropdown.classList.toggle('visible'); });
+    document.addEventListener('click', (e) => { if (!moreBtn.contains(e.target)) { moreDropdown.classList.remove('visible'); }});
+    function toggleLineReader() {
+        const isVisible = lineReaderOverlay.style.display === 'block';
+        lineReaderOverlay.style.display = isVisible ? 'none' : 'block';
+        document.removeEventListener('mousemove', moveLineReader);
+        if (!isVisible) document.addEventListener('mousemove', moveLineReader);
+    }
+    function moveLineReader(e) { document.getElementById('line-reader').style.top = `${e.clientY}px`; }
+    document.getElementById('linereader-tool-btn').addEventListener('click', toggleLineReader);
+    document.getElementById('line-reader-exit-btn').addEventListener('click', toggleLineReader);
+
+    // Highlight Tool Button functionality
+    const highlightBtn = document.getElementById('highlight-tool-btn');
+    const highlightToolbar = document.getElementById('highlight-toolbar');
+    
+    highlightBtn.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        btn.classList.toggle('active');
+        if (!btn.classList.contains('active')) {
+            highlightToolbar.style.display = 'none';
+        }
+    });
+
+    // Handle text selection
+    document.addEventListener('mouseup', (e) => {
+        if (!highlightBtn.classList.contains('active')) return;
+        // Ignore clicks inside the toolbar itself
+        if (highlightToolbar.contains(e.target)) return;
+
+        const selection = window.getSelection();
+        if (selection && selection.toString().trim() !== '') {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            
+            // Show and position toolbar (fixed positioning)
+            highlightToolbar.style.display = 'flex';
+            // Position slightly above the selection
+            highlightToolbar.style.top = (rect.top - 45) + 'px';
+            // Center horizontally
+            let leftPos = rect.left + (rect.width / 2) - (highlightToolbar.offsetWidth / 2);
+            highlightToolbar.style.left = Math.max(10, leftPos) + 'px';
+        } else {
+            highlightToolbar.style.display = 'none';
+        }
+    });
+
+    // Apply colors
+    const colors = {
+        yellow: '#fff38f',
+        pink: '#ffb6c1',
+        blue: '#add8e6',
+        green: '#90ee90'
+    };
+
+    highlightToolbar.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent mouseup from hiding toolbar immediately
+            const colorName = btn.dataset.color;
+            const hex = colors[colorName];
+            
+            document.designMode = "on";
+            if (!document.execCommand("hiliteColor", false, hex)) {
+                document.execCommand("backColor", false, hex);
+            }
+            document.designMode = "off";
+            
+            window.getSelection().removeAllRanges();
+            highlightToolbar.style.display = 'none';
+        });
+    });
+
+    // Remove highlight
+    highlightToolbar.querySelector('[data-action="remove"]').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        document.designMode = "on";
+        if (!document.execCommand("hiliteColor", false, "transparent")) {
+            document.execCommand("backColor", false, "transparent");
+        }
+        document.designMode = "off";
+        
+        window.getSelection().removeAllRanges();
+        highlightToolbar.style.display = 'none';
+    });
+
+    // --- INITIALIZATION WITH DYNAMIC DAILY AUTHENTICATION ---
+            window.verifyPassword = function() {
+                const pwdInput = document.getElementById('exam-password');
+                const errorMsg = document.getElementById('auth-error');
+                
+                if (!pwdInput) return;
+
+                const getSeed = (dateObj) => {
+                    return dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+                };
+
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+
+                const generateCode = (seed) => {
+                    let code = (seed * 13579 + 24680) % 1000000;
+                    return code.toString().padStart(6, '0');
+                };
+
+                const expectedCode = generateCode(getSeed(today));
+                const prevExpectedCode = generateCode(getSeed(yesterday));
+                
+                const userInput = pwdInput.value.trim();
+
+                if (userInput === expectedCode || userInput === prevExpectedCode) { 
+                    const overlay = document.getElementById('auth-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    
+                    if (typeof initializeExam === 'function') initializeExam();
+                    if (typeof switchView === 'function') switchView('start');
+                    if (typeof attachGlobalListeners === 'function') attachGlobalListeners();
+                    if (typeof loadReferenceMaterial === 'function') loadReferenceMaterial();
+                    
+                } else {
+                    if (errorMsg) errorMsg.style.display = 'block';
+                }
+            };
+
+            const passwordField = document.getElementById('exam-password');
+            if (passwordField) {
+                passwordField.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                
+                passwordField.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        window.verifyPassword();
+                    }
+                });
+            }
+        })();
+</script>
+</body>
+</html>
