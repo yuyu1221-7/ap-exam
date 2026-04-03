@@ -1262,7 +1262,7 @@ following sequences represents the most logical algorithmic approach?</p>`,
                         },
                         { id: 40, layout: 'single', isMarkedForReview: false, selectedAnswer: null, correctAnswer: 3, notes: [], highlights: { left: null, right: null },
                             leftContent: ``,
-                            stem: `<p>Consider the following code segment.</p><pre><code>double regularPrice = 100;\nboolean onClearance = true;\nboolean hasCoupon = false;\ndouble finalPrice = regularPrice;\nif (onClearance)\n{\n    finalPrice = finalPrice * 0.25;\n}\nif (hasCoupon)\n{\n    finalPrice -= 5.0;\n}\nSystem.out.println(finalPrice);</code></pre><p>What is printed as a result of executing the code segment?</p>`,
+                            stem: `<p>Consider the following code segment.</p><pre><code>double regularPrice = 100;\nboolean onClearance = true;\nboolean hasCoupon = false;\ndouble finalPrice = regularPrice;\nif (onClearance)\n{\n    finalPrice -= finalPrice * 0.25;\n}\nif (hasCoupon)\n{\n    finalPrice -= 5.0;\n}\nSystem.out.println(finalPrice);</code></pre><p>What is printed as a result of executing the code segment?</p>`,
                             options: [ `20.0`, `25.0`, `70.0`, `75.0`, `95.0` ]
                         },
                         {
